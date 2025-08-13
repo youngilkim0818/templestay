@@ -1,0 +1,88 @@
+{
+  "common": {
+    "back": "返回",
+    "next": "下一步",
+    "cancel": "取消",
+    "confirm": "确认",
+    "search": "搜索",
+    "loading": "加载中...",
+    "error": "发生错误",
+    "retry": "重试",
+    "save": "保存",
+    "edit": "编辑",
+    "delete": "删除"
+  },
+  "onboarding": {
+    "welcome": "欢迎来到寺庙住宿",
+    "subtitle": "寻找内心的平静",
+    "getStarted": "开始"
+  },
+  "auth": {
+    "login": "登录",
+    "signup": "注册",
+    "logout": "退出登录",
+    "email": "邮箱地址",
+    "password": "密码",
+    "forgotPassword": "忘记密码？",
+    "loginWithGoogle": "使用Google登录",
+    "loginWithKakao": "使用Kakao登录",
+    "loginWithNaver": "使用Naver登录"
+  },
+  "language": {
+    "selectLanguage": "选择语言",
+    "english": "English",
+    "korean": "한국어",
+    "japanese": "日本語",
+    "chinese": "中文"
+  },
+  "home": {
+    "title": "寺庙住宿",
+    "welcome": "寻找内心的平静",
+    "viewTemples": "查看所有寺庙",
+    "recommendedTemples": "推荐寺庙",
+    "nearbyTemples": "附近寺庙",
+    "popularTemples": "热门寺庙"
+  },
+  "temples": {
+    "listTitle": "寺庙列表",
+    "detailsTitle": "寺庙信息",
+    "templestayPrograms": "寺庙住宿项目",
+    "reserveNow": "立即预订",
+    "price": "价格",
+    "duration": "时长",
+    "capacity": "容量",
+    "nearbyAttractions": "附近景点"
+  },
+  "reservation": {
+    "selectDate": "选择日期",
+    "selectTime": "选择时间",
+    "selectPeople": "选择人数",
+    "guestInfo": "客人信息",
+    "payment": "付款",
+    "confirmation": "预订确认",
+    "myReservations": "我的预订",
+    "reservationComplete": "预订完成"
+  },
+  "map": {
+    "search": "搜索地点、地址",
+    "myLocation": "我的位置",
+    "nearbyAttractions": "附近景点推荐",
+    "templeLocation": "寺庙位置"
+  },
+  "profile": {
+    "myProfile": "我的档案",
+    "editProfile": "编辑档案",
+    "settings": "设置",
+    "language": "语言",
+    "notifications": "通知",
+    "privacy": "隐私"
+  },
+  "navigation": {
+    "home": "首页",
+    "temples": "寺庙",
+    "map": "地图",
+    "transportation": "交通",
+    "market": "市场",
+    "myPage": "我的页面"
+  }
+}
