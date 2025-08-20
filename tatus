@@ -1,0 +1,494 @@
+[1mdiff --git a/.claude/settings.local.json b/.claude/settings.local.json[m
+[1mdeleted file mode 100644[m
+[1mindex 1ee5e12..0000000[m
+[1m--- a/.claude/settings.local.json[m
+[1m+++ /dev/null[m
+[36m@@ -1,18 +0,0 @@[m
+[31m-{[m
+[31m-  "permissions": {[m
+[31m-    "allow": [[m
+[31m-      "Bash(find:*)",[m
+[31m-      "Bash(npm ls:*)",[m
+[31m-      "Bash(npm install:*)",[m
+[31m-      "Bash(npm uninstall:*)",[m
+[31m-      "Bash(npx tsc:*)",[m
+[31m-      "Bash(rm:*)",[m
+[31m-      "Bash(touch:*)",[m
+[31m-      "WebFetch(domain:www.templestay.com)",[m
+[31m-      "Bash(git add:*)",[m
+[31m-      "Bash(git push:*)",[m
+[31m-      "Bash(git commit:*)"[m
+[31m-    ],[m
+[31m-    "deny": [][m
+[31m-  }[m
+[31m-}[m
+\ No newline at end of file[m
+[1mdiff --git a/.env.example b/.env.example[m
+[1mdeleted file mode 100644[m
+[1mindex fcbf398..0000000[m
+[1m--- a/.env.example[m
+[1m+++ /dev/null[m
+[36m@@ -1,14 +0,0 @@[m
+[31m-# Environment Variables Template[m
+[31m-# Copy this file to .env and fill in your actual values[m
+[31m-[m
+[31m-# Supabase Configuration[m
+[31m-EXPO_PUBLIC_SUPABASE_URL=your_supabase_project_url[m
+[31m-EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key[m
+[31m-[m
+[31m-# Google Maps API Key[m
+[31m-# Get this from Google Cloud Console[m
+[31m-EXPO_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key[m
+[31m-[m
+[31m-# API Configuration[m
+[31m-EXPO_PUBLIC_API_BASE_URL=https://your-api-server.com[m
+[31m-EXPO_PUBLIC_APP_ENV=development[m
+\ No newline at end of file[m
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mdeleted file mode 100644[m
+[1mindex 14a0b4f..0000000[m
+[1m--- a/.gitignore[m
+[1m+++ /dev/null[m
+[36m@@ -1,53 +0,0 @@[m
+[31m-# Dependencies[m
+[31m-node_modules/[m
+[31m-npm-debug.log*[m
+[31m-yarn-debug.log*[m
+[31m-yarn-error.log*[m
+[31m-[m
+[31m-# Expo[m
+[31m-.expo/[m
+[31m-dist/[m
+[31m-web-build/[m
+[31m-[m
+[31m-# Native[m
+[31m-*.orig.*[m
+[31m-*.jks[m
+[31m-*.p8[m
+[31m-*.p12[m
+[31m-*.key[m
+[31m-*.mobileprovision[m
+[31m-[m
+[31m-# Metro[m
+[31m-.metro-health-check*[m
+[31m-[m
+[31m-# Debug[m
+[31m-npm-debug.*[m
+[31m-yarn-debug.*[m
+[31m-yarn-error.*[m
+[31m-[m
+[31m-# macOS[m
+[31m-.DS_Store[m
+[31m-*.pem[m
+[31m-[m
+[31m-# local env files[m
+[31m-.env[m
+[31m-.env*.local[m
+[31m-.env.production[m
+[31m-.env.development[m
+[31m-[m
+[31m-# typescript[m
+[31m-*.tsbuildinfo[m
+[31m-[m
+[31m-# IDE[m
+[31m-.vscode/[m
+[31m-.idea/[m
+[31m-[m
+[31m-# Temporary files[m
+[31m-*.log[m
+[31m-*.tmp[m
+[31m-*.temp[m
+[31m-[m
+[31m-# OS generated files[m
+[31m-Thumbs.db[m
+[31m-ehthumbs.db[m
+[31m-Desktop.ini [m
+\ No newline at end of file[m
+[1mdiff --git a/.next/server/app-paths-manifest.json b/.next/server/app-paths-manifest.json[m
+[1mdeleted file mode 100644[m
+[1mindex 9e26dfe..0000000[m
+[1m--- a/.next/server/app-paths-manifest.json[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-{}[m
+\ No newline at end of file[m
+[1mdiff --git a/.next/server/interception-route-rewrite-manifest.js b/.next/server/interception-route-rewrite-manifest.js[m
+[1mdeleted file mode 100644[m
+[1mindex 82d3ab1..0000000[m
+[1m--- a/.next/server/interception-route-rewrite-manifest.js[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-self.__INTERCEPTION_ROUTE_REWRITE_MANIFEST="[]"[m
+\ No newline at end of file[m
+[1mdiff --git a/.next/server/middleware-manifest.json b/.next/server/middleware-manifest.json[m
+[1mdeleted file mode 100644[m
+[1mindex 33872a3..0000000[m
+[1m--- a/.next/server/middleware-manifest.json[m
+[1m+++ /dev/null[m
+[36m@@ -1,6 +0,0 @@[m
+[31m-{[m
+[31m-  "version": 3,[m
+[31m-  "middleware": {},[m
+[31m-  "functions": {},[m
+[31m-  "sortedMiddleware": [][m
+[31m-}[m
+\ No newline at end of file[m
+[1mdiff --git a/.next/server/pages-manifest.json b/.next/server/pages-manifest.json[m
+[1mdeleted file mode 100644[m
+[1mindex 9e26dfe..0000000[m
+[1m--- a/.next/server/pages-manifest.json[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-{}[m
+\ No newline at end of file[m
+[1mdiff --git a/.next/server/server-reference-manifest.js b/.next/server/server-reference-manifest.js[m
+[1mdeleted file mode 100644[m
+[1mindex 82c038a..0000000[m
+[1m--- a/.next/server/server-reference-manifest.js[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-self.__RSC_SERVER_MANIFEST="{\n  \"node\": {},\n  \"edge\": {},\n  \"encryptionKey\": \"lyeyjfBGhnS80KeeXntnqa9Jgflb8Vr6tgBttrgIdRI=\"\n}"[m
+\ No newline at end of file[m
+[1mdiff --git a/.next/server/server-reference-manifest.json b/.next/server/server-reference-manifest.json[m
+[1mdeleted file mode 100644[m
+[1mindex e5259b4..0000000[m
+[1m--- a/.next/server/server-reference-manifest.json[m
+[1m+++ /dev/null[m
+[36m@@ -1,5 +0,0 @@[m
+[31m-{[m
+[31m-  "node": {},[m
+[31m-  "edge": {},[m
+[31m-  "encryptionKey": "lyeyjfBGhnS80KeeXntnqa9Jgflb8Vr6tgBttrgIdRI="[m
+[31m-}[m
+\ No newline at end of file[m
+[1mdiff --git a/.next/types/package.json b/.next/types/package.json[m
+[1mdeleted file mode 100644[m
+[1mindex 1632c2c..0000000[m
+[1m--- a/.next/types/package.json[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-{"type": "module"}[m
+\ No newline at end of file[m
+[1mdiff --git a/.serena/cache/typescript/document_symbols_cache_v23-06-25.pkl b/.serena/cache/typescript/document_symbols_cache_v23-06-25.pkl[m
+[1mdeleted file mode 100644[m
+[1mindex ca61731..0000000[m
+Binary files a/.serena/cache/typescript/document_symbols_cache_v23-06-25.pkl and /dev/null differ
+[1mdiff --git a/.serena/memories/code_style_conventions.md b/.serena/memories/code_style_conventions.md[m
+[1mdeleted file mode 100644[m
+[1mindex 7b65d3a..0000000[m
+[1m--- a/.serena/memories/code_style_conventions.md[m
+[1m+++ /dev/null[m
+[36m@@ -1,37 +0,0 @@[m
+[31m-# Code Style & Conventions[m
+[31m-[m
+[31m-## TypeScript[m
+[31m-- 엄격한 타입 체크 사용[m
+[31m-- 인터페이스와 타입 정의는 types/ 디렉토리에 모음[m
+[31m-- React 컴포넌트는 함수형 컴포넌트 사용[m
+[31m-[m
+[31m-## Styling[m
+[31m-- **NativeWind 사용** - Tailwind CSS 클래스로 스타일링[m
+[31m-- className prop으로 스타일 적용[m
+[31m-- 컬러 시스템: COLORS 상수에서 관리[m
+[31m-  - Primary: sage (브랜드 컬러)[m
+[31m-  - Neutral colors for text/backgrounds[m
+[31m-- 일관된 spacing, border radius 사용[m
+[31m-[m
+[31m-## Component Structure[m
+[31m-- Functional components with hooks[m
+[31m-- memo() 사용으로 성능 최적화[m
+[31m-- Props interface 정의[m
+[31m-- 재사용 가능한 컴포넌트는 components/common/에 위치[m
+[31m-[m
+[31m-## State Management[m
+[31m-- Zustand 스토어 사용[m
+[31m-- 각 도메인별로 별도 스토어 (userStore, templeStore, reservationStore)[m
+[31m-- useState/useEffect for local state[m
+[31m-[m
+[31m-## Naming Conventions[m
+[31m-- 컴포넌트: PascalCase[m
+[31m-- 파일명: PascalCase for components, camelCase for utilities[m
+[31m-- 변수/함수: camelCase[m
+[31m-- 상수: UPPER_SNAKE_CASE[m
+[31m-- 타입/인터페이스: PascalCase[m
+[31m-[m
+[31m-## Code Organization[m
+[31m-- 화면별 로직은 해당 Screen 파일에 포함[m
+[31m-- 재사용 로직은 hooks/나 services/에 분리[m
+[31m-- API 호출은 services/ 디렉토리에 모음[m
+\ No newline at end of file[m
+[1mdiff --git a/.serena/memories/project_overview.md b/.serena/memories/project_overview.md[m
+[1mdeleted file mode 100644[m
+[1mindex 99ee78b..0000000[m
+[1m--- a/.serena/memories/project_overview.md[m
+[1m+++ /dev/null[m
+[36m@@ -1,45 +0,0 @@[m
+[31m-# Temple Stay Project Overview[m
+[31m-[m
+[31m-## Project Purpose[m
+[31m-템플스테이 예약 서비스 - 한국의 사찰에서 제공하는 템플스테이 프로그램을 검색, 예약할 수 있는 모바일 앱[m
+[31m-[m
+[31m-## Tech Stack[m
+[31m-- **Framework**: React Native + Expo[m
+[31m-- **Navigation**: React Navigation v7[m
+[31m-- **Styling**: NativeWind (Tailwind CSS for React Native)[m
+[31m-- **State Management**: Zustand[m
+[31m-- **Backend**: Supabase[m
+[31m-- **Map Services**: React Native Maps[m
+[31m-- **API**: Tour API Service (관광지 정보)[m
+[31m-- **Internationalization**: i18next[m
+[31m-[m
+[31m-## Key Features[m
+[31m-- 사찰 검색 및 상세 정보 보기[m
+[31m-- 템플스테이 프로그램 예약[m
+[31m-- 주변 관광지 정보 제공[m
+[31m-- 다국어 지원 (한국어, 영어, 일본어, 중국어)[m
+[31m-- 지도 기반 사찰 위치 서비스[m
+[31m-[m
+[31m-## Project Structure[m
+[31m-```[m
+[31m-src/[m
+[31m-├── api/ - API 클라이언트들[m
+[31m-├── components/ - 재사용 컴포넌트[m
+[31m-├── constants/ - 상수 정의[m
+[31m-├── data/ - 정적 데이터[m
+[31m-├── hooks/ - 커스텀 훅[m
+[31m-├── lib/ - 외부 라이브러리 설정[m
+[31m-├── localization/ - 다국어 지원[m
+[31m-├── navigation/ - 네비게이션 구조[m
+[31m-├── screens/ - 화면 컴포넌트들[m
+[31m-├── services/ - 비즈니스 로직[m
+[31m-├── store/ - 상태 관리[m
+[31m-├── types/ - TypeScript 타입 정의[m
+[31m-└── utils/ - 유틸리티 함수[m
+[31m-```[m
+[31m-[m
+[31m-## Key Commands[m
+[31m-- `npm start` - Expo 개발 서버 시작[m
+[31m-- `npm run android` - Android 앱 실행[m
+[31m-- `npm run ios` - iOS 앱 실행[m
+[31m-- `npm run web` - 웹 버전 실행[m
+\ No newline at end of file[m
+[1mdiff --git a/.serena/memories/suggested_commands.md b/.serena/memories/suggested_commands.md[m
+[1mdeleted file mode 100644[m
+[1mindex 0b0e8de..0000000[m
+[1m--- a/.serena/memories/suggested_commands.md[m
+[1m+++ /dev/null[m
+[36m@@ -1,26 +0,0 @@[m
+[31m-# Suggested Commands for Temple Stay Project[m
+[31m-[m
+[31m-## Development Commands[m
+[31m-- `npm start` - Start Expo development server[m
+[31m-- `npm run android` - Run on Android device/simulator[m
+[31m-- `npm run ios` - Run on iOS device/simulator[m
+[31m-- `npm run web` - Run web version[m
+[31m-- `expo install <package>` - Install Expo-compatible packages[m
+[31m-[m
+[31m-## System Commands (macOS)[m
+[31m-- `ls -la` - List files with details[m
+[31m-- `find . -name "*.tsx" -o -name "*.ts"` - Find TypeScript files[m
+[31m-- `grep -r "searchTerm" src/` - Search in source files[m
+[31m-- `git status` - Check git status[m
+[31m-- `git add .` - Stage all changes[m
+[31m-- `git commit -m "message"` - Commit changes[m
+[31m-[m
+[31m-## Project Specific[m
+[31m-- Check `src/screens/` for screen components[m
+[31m-- Check `src/components/common/` for reusable components[m
+[31m-- Check `src/services/` for API and business logic[m
+[31m-- Check `src/types/index.ts` for type definitions[m
+[31m-[m
+[31m-## Testing/Linting[m
+[31m-- No specific lint/test commands configured yet[m
+[31m-- Should add TypeScript check: `npx tsc --noEmit`[m
+\ No newline at end of file[m
+[1mdiff --git a/.serena/project.yml b/.serena/project.yml[m
+[1mdeleted file mode 100644[m
+[1mindex 14f797f..0000000[m
+[1m--- a/.serena/project.yml[m
+[1m+++ /dev/null[m
+[36m@@ -1,68 +0,0 @@[m
+[31m-# language of the project (csharp, python, rust, java, typescript, go, cpp, or ruby)[m
+[31m-#  * For C, use cpp[m
+[31m-#  * For JavaScript, use typescript[m
+[31m-# Special requirements:[m
+[31m-#  * csharp: Requires the presence of a .sln file in the project folder.[m
+[31m-language: typescript[m
+[31m-[m
+[31m-# whether to use the project's gitignore file to ignore files[m
+[31m-# Added on 2025-04-07[m
+[31m-ignore_all_files_in_gitignore: true[m
+[31m-# list of additional paths to ignore[m
+[31m-# same syntax as gitignore, so you can use * and **[m
+[31m-# Was previously called `ignored_dirs`, please update your config if you are using that.[m
+[31m-# Added (renamed)on 2025-04-07[m
+[31m-ignored_paths: [][m
+[31m-[m
+[31m-# whether the project is in read-only mode[m
+[31m-# If set to true, all editing tools will be disabled and attempts to use them will result in an error[m
+[31m-# Added on 2025-04-18[m
+[31m-read_only: false[m
+[31m-[m
+[31m-[m
+[31m-# list of tool names to exclude. We recommend not excluding any tools, see the readme for more details.[m
+[31m-# Below is the complete list of tools for convenience.[m
+[31m-# To make sure you have the latest list of tools, and to view their descriptions, [m
+[31m-# execute `uv run scripts/print_tool_overview.py`.[m
+[31m-#[m
+[31m-#  * `activate_project`: Activates a project by name.[m
+[31m-#  * `check_onboarding_performed`: Checks whether project onboarding was already performed.[m
+[31m-#  * `create_text_file`: Creates/overwrites a file in the project directory.[m
+[31m-#  * `delete_lines`: Deletes a range of lines within a file.[m
+[31m-#  * `delete_memory`: Deletes a memory from Serena's project-specific memory store.[m
+[31m-#  * `execute_shell_command`: Executes a shell command.[m
+[31m-#  * `find_referencing_code_snippets`: Finds code snippets in which the symbol at the given location is referenced.[m
+[31m-#  * `find_referencing_symbols`: Finds symbols that reference the symbol at the given location (optionally filtered by type).[m
+[31m-#  * `find_symbol`: Performs a global (or local) search for symbols with/containing a given name/substring (optionally filtered by type).[m
+[31m-#  * `get_current_config`: Prints the current configuration of the agent, including the active and available projects, tools, contexts, and modes.[m
+[31m-#  * `get_symbols_overview`: Gets an overview of the top-level symbols defined in a given file or directory.[m
+[31m-#  * `initial_instructions`: Gets the initial instructions for the current project.[m
+[31m-#     Should only be used in settings where the system prompt cannot be set,[m
+[31m-#     e.g. in clients you have no control over, like Claude Desktop.[m
+[31m-#  * `insert_after_symbol`: Inserts content after the end of the definition of a given symbol.[m
+[31m-#  * `insert_at_line`: Inserts content at a given line in a file.[m
+[31m-#  * `insert_before_symbol`: Inserts content before the beginning of the definition of a given symbol.[m
+[31m-#  * `list_dir`: Lists files and directories in the given directory (optionally with recursion).[m
+[31m-#  * `list_memories`: Lists memories in Serena's project-specific memory store.[m
+[31m-#  * `onboarding`: Performs onboarding (identifying the project structure and essential tasks, e.g. for testing or building).[m
+[31m-#  * `prepare_for_new_conversation`: Provides instructions for preparing for a new conversation (in order to continue with the necessary context).[m
+[31m-#  * `read_file`: Reads a file within the project directory.[m
+[31m-#  * `read_memory`: Reads the memory with the given name from Serena's project-specific memory store.[m
+[31m-#  * `remove_project`: Removes a project from the Serena configuration.[m
+[31m-#  * `replace_lines`: Replaces a range of lines within a file with new content.[m
+[31m-#  * `replace_symbol_body`: Replaces the full definition of a symbol.[m
+[31m-#  * `restart_language_server`: Restarts the language server, may be necessary when edits not through Serena happen.[m
+[31m-#  * `search_for_pattern`: Performs a search for a pattern in the project.[m
+[31m-#  * `summarize_changes`: Provides instructions for summarizing the changes made to the codebase.[m
+[31m-#  * `switch_modes`: Activates modes by providing a list of their names[m
+[31m-#  * `think_about_collected_information`: Thinking tool for pondering the completeness of collected information.[m
+[31m-#  * `think_about_task_adherence`: Thinking tool for determining whether the agent is still on track with the current task.[m
+[31m-#  * `think_about_whether_you_are_done`: Thinking tool for determining whether the task is truly completed.[m
+[31m-#  * `write_memory`: Writes a named memory (for future reference) to Serena's project-specific memory store.[m
+[31m-excluded_tools: [][m
+[31m-[m
+[31m-# initial prompt for the project. It will always be given to the LLM upon activating the project[m
+[31m-# (contrary to the memories, which are loaded on demand).[m
+[31m-initial_prompt: ""[m
+[31m-[m
+[31m-project_name: "templestay"[m
+[1mdiff --git a/App.tsx b/App.tsx[m
+[1mdeleted file mode 100644[m
+[1mindex 1ad4034..0000000[m
+[1m--- a/App.tsx[m
+[1m+++ /dev/null[m
+[36m@@ -1,27 +0,0 @@[m
+[31m-import React, { useEffect } from 'react';[m
+[31m-import { NavigationContainer } from '@react-navigation/native';[m
+[31m-import { I18nextProvider } from 'react-i18next';[m
+[31m-import RootNavigator from './src/navigation/RootNavigator';[m
+[31m-import { useAuth } from './src/hooks/useAuth';[m
+[31m-import i18n from './src/services/i18n';[m
+[31m-import './global.css';[m
+[31m-import useLocationStore from './src/store/locationStore';[m
+[31m-[m
+[31m-export default function App() {[m
+[31m-  // 인증 상태 자동 확인[m
+[31m-  useAuth();[m
+[31m-  const initializeLocation = useLocationStore((s) => s.initialize);[m
+[31m-[m
+[31m-  useEffect(() => {[m
+[31m-    // 앱 시작 시 위치 권한과 좌표 초기화 (지도 최초 로딩 개선)[m
+[31m-    initializeLocation();[m
+[31m-  }, [initializeLocation]);[m
+[31m-[m
+[31m-  return ([m
+[31m-    <I18nextProvider i18n={i18n}>[m
+[31m-      <NavigationContainer>[m
+[31m-        <RootNavigator />[m
+[31m-      </NavigationContainer>[m
+[31m-    </I18nextProvider>[m
+[31m-  );[m
+[31m-}[m
+[1mdiff --git a/GOOGLE_MAPS_SETUP.md b/GOOGLE_MAPS_SETUP.md[m
+[1mdeleted file mode 100644[m
+[1mindex 61be824..0000000[m
+[1m--- a/GOOGLE_MAPS_SETUP.md[m
+[1m+++ /dev/null[m
+[36m@@ -1,82 +0,0 @@[m
+[31m-# Google Maps API 설정 가이드[m
+[31m-[m
+[31m-## 1. Google Cloud Console에서 API 키 생성[m
+[31m-[m
+[31m-1. [Google Cloud Console](https://console.cloud.google.com/)에 접속[m
+[31m-2. 새 프로젝트 생성 또는 기존 프로젝트 선택[m
+[31m-3. API 및 서비스 > 라이브러리로 이동[m
+[31m-4. 다음 API들을 활성화:[m
+[31m-   - Maps SDK for Android[m
+[31m-   - Maps SDK for iOS[m
+[31m-   - Geocoding API[m
+[31m-   - Places API[m
+[31m-[m
+[31m-## 2. API 키 생성 및 제한 설정[m
+[31m-[m
+[31m-1. API 및 서비스 > 사용자 인증 정보로 이동[m
+[31m-2. "사용자 인증 정보 만들기" > "API 키" 선택[m
+[31m-3. 생성된 API 키를 복사[m
+[31m-[m
+[31m-### API 키 제한 설정 (보안)[m
+[31m-- 애플리케이션 제한사항: Android 앱, iOS 앱으로 제한[m
+[31m-- API 제한사항: 위에서 활성화한 API들만 선택[m
+[31m-[m
+[31m-## 3. 프로젝트 설정[m
+[31m-[m
+[31m-### 환경 변수 설정[m
+[31m-`.env` 파일에서 API 키 업데이트:[m
+[31m-```[m
+[31m-EXPO_PUBLIC_GOOGLE_MAPS_API_KEY=your_actual_api_key_here[m
+[31m-```[m
+[31m-[m
+[31m-### app.json 설정[m
+[31m-```json[m
+[31m-{[m
+[31m-  "expo": {[m
+[31m-    "ios": {[m
+[31m-      "config": {[m
+[31m-        "googleMapsApiKey": "your_actual_api_key_here"[m
+[31m-      }[m
+[31m-    },[m
+[31m-    "android": {[m
+[31m-      "config": {[m
+[31m-        "googleMaps": {[m
+[31m-          "apiKey": "your_actual_api_key_here"[m
+[31m-        }[m
+[31m-      }[m
+[31m-    }[m
+[31m-  }[m
+[31m-}[m
+[31m-```[m
+[31m-[m
+[31m-## 4. 테스트[m
+[31m-[m
+[31m-1. 앱 재시작: `npx expo start --clear`[m
+[31m-2. 지도 화면에서 다음 기능 테스트:[m
+[31m-   - 사찰 마커 표시[m
+[31m-   - 사찰 마커 클릭 시 상세 페이지 이동[m
+[31m-   - 장소 검색 기능[m
+[31m-   - 내 위치 표시[m
+[31m-[m
+[31m-## 5. 현재 구현된 기능[m
+[31m-[m
+[31m-✅ **완료된 기능:**[m
+[31m-- 사찰 위치 마커 표시[m
+[31m-- 사찰 마커 클릭 시 상세 페이지 이동[m
+[31m-- 내 위치 표시[m
+[31m-- 장소 검색 기능[m
+[31m-- 사찰 상세 정보 표시[m
+[31m-[m
+[31m-⚠️ **주의사항:**[m
+[31m-- 실제 배포 시 API 키를 환경 변수로 관리하세요[m
+[31m-- API 키에 적절한 제한사항을 설정하세요[m
+[31m-- 개발 중에는 테스트용 API 키를 사용하세요[m
+[31m-[m
+[31m-## 6. 추가 개선 사항[m
+[31m-[m
+[31m-🔄 **향후 개선 가능한 기능

@@ -1,0 +1,326 @@
+import React, { useState, useCallback, useMemo, memo, useRef } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Image, Dimensions, FlatList, Alert, Animated, Modal } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+
+import { useTranslation } from 'react-i18next';
+import { COLORS } from '../../constants/colors';
+import Button from '../../components/common/Button';
+
+// Styled components for NativeWind
+
+const { width } = Dimensions.get('window');
+
+// Market categories
+const getCategoryName = (t: any, id: string) => {
+  const categoryMap: { [key: string]: string } = {
+    'all': t('market.categories.all'),
+    'experience': t('market.categories.experience'),
+    'goods': t('market.categories.goods'),
+    'food': t('market.categories.food'),
+    'books': t('market.categories.books')
+  };
+  return categoryMap[id] || id;
+};
+
+const CATEGORIES = [
+  { id: 'all', icon: 'grid-outline' },
+  { id: 'goods', icon: 'bag-outline' },
+  { id: 'food', icon: 'restaurant-outline' },
+  { id: 'books', icon: 'book-outline' },
+];
+
+// Product data with translation keys
+const getProductData = (t: any) => [
+  {
+    id: 1,
+    nameKey: 'market.products.incenseSet',
+    price: 45000,
+    originalPrice: null,
+    image: require('../../../assets/incenseSet.jpg'),
+    category: 'goods',
+    rating: 4.6,
+    reviewCount: 89,
+    descriptionKey: 'market.products.incenseDescription',
+    badgeKey: null
+  },
+  {
+    id: 2,
+    nameKey: 'market.products.meditationCushion',
+    price: 35000,
+    originalPrice: null,
+    image: require('../../../assets/meditationCushion.jpg'),
+    category: 'goods',
+    rating: 4.7,
+    reviewCount: 267,
+    descriptionKey: 'market.products.meditationDescription',
+    badgeKey: null
+  },
+  {
+    id: 3,
+    nameKey: 'market.products.teaSet',
+    price: 60000,
+    originalPrice: 75000,
+    image: require('../../../assets/teaSet.jpg'),
+    category: 'food',
+    rating: 4.5,
+    reviewCount: 123,
+    descriptionKey: 'market.products.teaDescription',
+    badgeKey: null
+  },
+  {
+    id: 4,
+    nameKey: 'market.products.buddhismBook',
+    price: 42000,
+    originalPrice: 54000,
+    image: require('../../../assets/buddhismBook.jpg'),
+    category: 'books',
+    rating: 4.8,
+    reviewCount: 445,
+    descriptionKey: 'market.products.bookDescription',
+    badgeKey: 'market.badges.bestseller'
+  },
+  {
+    id: 5,
+    nameKey: 'meditationMusic',
+    price: 25000,
+    originalPrice: 30000,
+    image: require('../../../assets/meditationMusic.jpg'),
+    category: 'goods',
+    rating: 4.9,
+    reviewCount: 178,
+    descriptionKey: 'Meditation music to find peace of mind',
+    badgeKey: 'market.badges.new'
+  },
+  {
+    id: 6,
+    nameKey: 'buddhistClothing',
+    price: 50000,
+    originalPrice: null,
+    image: require('../../../assets/buddhistClothing.jpg'),
+    category: 'goods',
+    rating: 4.7,
+    reviewCount: 95,
+    descriptionKey: 'a traditional temple robe set',
+    badgeKey: null
+  },
+  {
+    id: 7,
+    nameKey: 'amulet',
+    price: 10000,
+    originalPrice: null,
+    image: require('../../../assets/amulet.jpg'),
+    category: 'goods',
+    rating: 4.8,
+    reviewCount: 156,
+    descriptionKey: 'a traditional amulet for good luck and protection',
+    badgeKey: 'market.badges.popular'
+  },
+  {
+    id: 8,
+    nameKey: 'prayerBeads',
+    price: 40000,
+    originalPrice: 50000,
+    image: require('../../../assets/prayerBeads.jpg'),
+    category: 'goods',
+    rating: 4.9,
+    reviewCount: 203,
+    descriptionKey: 'Traditional temple beads set',
+    badgeKey: 'market.badges.bestseller'
+  }
+];
+
+const MarketScreen = ({ navigation }: any) => {
+  const { t } = useTranslation();
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedSort, setSelectedSort] = useState<string>('popular');
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
+  const [showModal, setShowModal] = useState(false);
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const HEADER_H = 120; // 헤더 높이
+  
+  const products = getProductData(t);
+  const filteredAndSortedProducts = useMemo(() => {
+    let filtered = getProductData(t).filter(product => 
+      selectedCategory === 'all' || product.category === selectedCategory
+    );
+
+    // Sort based on selected sort option
+    if (selectedSort === 'price') {
+      // Sort by price (low to high)
+      filtered.sort((a, b) => a.price - b.price);
+    } else {
+      // Sort by popularity (review count and rating)
+      filtered.sort((a, b) => {
+        const popularityA = (a.reviewCount * a.rating);
+        const popularityB = (b.reviewCount * b.rating);
+        return popularityB - popularityA; // High to low
+      });
+    }
+
+    return filtered;
+  }, [selectedCategory, selectedSort, t]);
+
+  // 찜하기 추가/제거
+  const toggleFavorite = useCallback((productId: string) => {
+    setFavorites(prev => 
+      prev.includes(productId) 
+        ? prev.filter(id => id !== productId)
+        : [...prev, productId]
+    );
+  }, []);
+
+  const renderCategory = useCallback(({ item }: { item: typeof CATEGORIES[0] }) => {
+    return (
+      <TouchableOpacity
+        className={`flex-row items-center px-4 py-2 mr-2 rounded-3xl border ${
+          selectedCategory === item.id 
+            ? 'bg-sage-600 border-sage-600' 
+            : 'bg-white border-stone-200 active:bg-stone-50'
+        }`}
+        onPress={() => setSelectedCategory(item.id)}
+      >
+        <Ionicons 
+          name={item.icon as any} 
+          size={18} 
+          color={selectedCategory === item.id ? 'white' : COLORS.neutral[600]} 
+        />
+        <Text className={`ml-2 text-sm font-medium ${
+          selectedCategory === item.id ? 'text-white font-semibold' : 'text-neutral-600'
+        }`}>
+          {getCategoryName(t, item.id)}
+        </Text>
+      </TouchableOpacity>
+    );
+  }, [selectedCategory, t]);
+
+  const handleProductPress = useCallback((product: ReturnType<typeof getProductData>[0]) => {
+    setShowModal(true);
+  }, []);
+
+  const renderProduct = useCallback(({ item }: { item: ReturnType<typeof getProductData>[0] }) => {
+    return (
+      <TouchableOpacity 
+        className="bg-white rounded-xl overflow-hidden border border-stone-100"
+        onPress={() => handleProductPress(item)}
+      >
+        {/* Product Image */}
+        <View className="relative p-2">
+          <Image 
+            source={item.image}
+            className="w-full h-32 rounded-lg"
+            resizeMode="cover"
+          />
+        </View>
+        
+        {/* Product Info */}
+        <View className="p-3">
+          <Text className="text-sm text-neutral-900 mb-2" numberOfLines={2}>
+            {t(item.nameKey)}
+          </Text>
+          
+          {/* Price */}
+          <Text className="text-base font-bold text-neutral-900">
+            ₩{item.price.toLocaleString()}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }, [handleProductPress, t]);
+
+  return (
+    <SafeAreaView className="flex-1 bg-stone-100">
+      {/* Header */}
+      <View className="px-5 py-4 bg-stone-100">
+        <Text className="text-4xl font-bold text-neutral-800 ml-1">
+          Temple Market
+        </Text>
+      </View>
+      
+      {/* Controls */}
+      <View className="px-3 py-3 bg-stone-100">
+        <View className="bg-white rounded-2xl p-3 border border-stone-200">
+          <View className="flex-row items-center justify-center">
+            {/* Category Filter */}
+            {CATEGORIES.map((item) => (
+              <View key={item.id} className="mr-0">
+                {renderCategory({ item })}
+              </View>
+            ))}
+          </View>
+          
+          {/* Sort Filter */}
+          <View className="flex-row items-center justify-end mr-2 mt-3 pt-3 border-t border-stone-100">
+            <TouchableOpacity 
+              className="flex-row items-center"
+              onPress={() => setSelectedSort(selectedSort === 'popular' ? 'price' : 'popular')}
+            >
+              <Ionicons 
+                name={selectedSort === 'popular' ? "trending-up-outline" : "pricetag-outline"} 
+                size={16} 
+                color="#6B7280" 
+              />
+              <Text className="text-sm text-neutral-600 ml-1 font-bold">
+                {selectedSort === 'popular' ? 'Popular' : 'Price'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+
+      {/* Product List with Beige Section */}
+      <View className="flex-1 bg-[#F5F1EB] rounded-t-[30px] px-3 pt-1">
+        <FlatList
+          data={filteredAndSortedProducts}
+          renderItem={({ item }) => (
+            <View className="w-1/2 px-1 mb-3">
+              {renderProduct({ item })}
+            </View>
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          ListEmptyComponent={
+            <View className="items-center justify-center py-10">
+              <Text className="text-neutral-500">No products available</Text>
+            </View>
+          }
+        />
+      </View>
+
+      {/* Custom Modal */}
+      <Modal
+        visible={showModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowModal(false)}
+      >
+        <View className="flex-1 justify-center items-center">
+          <View className="bg-white rounded-2xl p-6 mx-8 w-80 shadow-lg">
+            <View className="items-center mb-4">
+              <View className="w-16 h-16 bg-red-100 rounded-full items-center justify-center mb-3">
+                <Ionicons name="ban-outline" size={32} color="#ef4444" />
+              </View>
+              <Text className="text-xl font-bold text-neutral-800 mb-2">
+                Currently out of stock
+              </Text>
+            </View>
+            
+            <TouchableOpacity
+              className="bg-gray-400 py-3 rounded-xl items-center"
+              onPress={() => setShowModal(false)}
+            >
+              <Text className="text-white font-semibold text-base">
+                Got it!
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
+  );
+};
+
+export default MarketScreen; 

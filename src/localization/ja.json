@@ -1,0 +1,84 @@
+{
+  "common": {
+    "back": "戻る",
+    "next": "次へ",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "search": "検索",
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "retry": "再試行",
+    "save": "保存",
+    "edit": "編集",
+    "delete": "削除"
+  },
+
+  "auth": {
+    "login": "ログイン",
+    "signup": "新規登録",
+    "logout": "ログアウト",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "forgotPassword": "パスワードを忘れた方",
+    "loginWithGoogle": "Googleでログイン",
+    "loginWithKakao": "Kakaoでログイン",
+    "loginWithNaver": "Naverでログイン"
+  },
+  "language": {
+    "selectLanguage": "言語を選択",
+    "english": "English",
+    "korean": "한국어",
+    "japanese": "日本語",
+    "chinese": "中文"
+  },
+  "home": {
+    "title": "テンプルステイ",
+    "welcome": "心の平安を見つけましょう",
+    "viewTemples": "すべての寺院を見る",
+    "recommendedTemples": "おすすめの寺院",
+    "nearbyTemples": "近くの寺院",
+    "popularTemples": "人気の寺院"
+  },
+  "temples": {
+    "listTitle": "寺院一覧",
+    "detailsTitle": "寺院情報",
+    "templestayPrograms": "テンプルステイプログラム",
+    "reserveNow": "今すぐ予約",
+    "price": "料金",
+    "duration": "期間",
+    "capacity": "定員",
+    "nearbyAttractions": "近くの観光地"
+  },
+  "reservation": {
+    "selectDate": "日付を選択",
+    "selectTime": "時間を選択",
+    "selectPeople": "人数を選択",
+    "guestInfo": "ゲスト情報",
+    "payment": "お支払い",
+    "confirmation": "予約確認",
+    "myReservations": "私の予約",
+    "reservationComplete": "予約完了"
+  },
+  "map": {
+    "search": "場所、住所を検索",
+    "myLocation": "現在地",
+    "nearbyAttractions": "近くの観光地推薦",
+    "templeLocation": "寺院の場所"
+  },
+  "profile": {
+    "myProfile": "マイプロフィール",
+    "editProfile": "プロフィール編集",
+    "settings": "設定",
+    "language": "言語",
+    "notifications": "通知",
+    "privacy": "プライバシー"
+  },
+  "navigation": {
+    "home": "ホーム",
+    "temples": "寺院",
+    "map": "地図",
+    "transportation": "交通",
+    "market": "マーケット",
+    "myPage": "マイページ"
+  }
+}
