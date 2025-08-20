@@ -8,7 +8,11 @@ import { COLORS } from '../constants/colors';
 type RootStackParamList = {
   Splash: undefined;
   Auth: undefined;
-  Onboarding: undefined;
+  Onboarding1: undefined;
+  Onboarding2: undefined;
+  Onboarding3: undefined;
+  Onboarding4: undefined;
+  Onboarding5: undefined;
   Main: undefined;
 };
 

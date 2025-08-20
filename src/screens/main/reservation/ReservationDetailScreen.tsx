@@ -11,6 +11,7 @@ import { TourApiService, TourAttraction, formatApiDistance, calculateDistanceFro
 import { COLORS } from '../../../constants/colors';
 
 import { enrichTempleWithImages } from '../../../services/templeImageService';
+import { enrichAttractionWithImage } from '../../../services/attractionImageService';
 
 const { width } = Dimensions.get('window');
 
@@ -96,12 +97,16 @@ const AttractionCard = memo<{
     ? `${attraction.addr1} ${attraction.addr2 || ''}`.trim()
     : (attraction as any).description);
 
+  // 이미지 소스 결정 (기존 firstimage 또는 새로 추가된 로컬 이미지)
+  const enrichedAttraction = isTourAttraction ? enrichAttractionWithImage(attraction) : attraction;
+  const imageSource = enrichedAttraction.imageUrl || enrichedAttraction.firstimage;
+
   return (
     <View className="bg-white rounded-2xl p-4 mr-3 w-72 border border-stone-200">
-      {/* 사진이 있으면 실제 사진 표시, 없으면 사진칸 제거 */}
-      {isTourAttraction && attraction.firstimage && (
+      {/* 사진이 있으면 실제 사진 표시 (API 이미지 또는 로컬 이미지) */}
+      {isTourAttraction && imageSource && (
         <View className="w-full h-28 rounded-xl mb-3 bg-stone-100 overflow-hidden">
-          <Image source={{ uri: attraction.firstimage }} className="w-full h-full" resizeMode="cover" />
+          <Image source={{ uri: imageSource }} className="w-full h-full" resizeMode="cover" />
         </View>
       )}
       

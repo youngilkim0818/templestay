@@ -9,6 +9,7 @@ import { Temple } from '../../types';
 import { COLORS } from '../../constants/colors';
 import { TEMPLES_DATA, getAllTemplesWithImages } from '../../data/temple-data';
 import { TourApiService, calculateDistanceFromApi, formatApiDistance, TourAttraction } from '../../services/tourApiService';
+import { enrichAttractionWithImage } from '../../services/attractionImageService';
 
 const { width, height } = Dimensions.get('window');
 const CARD_WIDTH = Math.min(width - 48, 360);
@@ -243,12 +244,18 @@ export default function MapScreen({ navigation, route }: any) {
           }
           if (img) imageCacheRef.current[id] = img;
         }
+        // 이미지가 없는 경우 로컬 이미지 매핑 시도
+        const enriched = enrichAttractionWithImage({
+          title: item.title,
+          firstimage: img || undefined
+        });
+        
         return {
           id,
           title: item.title,
           desc: (item.addr1 || '').toString(),
           distance: formatApiDistance(distanceKm),
-          imageUrl: img,
+          imageUrl: enriched.imageUrl || img,
           latitude: parseFloat(item.mapy || '0'),
           longitude: parseFloat(item.mapx || '0'),
         };
