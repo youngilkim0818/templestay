@@ -4,17 +4,39 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
+import useUserStore from '../../store/userStore';
 
 
 
 const ImportantFactor2Screen = ({ navigation }: any) => {
+  const { user: currentUser } = useUserStore();
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>('');
   const [showImageModal, setShowImageModal] = useState<boolean>(false);
 
   const handleStart = async () => {
     try {
-      await AsyncStorage.setItem('hasCompletedSurvey', 'true');
+      // 사용자 이름이나 이메일에 'test'가 포함된 계정인지 확인
+      const enteredUserName = userName.trim() || (currentUser?.name) || '';
+      const userEmail = currentUser?.email || '';
+      
+      const isTestAccount = 
+        enteredUserName.toLowerCase().includes('test') ||
+        userEmail.toLowerCase().includes('test');
+      
+      console.log('🧪 온보딩 완료 시 테스트 계정 확인:', {
+        enteredUserName,
+        userEmail,
+        isTestAccount
+      });
+      
+      // 테스트 계정이 아닌 경우에만 온보딩 완료 저장
+      if (!isTestAccount) {
+        await AsyncStorage.setItem('hasCompletedSurvey', 'true');
+        console.log('✅ 일반 사용자: 온보딩 완료 상태 저장됨');
+      } else {
+        console.log('🧪 테스트 계정: 온보딩 완료 상태 저장하지 않음 (계속 온보딩 표시)');
+      }
       
       // 사용자 정보 저장
       if (userName.trim() !== '') {
