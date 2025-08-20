@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, Alert, Modal } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -42,6 +42,22 @@ const ReservationConfirmScreen = () => {
   
   const { createReservation } = useReservationStore();
   const { user } = useUserStore();
+
+  // 네비게이션 헤더 수정
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#1A1B1F" />
+        </TouchableOpacity>
+      ),
+      headerTitle: '',
+      headerStyle: {
+        backgroundColor: '#F5F5F4', // stone-100
+      },
+    });
+  }, [navigation]);
 
   const handlePaymentMethodSelect = (method: 'bank' | 'onsite') => {
     // 이미 선택된 방식이라면 해제, 아니면 선택
@@ -202,8 +218,8 @@ const ReservationConfirmScreen = () => {
   };
 
   return (
-         <View className="flex-1 bg-stone-100">
-             <ScrollView className="flex-1 px-4 py-6">
+    <View className="flex-1 bg-stone-100">
+      <ScrollView className="flex-1 px-4 py-6">
         {/* 사찰 정보 */}
         <View className="bg-white rounded-xl p-4 mb-2 border border-stone-200">
           <View className="flex-row items-center mb-3">
@@ -454,9 +470,8 @@ const ReservationConfirmScreen = () => {
             </Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
 
-                               {/* 날짜 선택 모달 */}
+        {/* 날짜 선택 모달 */}
         <Modal
           visible={showDateModal}
           animationType="fade"
@@ -912,8 +927,9 @@ const ReservationConfirmScreen = () => {
            </View>
          </View>
        </Modal>
-     </View>
-   );
- };
+     </ScrollView>
+   </View>
+ );
+};
 
 export default ReservationConfirmScreen;

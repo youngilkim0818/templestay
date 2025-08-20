@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, memo, useState, useEffect } from 'react';
+import React, { useMemo, useCallback, memo, useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, FlatList, ActivityIndicator, Dimensions, Alert, Modal } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -283,6 +283,22 @@ const ReservationDetailScreen = () => {
 
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showReservationModal, setShowReservationModal] = useState(false);
+
+  // 네비게이션 헤더 수정
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#1A1B1F" />
+        </TouchableOpacity>
+      ),
+      headerTitle: '',
+      headerStyle: {
+        backgroundColor: '#F5F5F4', // stone-100
+      },
+    });
+  }, [navigation]);
 
   useEffect(() => {
     const loadTempleWithImages = async () => {
@@ -1034,11 +1050,10 @@ const ReservationDetailScreen = () => {
             </View>
           </View>
         </View>
-      </Modal>
-
-    </ScrollView>
-  );
-};
+             </Modal>
+     </ScrollView>
+   );
+ };
 
 export default ReservationDetailScreen;
 
