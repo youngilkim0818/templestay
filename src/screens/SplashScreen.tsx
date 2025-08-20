@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react';
-import { View, Dimensions, Image } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Dimensions, Image, Text, TouchableOpacity, Animated } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useUserStore from '../store/userStore';
 import { COLORS } from '../constants/colors';
+import { supabase } from '../lib/supabase';
 
 type RootStackParamList = {
   Splash: undefined;
-  Auth: undefined;
+  Login: undefined;
+  Signup: undefined;
   Onboarding1: undefined;
   Onboarding2: undefined;
   Onboarding3: undefined;
@@ -26,58 +28,76 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
   const logoHeight = logoWidth / LOGO_ASPECT;
   const logoSource = require('../../assets/templebuk-logo.png');
   const verticalOffset = -Math.round(screen.height * 0.09); // 가운데에서 위로 6%
+  
+  const [showStartButton, setShowStartButton] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    let isMounted = true;
-
-    const checkOnboardingAndNavigate = async () => {
+    console.log('🎬 SplashScreen 마운트됨');
+    
+    const checkUserStatus = async () => {
       try {
-        // 사용자 이름이나 이메일에 'test'가 포함된 계정인지 확인
-        const isTestAccount = currentUser && (
-          (currentUser.name && currentUser.name.toLowerCase().includes('test')) ||
-          (currentUser.email && currentUser.email.toLowerCase().includes('test'))
-        );
+        // 사용자가 이미 로그인했는지 확인
+        const { data: { session } } = await supabase.auth.getSession();
+        const isLoggedIn = !!session;
         
-        console.log('🧪 테스트 계정 확인:', {
-          currentUser: currentUser ? { name: currentUser.name, email: currentUser.email } : null,
-          isTestAccount
-        });
+        console.log('🔍 사용자 로그인 상태 확인:', { isLoggedIn, user: session?.user?.email });
         
-        // 온보딩 완료 여부 확인 (Onboarding5에서 저장하는 키와 맞춤)
-        const hasSeenOnboarding = await AsyncStorage.getItem('hasCompletedSurvey');
-        
-        setTimeout(() => {
-          if (!isMounted) return;
-          
-          if (isTestAccount) {
-            // 테스트 계정은 항상 온보딩으로
-            console.log('🧪 테스트 계정 감지 → 온보딩 화면으로 이동');
-            navigation.replace('Onboarding1');
-          } else if (hasSeenOnboarding === 'true') {
-            // 일반 사용자가 온보딩을 이미 본 경우 -> 메인으로
-            console.log('✅ 온보딩 완료된 일반 사용자 → 메인으로 이동');
+        if (isLoggedIn) {
+          // 이미 로그인한 사용자: 2초 후 자동으로 홈으로 이동
+          console.log('✅ 로그인된 사용자 → 홈으로 자동 이동');
+          setTimeout(() => {
             navigation.replace('Main');
-          } else {
-            // 일반 사용자가 온보딩을 아직 안 본 경우 -> 온보딩1으로
-            console.log('🆕 온보딩 미완료 일반 사용자 → 온보딩 화면으로 이동');
-            navigation.replace('Onboarding1');
-          }
-        }, 3000);
+          }, 2000);
+        } else {
+          // 처음 사용자: 1초 후 로그인 버튼 표시
+          console.log('🆕 처음 사용자 → 로그인 버튼 표시');
+          setTimeout(() => {
+            setShowStartButton(true);
+            Animated.timing(fadeAnim, {
+              toValue: 1,
+              duration: 550,
+              useNativeDriver: true,
+            }).start(() => {
+              console.log('✨ 애니메이션 완료');
+            });
+          }, 1000);
+        }
       } catch (error) {
-        console.error('온보딩 상태 확인 실패:', error);
-        // 에러 발생시 온보딩으로 이동
+        console.error('사용자 상태 확인 실패:', error);
+        // 에러 발생시 로그인 버튼 표시
         setTimeout(() => {
-          if (!isMounted) return;
-          navigation.replace('Onboarding1');
-        }, 3000);
+          setShowStartButton(true);
+          Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 550,
+            useNativeDriver: true,
+          }).start();
+        }, 1000);
       }
     };
 
-    checkOnboardingAndNavigate();
+    checkUserStatus();
+
     return () => {
-      isMounted = false;
+      console.log('🧹 SplashScreen 언마운트');
     };
-  }, [navigation]);
+  }, []);
+
+  const handleStartPress = async () => {
+    console.log('🖱️ Sign in to TempleBuk 버튼 클릭됨');
+    try {
+      // 로그인 화면으로 이동
+      console.log('🔐 로그인 화면으로 이동');
+      navigation.replace('Login');
+    } catch (error) {
+      console.error('네비게이션 실패:', error);
+      // 에러 발생시 로그인으로 이동
+      navigation.replace('Login');
+    }
+  };
+
+  console.log('🔄 SplashScreen 렌더링, showStartButton:', showStartButton);
 
   return (
     <View
@@ -86,11 +106,68 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
         backgroundColor: COLORS.background.secondary,
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'relative',
       }}
     >
-      <View style={{ transform: [{ translateY: verticalOffset }] }}>
+      {/* 로고를 절대 위치로 고정 */}
+      <View 
+        style={{ 
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: [
+            { translateX: -logoWidth / 2 },
+            { translateY: -logoHeight / 2 + verticalOffset }
+          ]
+        }}
+      >
         <Image source={logoSource} resizeMode="contain" style={{ width: logoWidth, height: logoHeight }} />
       </View>
+      
+      {showStartButton && (
+        <Animated.View
+          style={{
+            opacity: fadeAnim,
+            position: 'absolute',
+            bottom: '15%',
+            left: 0,
+            right: 0,
+            alignItems: 'center',
+            transform: [
+              { translateY: 20 }
+            ],
+          }}
+        >
+          <TouchableOpacity
+            onPress={handleStartPress}
+            style={{
+              backgroundColor: '#5A4636',
+              paddingHorizontal: 80,
+              paddingVertical: 20,
+              borderRadius: 30,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            }}
+          >
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 16,
+                fontWeight: '700',
+                textAlign: 'center',
+              }}
+            >
+              Sign in to TempleBuk
+            </Text>
+          </TouchableOpacity>
+        </Animated.View>
+      )}
     </View>
   );
 };
