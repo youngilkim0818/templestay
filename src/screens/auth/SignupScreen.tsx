@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyb
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthService } from '../../services/authService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RegistrationScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
@@ -113,6 +114,9 @@ const RegistrationScreen = ({ navigation }: any) => {
 
     setLoading(true);
     try {
+      // 재가입일 수 있으므로, 이전 온보딩 완료 플래그를 제거
+      await AsyncStorage.removeItem('hasCompletedOnboarding');
+
       // Supabase Auth로 회원가입
       const result = await AuthService.signUp(email, password, {
         name: email.trim().split('@')[0], // 이메일 아이디를 이름으로 사용
@@ -120,12 +124,12 @@ const RegistrationScreen = ({ navigation }: any) => {
       });
 
       if (result.user) {
-        // 이메일 인증이 필요한 경우
-        if (!result.user.email_confirmed_at) {
-          setEmailSent(true);
+        // 이메일 인증이 필요 없는 경우, 바로 온보딩으로 이동
+        if (result.user.email_confirmed_at) {
+          navigation.replace('Onboarding1');
         } else {
-          // 이미 인증된 사용자는 바로 로그인 화면으로
-          navigation.navigate('Login');
+          // 이메일 인증이 필요한 경우, 인증 안내 화면 표시
+          setEmailSent(true);
         }
       }
     } catch (error: any) {

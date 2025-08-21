@@ -8,6 +8,7 @@ import useReservationStore from '../../../store/reservationStore';
 import useUserStore from '../../../store/userStore';
 import { Reservation } from '../../../types';
 import { AuthService } from '../../../services/authService';
+import { supabase } from '../../../lib/supabase';
 
 const MyPageScreen = ({ navigation }: any) => {
   const [user, setUser] = useState({
@@ -21,19 +22,51 @@ const MyPageScreen = ({ navigation }: any) => {
   const [receiveEmailNotifications, setReceiveEmailNotifications] = useState(false);
 
   const { reservations, fetchUserReservations, loading } = useReservationStore();
-  const { user: currentUser, logout: logoutUser } = useUserStore();
+  const { user: currentUser, logout: logoutUser, updateUser } = useUserStore();
 
   // 사용자 정보 불러오기 - Supabase 연동
   const loadUserInfo = async () => {
     try {
+      if (currentUser) {
+        // Supabase에서 최신 프로필 정보 가져오기
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('name, profile_image')
+          .eq('id', currentUser.id)
+          .single();
+
+        if (error) {
+          console.error('Failed to fetch profile from Supabase:', error);
+          // Supabase에서 가져오기 실패시 userStore 데이터 사용
+          setUser({
+            name: currentUser.name || currentUser.email?.split('@')[0] || 'User',
+            profileImage: currentUser.profileImage || null
+          });
+        } else {
+          // Supabase 데이터로 업데이트
+          const updatedUser = {
+            name: profile?.name || currentUser.name || currentUser.email?.split('@')[0] || 'User',
+            profileImage: profile?.profile_image || currentUser.profileImage || null
+          };
+          
+          setUser(updatedUser);
+          
+          // userStore도 업데이트 (Supabase 데이터로 동기화)
+          updateUser({
+            name: updatedUser.name,
+            profileImage: updatedUser.profileImage
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load user info:', error);
+      // 에러 발생시 기본값 사용
       if (currentUser) {
         setUser({
           name: currentUser.name || currentUser.email?.split('@')[0] || 'User',
           profileImage: currentUser.profileImage || null
         });
       }
-    } catch (error) {
-      console.error('Failed to load user info:', error);
     }
   };
 

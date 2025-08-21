@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, TextInput, Image, TouchableWithoutFeedbac
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthService } from '../../services/authService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
  const LoginSignupScreen = ({ navigation }: any) => {
    const [isLogin, setIsLogin] = useState(true);
@@ -46,8 +47,13 @@ import { AuthService } from '../../services/authService';
       
       if (result.user) {
         setErrorMessage('');
-        // 로그인 성공 - 메인 화면으로 이동
-        navigation.navigate('Main');
+        // 로그인 성공 - 온보딩 완료 여부 확인
+        const hasCompletedOnboarding = await AsyncStorage.getItem('hasCompletedOnboarding');
+        if (hasCompletedOnboarding === 'true') {
+          navigation.replace('Main');
+        } else {
+          navigation.replace('Onboarding1');
+        }
       }
     } catch (error: any) {
       console.error('Login error:', error);

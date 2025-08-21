@@ -39,51 +39,37 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
     
     const checkUserStatus = async () => {
       try {
-        // 사용자가 이미 로그인했는지 확인
         const { data: { session } } = await supabase.auth.getSession();
         const isLoggedIn = !!session;
         
-        if (__DEV__) {
-          console.log('🔍 사용자 로그인 상태 확인:', { isLoggedIn, user: session?.user?.email });
-        }
-        
         if (isLoggedIn) {
-          // 이미 로그인한 사용자: 2초 후 자동으로 홈으로 이동
-          if (__DEV__) {
-            console.log('✅ 로그인된 사용자 → 홈으로 자동 이동');
-          }
-          setTimeout(() => {
+          const hasCompletedOnboarding = await AsyncStorage.getItem('hasCompletedOnboarding');
+          if (hasCompletedOnboarding === 'true') {
+            if (__DEV__) console.log('✅ 온보딩 완료 사용자 → 홈으로 이동');
             navigation.replace('Main');
-          }, 2000);
-        } else {
-          // 처음 사용자: 1초 후 로그인 버튼 표시
-          if (__DEV__) {
-            console.log('🆕 처음 사용자 → 로그인 버튼 표시');
+          } else {
+            if (__DEV__) console.log('⚠️ 온보딩 미완료 사용자 → 온보딩으로 이동');
+            navigation.replace('Onboarding1');
           }
+        } else {
+          if (__DEV__) console.log('🆕 비로그인 사용자 → 시작 버튼 표시');
           setTimeout(() => {
             setShowStartButton(true);
             Animated.timing(fadeAnim, {
               toValue: 1,
               duration: 550,
               useNativeDriver: true,
-            }).start(() => {
-              if (__DEV__) {
-                console.log('✨ 애니메이션 완료');
-              }
-            });
+            }).start();
           }, 1000);
         }
       } catch (error) {
         console.error('사용자 상태 확인 실패:', error);
-        // 에러 발생시 로그인 버튼 표시
-        setTimeout(() => {
-          setShowStartButton(true);
-          Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: 550,
-            useNativeDriver: true,
-          }).start();
-        }, 1000);
+        setShowStartButton(true);
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 550,
+          useNativeDriver: true,
+        }).start();
       }
     };
 

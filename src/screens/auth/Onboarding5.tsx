@@ -5,57 +5,63 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import useUserStore from '../../store/userStore';
+import { supabase } from '../../lib/supabase';
 
 
 
 const ImportantFactor2Screen = ({ navigation }: any) => {
-  const { user: currentUser } = useUserStore();
+  const { user: currentUser, updateUser } = useUserStore();
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>('');
   const [showImageModal, setShowImageModal] = useState<boolean>(false);
 
   const handleStart = async () => {
     try {
-      // 사용자 이름이나 이메일에 'test'가 포함된 계정인지 확인
-      const enteredUserName = userName.trim() || (currentUser?.name) || '';
-      const userEmail = currentUser?.email || '';
-      
-      const isTestAccount = 
-        enteredUserName.toLowerCase().includes('test') ||
-        userEmail.toLowerCase().includes('test');
-      
+      // 온보딩 완료 상태를 저장
+      await AsyncStorage.setItem('hasCompletedOnboarding', 'true');
       if (__DEV__) {
-        console.log('🧪 온보딩 완료 시 테스트 계정 확인:', {
-          enteredUserName,
-          userEmail,
-          isTestAccount
+        console.log('✅ 온보딩 완료, hasCompletedOnboarding 플래그 저장됨');
+      }
+      
+      // 사용자 정보 저장 (AsyncStorage + Supabase + UserStore)
+      if (userName.trim() !== '') {
+        await AsyncStorage.setItem('userName', userName.trim());
+        
+        // Supabase profiles 테이블 업데이트
+        if (currentUser?.id) {
+          const { error } = await supabase
+            .from('profiles')
+            .upsert({
+              id: currentUser.id,
+              name: userName.trim(),
+              updated_at: new Date().toISOString()
+            });
+          
+          if (error) {
+            console.error('Failed to update profile in Supabase:', error);
+          } else {
+            if (__DEV__) {
+              console.log('✅ 프로필 업데이트 성공:', userName.trim());
+            }
+          }
+        }
+        
+        // UserStore 업데이트
+        updateUser({ 
+          name: userName.trim(),
+          profileImage: profileImage || undefined
         });
       }
       
-      // 테스트 계정이 아닌 경우에만 온보딩 완료 저장
-      if (!isTestAccount) {
-        await AsyncStorage.setItem('hasCompletedSurvey', 'true');
-        if (__DEV__) {
-          console.log('✅ 일반 사용자: 온보딩 완료 상태 저장됨');
-        }
-      } else {
-        if (__DEV__) {
-          console.log('🧪 테스트 계정: 온보딩 완료 상태 저장하지 않음 (계속 온보딩 표시)');
-        }
-      }
-      
-      // 사용자 정보 저장
-      if (userName.trim() !== '') {
-        await AsyncStorage.setItem('userName', userName.trim());
-      }
       if (profileImage) {
         await AsyncStorage.setItem('userProfileImage', profileImage);
       }
       
-      navigation.navigate('Main');
+      navigation.replace('Main');
     } catch (error) {
-      console.error('Failed to save survey completion:', error);
-      navigation.navigate('Main');
+      console.error('Failed to save onboarding completion state:', error);
+      // 에러가 발생하더라도 사용자가 앱을 계속 사용할 수 있도록 메인 화면으로 이동
+      navigation.replace('Main');
     }
   };
 
