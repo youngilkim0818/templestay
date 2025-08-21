@@ -20,7 +20,7 @@ const CommonListScreen = ({ navigation, route }: any) => {
     id: reservation.id,
     templeName: reservation.temple_name || 'Unknown Temple',
     date: reservation.reservation_date || 'Unknown Date',
-    time: reservation.reservation_time || 'N/A',
+    participants: reservation.participants || { adults: 0, teenagers: 0, children: 0, preschool: 0 },
     status: reservation.status === 'confirmed' ? 'Upcoming' : 
             reservation.status === 'cancelled' ? 'Cancelled' : 
             reservation.status === 'pending' ? 'Pending' : 'Unknown'
@@ -79,8 +79,10 @@ const CommonListScreen = ({ navigation, route }: any) => {
                     {reservation.date && (
                       <Text className="text-sm text-neutral-600">Date: {reservation.date}</Text>
                     )}
-                    {reservation.time && (
-                      <Text className="text-sm text-neutral-600 ml-4">Time: {reservation.time}</Text>
+                    {reservation.participants && (
+                      <Text className="text-sm text-neutral-600 ml-4">
+                        Total: {reservation.participants.adults + reservation.participants.teenagers + reservation.participants.children + reservation.participants.preschool} people
+                      </Text>
                     )}
                   </View>
                 </TouchableOpacity>
@@ -121,20 +123,31 @@ const CommonListScreen = ({ navigation, route }: any) => {
           <View className="px-4">
             {favoriteTemples.map((temple) => (
               <View key={temple.id} className="bg-white rounded-xl p-4 mb-3 border border-gray-200">
-                <View className="flex-row justify-between items-start mb-2">
-                  <Text className="text-lg font-semibold text-neutral-900">{temple.name}</Text>
-                  <TouchableOpacity
-                    className="w-8 h-8 border border-gray-300 rounded-full items-center justify-center"
-                    onPress={() => toggleFavorite(temple)}
-                  >
-                    <Ionicons
-                      name={isFavorite(temple.id) ? "heart" : "heart-outline"}
-                      size={16}
-                      color={isFavorite(temple.id) ? "#EF4444" : "#9CA3AF"}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <Text className="text-sm text-neutral-600">{temple.region}</Text>
+                                 <TouchableOpacity
+                   onPress={() => navigation.navigate('TempleStack', { 
+                     screen: 'ReservationDetail', 
+                     params: { templeId: temple.id } 
+                   })}
+                   activeOpacity={0.7}
+                 >
+                  <View className="flex-row justify-between items-start mb-2">
+                    <Text className="text-lg font-semibold text-neutral-900">{temple.name}</Text>
+                    <TouchableOpacity
+                      className="w-8 h-8 border border-gray-300 rounded-full items-center justify-center"
+                      onPress={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(temple);
+                      }}
+                    >
+                      <Ionicons
+                        name={isFavorite(temple.id) ? "heart" : "heart-outline"}
+                        size={16}
+                        color={isFavorite(temple.id) ? "#EF4444" : "#9CA3AF"}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <Text className="text-sm text-neutral-600">{temple.region}</Text>
+                </TouchableOpacity>
               </View>
             ))}
           </View>
@@ -179,8 +192,8 @@ const CommonListScreen = ({ navigation, route }: any) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#1A1B1F" />
         </TouchableOpacity>
-                 <Text className="text-4xl font-bold text-neutral-800 ml-1">
-           My TempleBuk
+                 <Text className="text-3xl font-bold text-neutral-800 ml-1">
+           My Activity
          </Text>
         <View className="w-6" />
       </View>
@@ -215,26 +228,26 @@ const CommonListScreen = ({ navigation, route }: any) => {
                {/* Custom Cancel Modal */}
         {showCancelModal && (
           <View className="absolute inset-0 flex-1 justify-center items-center">
-                         <View className="bg-stone-100 rounded-3xl p-6 mx-8 max-w-sm shadow-2xl">
-                           <Text className="text-xl font-semibold text-neutral-900 text-center mb-4">
+                                                                                                       <View className="bg-white rounded-3xl p-6 mx-12 max-w-xs shadow-2xl border border-stone-200">
+                           <Text className="text-xl font-semibold text-sage-800 text-center mb-4">
                 Cancel Reservation
               </Text>
-                             <View className="w-80 h-0.5 bg-neutral-300 self-center mb-4" />
-              <Text className="text-base text-neutral-700 text-center mb-6">
-               Are you sure you want to cancel this reservation?
-             </Text>
-             <View className="flex-row justify-center">
-               <TouchableOpacity 
-                 className="bg-stone-400 py-2 px-6 rounded-2xl w-24"
-                 onPress={() => {
-                   setShowCancelModal(false);
-                   setReservationToCancel(null);
-                 }}
-               >
-                 <Text className="text-white font-medium text-center">No</Text>
-               </TouchableOpacity>
-                               <TouchableOpacity 
-                  className="bg-red-500 py-2 px-6 rounded-3xl ml-12 w-24"
+                             <View className="w-60 h-0.5 bg-sage-300 self-center mb-4" />
+                             <Text className="text-base text-stone-700 text-center mb-6">
+                Are you sure you want to cancel{'\n'}this reservation?
+              </Text>
+                           <View className="flex-row justify-center">
+                <TouchableOpacity 
+                  className="bg-sage-600 py-2 px-6 rounded-2xl w-24"
+                  onPress={() => {
+                    setShowCancelModal(false);
+                    setReservationToCancel(null);
+                  }}
+                >
+                  <Text className="text-white font-medium text-center">No</Text>
+                </TouchableOpacity>
+                                <TouchableOpacity 
+                  className="bg-red-500 py-2 px-6 rounded-3xl ml-6 w-24"
                   onPress={() => {
                     // 예약 취소 로직
                     if (reservationToCancel) {

@@ -81,7 +81,7 @@ const MyPageScreen = ({ navigation }: any) => {
 
       {/* 헤더 */}
       <View className="flex-row justify-between items-center px-5 -py-5 bg-stone-100">
-        <Text className="text-3xl font-bold text-neutral-900">My TempleBuk</Text>
+        <Text className="text-3xl font-bold text-neutral-800">My TempleBuk</Text>
       </View>
 
       <View className="flex-1 bg-stone-100">
