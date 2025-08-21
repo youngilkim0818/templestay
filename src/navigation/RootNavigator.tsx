@@ -21,13 +21,29 @@ import useUserStore from '../store/userStore';
 import { COLORS } from '../constants/colors';
 import SplashScreen from '../screens/SplashScreen';
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+  Splash: undefined;
+  Login: undefined;
+  Signup: undefined;
+  ChangePassword: undefined;
+  Onboarding1: undefined;
+  Onboarding2: undefined;
+  Onboarding3: undefined;
+  Onboarding4: undefined;
+  Onboarding5: undefined;
+  Main: undefined;
+  TempleStack: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
   // Deep link 처리 for email confirmation
   useEffect(() => {
     const handleDeepLink = async (url: string) => {
-      console.log('Deep link received:', url);
+      if (__DEV__) {
+        console.log('Deep link received:', url);
+      }
       
       if (url.includes('/auth/callback') || url.includes('/auth/email-confirmed')) {
         const urlParams = new URL(url);
@@ -44,7 +60,9 @@ const RootNavigator = () => {
             if (error) {
               console.error('Deep link auth error:', error);
             } else {
-              console.log('Deep link auth success:', data.user?.email);
+              if (__DEV__) {
+                console.log('Deep link auth success:', data.user?.email);
+              }
             }
           } catch (error) {
             console.error('Deep link session error:', error);

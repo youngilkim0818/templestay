@@ -3,6 +3,7 @@ import { View, Text, Alert, KeyboardAvoidingView, Platform, ScrollView, Touchabl
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { supabase } from '../../../lib/supabase';
 
 const ChangePasswordScreen = () => {
     const navigation = useNavigation();
@@ -46,7 +47,7 @@ const ChangePasswordScreen = () => {
 
     const passwordStrength = checkPasswordStrength(newPassword);
 
-    const handleChangePassword = () => {
+    const handleChangePassword = async () => {
         // 에러 상태 초기화
         setEmailError(false);
         setCurrentPasswordError(false);
@@ -102,15 +103,44 @@ const ChangePasswordScreen = () => {
             return;
         }
 
-        // TODO: 실제 비밀번호 변경 API 호출
-        // 여기서 현재 비밀번호가 맞는지 확인하는 로직이 들어갈 예정
-        // 현재는 임시로 "123456"을 올바른 비밀번호로 가정
-        if (currentPassword !== "123456") {
-            setShowCurrentPasswordWrong(true);
-            return;
-        }
+        try {
+            // 현재 비밀번호 확인을 위해 로그인 시도
+            const { error: signInError } = await supabase.auth.signInWithPassword({
+                email: email.trim(),
+                password: currentPassword.trim()
+            });
 
-        navigation.goBack();
+            if (signInError) {
+                setShowCurrentPasswordWrong(true);
+                return;
+            }
+
+            // 비밀번호 변경
+            const { error: updateError } = await supabase.auth.updateUser({
+                password: newPassword.trim()
+            });
+
+            if (updateError) {
+                Alert.alert('Error', updateError.message);
+                return;
+            }
+
+            Alert.alert(
+                'Success',
+                'Password changed successfully!',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.goBack()
+                    }
+                ]
+            );
+        } catch (error) {
+            if (__DEV__) {
+                console.log('Password change error:', error);
+            }
+            Alert.alert('Error', 'Failed to change password. Please try again.');
+        }
     };
 
     return (

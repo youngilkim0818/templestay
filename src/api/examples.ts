@@ -14,7 +14,9 @@ export const loginExample = async () => {
       password: 'password123',
     });
     
-    console.log('Login successful:', response.data);
+    if (__DEV__) {
+      console.log('Login successful:', response.data);
+    }
     // 토큰을 AsyncStorage에 저장하거나 상태 관리에 저장
   } catch (error) {
     console.error('Login failed:', error);
@@ -25,7 +27,9 @@ export const loginExample = async () => {
 export const googleLoginExample = async () => {
   try {
     const response = await AuthAPI.googleLogin('google_oauth_token');
-    console.log('Google login successful:', response.data);
+    if (__DEV__) {
+      console.log('Google login successful:', response.data);
+    }
   } catch (error) {
     console.error('Google login failed:', error);
   }
@@ -42,8 +46,12 @@ export const getTemplesExample = async () => {
       limit: 10,
     });
     
-    console.log('Temples:', response.data.temples);
-    console.log('Total count:', response.data.total);
+    if (__DEV__) {
+      console.log('Temples:', response.data.temples);
+    }
+    if (__DEV__) {
+      console.log('Total count:', response.data.total);
+    }
   } catch (error) {
     console.error('Failed to fetch temples:', error);
   }
@@ -58,7 +66,9 @@ export const getNearbyTemplesExample = async () => {
       50 // 반경 (km)
     );
     
-    console.log('Nearby temples:', response.data.temples);
+    if (__DEV__) {
+      console.log('Nearby temples:', response.data.temples);
+    }
   } catch (error) {
     console.error('Failed to fetch nearby temples:', error);
   }
@@ -72,7 +82,9 @@ export const searchTemplesExample = async () => {
       limit: 20,
     });
     
-    console.log('Search results:', response.data.temples);
+    if (__DEV__) {
+      console.log('Search results:', response.data.temples);
+    }
   } catch (error) {
     console.error('Search failed:', error);
   }
@@ -98,7 +110,9 @@ export const createReservationExample = async () => {
       paymentMethod: 'card',
     });
     
-    console.log('Reservation created:', response.data);
+    if (__DEV__) {
+      console.log('Reservation created:', response.data);
+    }
   } catch (error) {
     console.error('Reservation failed:', error);
   }
@@ -114,7 +128,9 @@ export const getMyReservationsExample = async () => {
       sortOrder: 'desc',
     });
     
-    console.log('My reservations:', response.data.reservations);
+    if (__DEV__) {
+      console.log('My reservations:', response.data.reservations);
+    }
   } catch (error) {
     console.error('Failed to fetch reservations:', error);
   }
@@ -130,7 +146,9 @@ export const searchAttractionsExample = async () => {
       limit: 20,
     });
     
-    console.log('Attractions:', response.data.attractions);
+    if (__DEV__) {
+      console.log('Attractions:', response.data.attractions);
+    }
   } catch (error) {
     console.error('Search failed:', error);
   }
@@ -150,7 +168,9 @@ export const getTourRoutesExample = async () => {
       }
     );
     
-    console.log('Tour routes:', response.data);
+    if (__DEV__) {
+      console.log('Tour routes:', response.data);
+    }
   } catch (error) {
     console.error('Failed to get tour routes:', error);
   }
@@ -161,7 +181,11 @@ export const getTourRoutesExample = async () => {
 // 컴포넌트에서 useAPI 훅 사용
 export const TempleListComponent = () => {
   const api = useTemplesAPI({
-    onSuccess: (data) => console.log('Temples loaded:', data),
+    onSuccess: (data) => {
+      if (__DEV__) {
+        console.log('Temples loaded:', data);
+      }
+    },
     onError: (error) => console.error('Failed to load temples:', error),
   });
 
@@ -220,29 +244,43 @@ export const TempleSearchComponent = () => {
 export const errorHandlingExample = async () => {
   try {
     const response = await TemplesAPI.getTemples();
-    console.log('Success:', response.data);
+    if (__DEV__) {
+      console.log('Success:', response.data);
+    }
   } catch (error) {
     // ApiError 타입의 에러 처리
     if (error && typeof error === 'object' && 'status' in error) {
       switch (error.status) {
         case 401:
-          console.log('로그인이 필요합니다.');
+          if (__DEV__) {
+            console.log('로그인이 필요합니다.');
+          }
           // 로그인 화면으로 리다이렉트
           break;
         case 403:
-          console.log('접근 권한이 없습니다.');
+          if (__DEV__) {
+            console.log('접근 권한이 없습니다.');
+          }
           break;
         case 404:
-          console.log('요청한 정보를 찾을 수 없습니다.');
+          if (__DEV__) {
+            console.log('요청한 정보를 찾을 수 없습니다.');
+          }
           break;
         case 500:
-          console.log('서버 오류가 발생했습니다.');
+          if (__DEV__) {
+            console.log('서버 오류가 발생했습니다.');
+          }
           break;
         default:
-          console.log('알 수 없는 오류:', (error as any).message || '오류 발생');
+          if (__DEV__) {
+            console.log('알 수 없는 오류:', (error as any).message || '오류 발생');
+          }
       }
     } else {
-      console.log('네트워크 오류:', error);
+      if (__DEV__) {
+        console.log('네트워크 오류:', error);
+      }
     }
   }
 };

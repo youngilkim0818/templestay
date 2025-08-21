@@ -71,7 +71,7 @@ const MyPageScreen = ({ navigation }: any) => {
   // 다가오는 예약 가져오기
   const upcomingReservation = reservations
     .filter((reservation: Reservation) => reservation.status === 'confirmed' || reservation.status === 'pending')
-    .sort((a: Reservation, b: Reservation) => new Date(a.reservation_date || a.reservationDate || '').getTime() - new Date(b.reservation_date || b.reservationDate || '').getTime())[0];
+    .sort((a: Reservation, b: Reservation) => new Date(a.reservation_date || '').getTime() - new Date(b.reservation_date || '').getTime())[0];
 
   // 예약이 있는지 확인
   const hasReservations = reservations.length > 0;
@@ -120,18 +120,18 @@ const MyPageScreen = ({ navigation }: any) => {
               </View>
             </View>
             <Text className="text-base font-semibold text-neutral-900 mb-3">
-                              {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || upcomingReservation.reservationDate || '').getTime() > new Date().getTime() ? `${upcomingReservation.temple_name || upcomingReservation.templeName || 'Unknown Temple'} - ${upcomingReservation.program_title || upcomingReservation.programName || 'Temple Stay Program'}` : 'No temple stay reservations yet'}
+                              {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? `${upcomingReservation.temple_name || 'Unknown Temple'} - ${upcomingReservation.program_title || 'Temple Stay Program'}` : 'No temple stay reservations yet'}
             </Text>
             <View className="border-t-2 border-sage-200 pt-3">
               <View className="flex-row items-center">
                 <Text className="text-sm text-neutral-700">
-                  {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || upcomingReservation.reservationDate || '').getTime() > new Date().getTime() ? 'Upcoming Reservation' : 'Try booking a templestay'}
+                  {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? 'Upcoming Reservation' : 'Try booking a templestay'}
                 </Text>
-                {upcomingReservation && new Date(upcomingReservation.reservation_date || upcomingReservation.reservationDate || '').getTime() > new Date().getTime() ? (
+                {upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? (
                   <>
                     <Ionicons name="time" size={16} color="#5A4636" className="ml-2" />
                     <Text className="text-sm font-semibold text-sage-700 ml-1">
-                      D-{Math.ceil((new Date(upcomingReservation.reservation_date || upcomingReservation.reservationDate || '').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))}
+                      D-{Math.ceil((new Date(upcomingReservation.reservation_date || '').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))}
                     </Text>
                   </>
                 ) : null}

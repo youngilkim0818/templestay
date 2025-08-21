@@ -11,14 +11,20 @@ export class DatabaseTest {
         .limit(1);
       
       if (error) {
-        console.log('❌ 데이터베이스 연결 실패:', error.message);
+        if (__DEV__) {
+          console.log('❌ 데이터베이스 연결 실패:', error.message);
+        }
         return false;
       }
       
-      console.log('✅ 데이터베이스 연결 성공');
+      if (__DEV__) {
+        console.log('✅ 데이터베이스 연결 성공');
+      }
       return true;
     } catch (error) {
-      console.log('❌ 데이터베이스 연결 에러:', error);
+      if (__DEV__) {
+        console.log('❌ 데이터베이스 연결 에러:', error);
+      }
       return false;
     }
   }
@@ -32,14 +38,20 @@ export class DatabaseTest {
         .limit(10);
       
       if (error) {
-        console.log('❌ 사찰 데이터 조회 실패:', error.message);
+        if (__DEV__) {
+          console.log('❌ 사찰 데이터 조회 실패:', error.message);
+        }
         return { exists: false, count: 0, data: null };
       }
       
-      console.log(`✅ 사찰 데이터 확인 - 총 ${data?.length || 0}개`);
+      if (__DEV__) {
+        console.log(`✅ 사찰 데이터 확인 - 총 ${data?.length || 0}개`);
+      }
       return { exists: true, count: data?.length || 0, data };
     } catch (error) {
-      console.log('❌ 사찰 데이터 조회 에러:', error);
+      if (__DEV__) {
+        console.log('❌ 사찰 데이터 조회 에러:', error);
+      }
       return { exists: false, count: 0, data: null };
     }
   }
@@ -47,7 +59,9 @@ export class DatabaseTest {
   // 로컬 데이터를 데이터베이스에 삽입
   static async insertLocalData() {
     try {
-      console.log('📥 로컬 사찰 데이터를 데이터베이스에 삽입 중...');
+      if (__DEV__) {
+        console.log('📥 로컬 사찰 데이터를 데이터베이스에 삽입 중...');
+      }
       
       for (const temple of TEMPLES_DATA) {
         const { data, error } = await supabase
@@ -70,9 +84,13 @@ export class DatabaseTest {
           .select();
 
         if (error) {
-          console.log(`❌ ${temple.name} 삽입 실패:`, error.message);
+          if (__DEV__) {
+            console.log(`❌ ${temple.name} 삽입 실패:`, error.message);
+          }
         } else {
-          console.log(`✅ ${temple.name} 삽입 성공`);
+          if (__DEV__) {
+            console.log(`✅ ${temple.name} 삽입 성공`);
+          }
         }
 
         // 템플스테이 프로그램도 삽입
@@ -92,23 +110,31 @@ export class DatabaseTest {
               });
 
             if (programError) {
-              console.log(`❌ ${program.title} 프로그램 삽입 실패:`, programError.message);
+              if (__DEV__) {
+                console.log(`❌ ${program.title} 프로그램 삽입 실패:`, programError.message);
+              }
             }
           }
         }
       }
       
-      console.log('✅ 로컬 데이터 삽입 완료');
+      if (__DEV__) {
+        console.log('✅ 로컬 데이터 삽입 완료');
+      }
       return true;
     } catch (error) {
-      console.log('❌ 로컬 데이터 삽입 에러:', error);
+      if (__DEV__) {
+        console.log('❌ 로컬 데이터 삽입 에러:', error);
+      }
       return false;
     }
   }
 
   // 전체 테스트 실행
   static async runAllTests() {
-    console.log('🔍 데이터베이스 테스트 시작...');
+    if (__DEV__) {
+      console.log('🔍 데이터베이스 테스트 시작...');
+    }
     
     // 1. 연결 테스트
     const connected = await this.testConnection();
@@ -120,7 +146,9 @@ export class DatabaseTest {
     const { exists, count } = await this.checkTemplesData();
     
     if (!exists || count === 0) {
-      console.log('📋 사찰 데이터가 없습니다. 로컬 데이터를 삽입합니다...');
+      if (__DEV__) {
+        console.log('📋 사찰 데이터가 없습니다. 로컬 데이터를 삽입합니다...');
+      }
       const inserted = await this.insertLocalData();
       
       if (!inserted) {

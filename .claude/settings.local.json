@@ -20,7 +20,13 @@
       "WebFetch(domain:sbeeewzhmjophlytqhys.supabase.co)",
       "mcp__sequential-thinking__sequentialthinking",
       "Bash(git checkout:*)",
-      "Bash(git rebase:*)"
+      "Bash(git rebase:*)",
+      "mcp__filesystem__list_directory",
+      "mcp__filesystem__search_files",
+      "Bash(grep:*)",
+      "Bash(npm run preview:*)",
+      "Bash(git restore:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": []
   }

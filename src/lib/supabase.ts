@@ -2,8 +2,12 @@ import { createClient } from '@supabase/supabase-js';
 import Constants from 'expo-constants';
 
 // Supabase 프로젝트 설정
-const supabaseUrl = Constants?.expoConfig?.extra?.supabaseUrl || 'https://sbeeewzhmjophlytqhys.supabase.co';
-const supabaseAnonKey = Constants?.expoConfig?.extra?.supabaseAnonKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiZWVld3pobWpvcGhseXRxaHlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE0MzY3OTgsImV4cCI6MjA2NzAxMjc5OH0.eeXlhAxO8hB39sUvP81NNSO2vmHPnCMBzUdP6RvJgG4';
+const supabaseUrl = Constants?.expoConfig?.extra?.supabaseUrl;
+const supabaseAnonKey = Constants?.expoConfig?.extra?.supabaseAnonKey;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase configuration. Please ensure EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY are set in your .env file.');
+}
 
 // Supabase 클라이언트 생성
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

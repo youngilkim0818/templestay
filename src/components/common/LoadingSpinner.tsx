@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { COLORS } from '../../constants/colors';
+import { LEGACY_COLORS } from '../../constants/colors';
 
 interface LoadingSpinnerProps {
   size?: 'small' | 'large';
@@ -9,7 +9,7 @@ interface LoadingSpinnerProps {
 
 const LoadingSpinner = memo<LoadingSpinnerProps>(({ 
   size = 'large', 
-  color = COLORS.primary 
+  color = LEGACY_COLORS.primary 
 }) => {
   return (
     <View className="flex-1 justify-center items-center">

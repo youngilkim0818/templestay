@@ -466,7 +466,9 @@ export class TourApiService {
   }
 
   private static log(...args: any[]) {
-    if (this.debug) console.log(...args);
+    if (__DEV__) {
+      if (this.debug) console.log(...args);
+    }
   }
 
   // 지역 코드 기반 관광지 조회 (KorService1/areaBasedList1)

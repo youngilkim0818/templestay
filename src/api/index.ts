@@ -53,6 +53,10 @@ export type {
 
 // API 설정
 import { httpClient } from './httpClient';
+import { AuthAPI } from './auth';
+import { TemplesAPI } from './temples';
+import { ReservationsAPI } from './reservations';
+import { AttractionsAPI } from './attractions';
 
 export const configureAPI = (config: {
   baseURL?: string;

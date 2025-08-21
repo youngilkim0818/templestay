@@ -107,10 +107,10 @@ const useReservationStore = create<ReservationState>()(
         const now = new Date();
         return state.reservations
           .filter(reservation => {
-            if (!reservation.reservationDate) {
+            if (!reservation.reservation_date) {
               return false;
             }
-            const reservationDate = new Date(reservation.reservationDate);
+            const reservationDate = new Date(reservation.reservation_date);
             if (isNaN(reservationDate.getTime())) {
               return false;
             }
@@ -118,8 +118,8 @@ const useReservationStore = create<ReservationState>()(
                    (reservation.status === 'confirmed' || reservation.status === 'pending');
           })
           .sort((a, b) => {
-            const timeA = a.reservationDate ? new Date(a.reservationDate).getTime() : 0;
-            const timeB = b.reservationDate ? new Date(b.reservationDate).getTime() : 0;
+            const timeA = a.reservation_date ? new Date(a.reservation_date).getTime() : 0;
+            const timeB = b.reservation_date ? new Date(b.reservation_date).getTime() : 0;
             return timeA - timeB;
           });
       },

@@ -97,7 +97,9 @@ export class TempleImageService {
     }
 
     try {
-      console.log(`🖼️ 사찰 이미지 조회: ${templeName}`);
+      if (__DEV__) {
+        console.log(`🖼️ 사찰 이미지 조회: ${templeName}`);
+      }
       
       // 1. 우선 매핑된 이미지 사용 (즉시 로딩)
       const mappedImages = TEMPLE_IMAGES_MAP[templeName];
@@ -114,21 +116,31 @@ export class TempleImageService {
 
         // 캐시 저장
         this.imageCache.set(templeName, templeImageData);
-        console.log(`✅ ${templeName} 매핑 이미지 사용 (${mappedImages.length}개)`);
+        if (__DEV__) {
+          console.log(`✅ ${templeName} 매핑 이미지 사용 (${mappedImages.length}개)`);
+        }
         return templeImageData;
       }
 
-      console.log(`⚠️ ${templeName} 매핑 이미지 없음 → API 시도 후 기본 이미지 fallback`);;
+      if (__DEV__) {
+        console.log(`⚠️ ${templeName} 매핑 이미지 없음 → API 시도 후 기본 이미지 fallback`);;
+      }
 
       // 2. 사진갤러리에서 상세 이미지 검색 (KorService1 사용 회피)
-      console.log(`🔍 ${templeName} 갤러리 상세 검색 시작...`);
+      if (__DEV__) {
+        console.log(`🔍 ${templeName} 갤러리 상세 검색 시작...`);
+      }
       let gallery = await TourApiService.getGalleryDetailByTitle(templeName, 1, 8);
       if (!gallery || gallery.length === 0) {
-        console.log(`⚠️ ${templeName} 갤러리 상세 결과 없음 → 키워드 검색 시도`);
+        if (__DEV__) {
+          console.log(`⚠️ ${templeName} 갤러리 상세 결과 없음 → 키워드 검색 시도`);
+        }
         gallery = await TourApiService.searchGalleryPhotos(templeName, 1, 8);
       }
       if (!gallery || gallery.length === 0) {
-        console.log(`❌ ${templeName} 갤러리 결과 없음`);
+        if (__DEV__) {
+          console.log(`❌ ${templeName} 갤러리 결과 없음`);
+        }
         return this.getDefaultTempleData(templeName);
       }
 
@@ -148,7 +160,9 @@ export class TempleImageService {
       // 캐시 저장
       this.imageCache.set(templeName, templeImageData);
       
-      console.log(`🖼️ ${templeName} TourAPI 이미지 ${images.length}개 수집 완료`);
+      if (__DEV__) {
+        console.log(`🖼️ ${templeName} TourAPI 이미지 ${images.length}개 수집 완료`);
+      }
       return templeImageData;
 
     } catch (error) {
@@ -205,7 +219,7 @@ export class TempleImageService {
   /**
    * 기본 사찰 데이터 (이미지를 찾을 수 없을 때)
    */
-  private static getDefaultTempleData(templeName: string): TempleImageData {
+  public static getDefaultTempleData(templeName: string): TempleImageData {
     const defaultImages = [
       'https://images.unsplash.com/photo-1596792349887-2c1f3d8e5793?q=80&w=2070&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1543783300-302647a75223?q=80&w=2070&auto=format&fit=crop',
@@ -225,7 +239,9 @@ export class TempleImageService {
    * 여러 사찰의 이미지를 배치로 조회
    */
   static async getMultipleTempleImages(templeNames: string[]): Promise<Map<string, TempleImageData>> {
-    console.log(`🖼️ ${templeNames.length}개 사찰 이미지 배치 조회 시작`);
+    if (__DEV__) {
+      console.log(`🖼️ ${templeNames.length}개 사찰 이미지 배치 조회 시작`);
+    }
     
     const results = new Map<string, TempleImageData>();
     
@@ -242,7 +258,9 @@ export class TempleImageService {
 
     await Promise.allSettled(promises);
     
-    console.log(`✅ 사찰 이미지 배치 조회 완료: ${results.size}/${templeNames.length}`);
+    if (__DEV__) {
+      console.log(`✅ 사찰 이미지 배치 조회 완료: ${results.size}/${templeNames.length}`);
+    }
     return results;
   }
 
@@ -251,7 +269,9 @@ export class TempleImageService {
    */
   static clearCache(): void {
     this.imageCache.clear();
-    console.log('🗑️ 사찰 이미지 캐시 초기화 완료');
+    if (__DEV__) {
+      console.log('🗑️ 사찰 이미지 캐시 초기화 완료');
+    }
   }
 
   static getCacheSize(): number {
@@ -282,7 +302,7 @@ export const enrichTempleWithImages = async (temple: any): Promise<any> => {
     // programDetails 보존 (가격 정보 유지)
     programDetails: temple.programDetails || {},
     // 이미지 관련 필드 - 로컬 이미지 우선 사용, 없으면 API 이미지, 그것도 없으면 기본 이미지
-    imageUrl: temple.imageUrl || imageData.mainImage || getDefaultTempleData(temple.name).mainImage,
+    imageUrl: temple.imageUrl || imageData.mainImage || TempleImageService.getDefaultTempleData(temple.name).mainImage,
     images: temple.imageUrl ? [temple.imageUrl, ...imageData.images] : imageData.images,
     apiImages: imageData.images,
     apiDescription: imageData.description,

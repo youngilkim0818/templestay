@@ -18,12 +18,12 @@ const CommonListScreen = ({ navigation, route }: any) => {
   // 스토어의 예약 데이터를 CommonListScreen 형식으로 변환
   const reservationHistory = reservations.map(reservation => ({
     id: reservation.id,
-    templeName: reservation.temple_name || reservation.templeName || 'Unknown Temple',
-    date: reservation.reservation_date || reservation.reservationDate || 'Unknown Date',
-    time: reservation.reservation_time || reservation.reservationTime || 'N/A',
+    templeName: reservation.temple_name || 'Unknown Temple',
+    date: reservation.reservation_date || 'Unknown Date',
+    time: reservation.reservation_time || 'N/A',
     status: reservation.status === 'confirmed' ? 'Upcoming' : 
-            reservation.status === 'completed' ? 'Completed' : 
-            reservation.status === 'cancelled' ? 'Cancelled' : 'Unknown'
+            reservation.status === 'cancelled' ? 'Cancelled' : 
+            reservation.status === 'pending' ? 'Pending' : 'Unknown'
   }));
 
   // 탭 데이터

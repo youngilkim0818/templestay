@@ -205,19 +205,25 @@ const AttractionsScreen = ({ navigation }: any) => {
   // 검색 핸들러
   const handleSearch = useCallback(() => {
     if (!searchText.trim()) return;
-    console.log('Searching for:', searchText);
+    if (__DEV__) {
+      console.log('Searching for:', searchText);
+    }
     // 실제 검색 로직 구현
   }, [searchText]);
 
   // 관광지 카드 클릭 핸들러
   const handleAttractionPress = useCallback((attractionId: string) => {
-    console.log('Attraction pressed:', attractionId);
+    if (__DEV__) {
+      console.log('Attraction pressed:', attractionId);
+    }
     // 관광지 상세 페이지로 이동
   }, []);
 
   // 내 위치 핸들러
   const handleMyLocation = useCallback(() => {
-    console.log('My location pressed');
+    if (__DEV__) {
+      console.log('My location pressed');
+    }
     // 위치 기반 추천 로직
   }, []);
 

@@ -79,7 +79,9 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
         setCurrentLocation(location);
       }
     } catch (error) {
-      console.log('위치 권한 요청 실패:', error);
+      if (__DEV__) {
+        console.log('위치 권한 요청 실패:', error);
+      }
     }
   };
 
@@ -231,7 +233,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
       <View className="relative h-80">
         {/* 배경 이미지 */}
         <Image 
-          source={require('../../../../assets/레코멘드1.jpg')}
+          source={require('../../../../assets/recommend-1.jpg')}
           className="absolute inset-0 w-full h-full"
           resizeMode="cover"
         />

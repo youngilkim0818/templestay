@@ -61,10 +61,10 @@ const ReservationCard = memo<{
         {/* Temple Info */}
         <View className="flex-1">
           <Text className="text-xl font-bold text-sage-600 mb-1">
-            {reservation.temple_name || reservation.templeName || 'Unknown Temple'}
+            {reservation.temple_name || 'Unknown Temple'}
           </Text>
           <Text className="text-sm text-neutral-600 mb-2">
-            {reservation.program_title || reservation.programTitle || 'Temple Stay Program'}
+            {reservation.program_title || 'Temple Stay Program'}
           </Text>
           <View className={`self-start px-3 py-1 rounded-xl ${statusInfo.bg} ${statusInfo.border} border`}>
             <Text className={`text-xs font-semibold ${statusInfo.color}`}>
@@ -79,21 +79,21 @@ const ReservationCard = memo<{
         <View className="flex-row items-center">
           <Ionicons name="calendar-outline" size={18} color="#4A5D23" />
           <Text className="text-base text-neutral-700 ml-3 font-medium">
-            {reservation.reservation_date || reservation.reservationDate || 'Date not set'}
+            {reservation.reservation_date || 'Date not set'}
           </Text>
         </View>
         
         <View className="flex-row items-center">
           <Ionicons name="time-outline" size={18} color="#4A5D23" />
           <Text className="text-base text-neutral-700 ml-3 font-medium">
-            {reservation.reservation_time || reservation.reservationTime || 'Time not set'}
+            {reservation.reservation_time || 'Time not set'}
           </Text>
         </View>
         
         <View className="flex-row items-center">
           <Ionicons name="person-outline" size={18} color="#4A5D23" />
           <Text className="text-base text-neutral-700 ml-3 font-medium">
-            {reservation.userName || reservation.user_name || 'Guest'}
+            {reservation.user_name || 'Guest'}
           </Text>
         </View>
 

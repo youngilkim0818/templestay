@@ -24,18 +24,24 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
         enteredUserName.toLowerCase().includes('test') ||
         userEmail.toLowerCase().includes('test');
       
-      console.log('🧪 온보딩 완료 시 테스트 계정 확인:', {
-        enteredUserName,
-        userEmail,
-        isTestAccount
-      });
+      if (__DEV__) {
+        console.log('🧪 온보딩 완료 시 테스트 계정 확인:', {
+          enteredUserName,
+          userEmail,
+          isTestAccount
+        });
+      }
       
       // 테스트 계정이 아닌 경우에만 온보딩 완료 저장
       if (!isTestAccount) {
         await AsyncStorage.setItem('hasCompletedSurvey', 'true');
-        console.log('✅ 일반 사용자: 온보딩 완료 상태 저장됨');
+        if (__DEV__) {
+          console.log('✅ 일반 사용자: 온보딩 완료 상태 저장됨');
+        }
       } else {
-        console.log('🧪 테스트 계정: 온보딩 완료 상태 저장하지 않음 (계속 온보딩 표시)');
+        if (__DEV__) {
+          console.log('🧪 테스트 계정: 온보딩 완료 상태 저장하지 않음 (계속 온보딩 표시)');
+        }
       }
       
       // 사용자 정보 저장
@@ -145,7 +151,9 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                  placeholderTextColor="#78716C"
                  value={userName}
                  onChangeText={(text) => {
-                   console.log('Text changed:', text);
+                   if (__DEV__) {
+                     console.log('Text changed:', text);
+                   }
                    setUserName(text);
                  }}
                  autoCapitalize="words"
@@ -162,7 +170,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
          {/* 온보딩 이미지 */}
          <View className="py-8 items-center -mt-28">
            <Image 
-             source={require('../../../assets/온보딩.png')}
+             source={require('../../../assets/onboarding.png')}
              style={{ width: 410, height: 410 }}
              resizeMode="contain"
            />

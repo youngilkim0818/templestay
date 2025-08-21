@@ -123,21 +123,31 @@ export default function MapScreen({ navigation, route }: any) {
 
   useEffect(() => {
     (async () => {
-      console.log('📍 Requesting location permissions...');
+      if (__DEV__) {
+        console.log('📍 Requesting location permissions...');
+      }
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        console.log('⚠️ Location permission denied');
+        if (__DEV__) {
+          console.log('⚠️ Location permission denied');
+        }
         setLoading(false);
         return;
       }
 
       try {
-        console.log('📍 Getting current location...');
+        if (__DEV__) {
+          console.log('📍 Getting current location...');
+        }
         const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-        console.log('✅ Location obtained:', loc.coords);
+        if (__DEV__) {
+          console.log('✅ Location obtained:', loc.coords);
+        }
         setLocation(loc.coords);
       } catch (error) {
-        console.log('⚠️ Could not get location', error);
+        if (__DEV__) {
+          console.log('⚠️ Could not get location', error);
+        }
       } finally {
         setLoading(false);
       }
@@ -147,7 +157,9 @@ export default function MapScreen({ navigation, route }: any) {
   // Top Places에서 전달받은 주소로 맵에 마커 표시
   useEffect(() => {
     if (route.params?.address) {
-      console.log('📍 Setting marker from Top Places address:', route.params.address);
+      if (__DEV__) {
+        console.log('📍 Setting marker from Top Places address:', route.params.address);
+      }
       
       // 주소를 좌표로 변환
       (async () => {
@@ -155,7 +167,9 @@ export default function MapScreen({ navigation, route }: any) {
           const geocodeResult = await Location.geocodeAsync(route.params.address);
           if (geocodeResult && geocodeResult.length > 0) {
             const coords = geocodeResult[0];
-            console.log('✅ Geocoded coordinates:', coords);
+            if (__DEV__) {
+              console.log('✅ Geocoded coordinates:', coords);
+            }
             
             // 검색 마커 설정
             setSearchMarker({
@@ -174,7 +188,9 @@ export default function MapScreen({ navigation, route }: any) {
             }
           }
         } catch (error) {
-          console.log('⚠️ Failed to geocode address:', error);
+          if (__DEV__) {
+            console.log('⚠️ Failed to geocode address:', error);
+          }
         }
       })();
     }
@@ -183,7 +199,9 @@ export default function MapScreen({ navigation, route }: any) {
   useEffect(() => {
     (async () => {
       try {
-        console.log('🏯 Loading temple data with images...');
+        if (__DEV__) {
+          console.log('🏯 Loading temple data with images...');
+        }
         const templesWithImages = await getAllTemplesWithImages();
         setTemples(templesWithImages.length > 0 ? templesWithImages : TEMPLES_DATA);
       } catch (error) {
@@ -206,7 +224,9 @@ export default function MapScreen({ navigation, route }: any) {
     const anchor = getAnchorCoords();
     const updatedNearbyTemples = getNearbyTemples(anchor, temples);
     setNearbyTemples(updatedNearbyTemples);
-    console.log('📍 Updated nearby temples (anchor):', updatedNearbyTemples.map(t => `${t.title}: ${t.distance}`));
+    if (__DEV__) {
+      console.log('📍 Updated nearby temples (anchor):', updatedNearbyTemples.map(t => `${t.title}: ${t.distance}`));
+    }
   }, [getAnchorCoords, temples]);
 
   // 관광지 로딩 함수 (검색 기준 좌표가 있으면 그것으로)
@@ -360,7 +380,9 @@ export default function MapScreen({ navigation, route }: any) {
       }
 
       // 알림
-      console.log(`검색 결과 없음: ${searchText}`);
+      if (__DEV__) {
+        console.log(`검색 결과 없음: ${searchText}`);
+      }
     } catch (e) {
       console.error('검색 오류:', e);
     }

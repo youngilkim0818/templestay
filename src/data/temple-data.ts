@@ -11,7 +11,7 @@ export const TEMPLES_DATA: Temple[] = [
     longitude: 129.3321,
     areaCd: 47,
     sigunguCd: 47113,
-    imageUrl: require('../../assets/불국사.jpg'),
+    imageUrl: require('../../assets/bulguksa-temple.jpg'),
     basePrice: 80000,
     precautions: 'As a UNESCO World Heritage Site, please be especially careful not to damage cultural properties.', // 유네스코 세계문화유산으로 지정된 곳이므로, 문화재 훼손에 각별히 유의해야 합니다
     description: 'Bulguksa Temple showcases the essence of Buddhist art from the Silla Dynasty, where you can vividly experience the brilliant Buddhist culture alongside numerous national treasures such as Dabotap and Seokgatap.', // 신라 시대 불교 예술의 정수를 보여주는 불국사는 다보탑, 석가탑 등 수많은 국보와 함께 찬란했던 불교 문화를 생생하게 느낄 수 있는 곳입니다
@@ -130,7 +130,7 @@ export const TEMPLES_DATA: Temple[] = [
     longitude: 129.4265,
     areaCd: 47,
     sigunguCd: 47113,
-    imageUrl: require('../../assets/굴국사.jpg'),
+    imageUrl: require('../../assets/gulguksa-temple.jpg'),
     basePrice: 60000,
     precautions: 'Photography is only allowed in designated areas.', // 사진 촬영은 지정된 장소에서만 가능합니다
     description: 'Golgulsa Temple is a mountain temple where the tranquility of meditation and practice flows, combining stone caves that have preserved a thousand years of history with nature.', // 골굴사는 천년의 세월을 간직한 석굴과 자연이 어우러진, 명상과 수행의 고요함이 흐르는 산사입니다
@@ -259,7 +259,7 @@ export const TEMPLES_DATA: Temple[] = [
     longitude: 128.0817,
     areaCd: 47,
     sigunguCd: 47150,
-    imageUrl: require('../../assets/직지사.jpg'),
+    imageUrl: require('../../assets/jikjisa-temple.jpg'),
     basePrice: 70000,
     precautions: 'Located by the sea, please be careful of waves and wind.', // 바닷가에 위치하여 파도와 바람에 주의해야 합니다.
     description: 'Jikjisa Temple is a representative temple of Gyeongbuk, where ancient traditions and Buddhist faith live and breathe together with the deep mountains and lush forests.', // 직지사는 깊은 산속 울창한 숲과 함께, 오랜 전통과 불심이 살아 숨 쉬는 경북의 대표 사찰입니다.
@@ -369,7 +369,7 @@ export const TEMPLES_DATA: Temple[] = [
     longitude: 129.3370795,
     areaCd: 47,
     sigunguCd: 47113,
-    imageUrl: require('../../assets/감산사.jpg'),
+    imageUrl: require('../../assets/gamsansa-temple.jpg'),
     basePrice: 65000,
     precautions: 'At the temple, refrain from unnecessary speech (silence), live simply and slowly with a humble and caring heart in harmony.', // 절에서는 필요 없는 말을 하지 않으며(묵언), 단순하고 느리게, 겸손과 배려의 마음으로 조화롭게 생활합니다.
     description: 'This temple was founded by King Seongdeok of Unified Silla to pray for the repose of his father and mother\'s souls, and to wish for the well-being of the king and his family.', // 통일신라 성덕왕이 아버지와 어머디의 명복을 빌고, 국왕과 그 가문의 안녕을 기원하기 위해 창건된 사찰입니다
@@ -486,7 +486,7 @@ export const TEMPLES_DATA: Temple[] = [
     longitude: 128.2720622,
     areaCd: 47,
     sigunguCd: 47280,
-    imageUrl: require('../../assets/대승사.jpg'),
+    imageUrl: require('../../assets/daeseungsa-temple.jpg'),
     basePrice: 70000,
     precautions: 'The temple is a space for practice. Please observe basic etiquette at the temple.', // 사찰은 수행의 공간입니다. 사찰에서의 기본 예절을 잘 지켜주십시오.
     description: 'Daeseungsa Temple is a thousand-year-old temple located in the deep mountain valley, a practice ground where the serene mountain landscape and Buddhist faith blend with tradition.', // 대승사는 깊은 산자락에 자리한 천년고찰로, 고즈넉한 산세와 불심이 깃든 전통이 어우러진 수행 도량입니다.
@@ -567,7 +567,7 @@ export const TEMPLES_DATA: Temple[] = [
     longitude: 129.317949,
     areaCd: 47,
     sigunguCd: 47111,
-    imageUrl: require('../../assets/보경사.jpg'),
+    imageUrl: require('../../assets/bogyeongsa-temple.jpg'),
     basePrice: 65000,
     precautions: 'Located overlooking the East Sea, the wind can be strong.', // 동해바다를 바라보는 위치에 있어 바람이 강할 수 있습니다.
     description: 'This is an ancient temple with a thousand years of Buddhist faith and natural beauty, located on the slopes of Naeyeonsan Mountain where strange rocks and waterfalls come together.', // 기암과 폭포가 어우러진 내연산 자락에 자리한, 천년의 불심과 자연의 아름다움을 간직한 고찰입니다.
@@ -644,7 +644,7 @@ export const TEMPLES_DATA: Temple[] = [
     longitude: 128.7387497,
     areaCd: 47,
     sigunguCd: 47290,
-    imageUrl: require('../../assets/선본사.jpg'),
+    imageUrl: require('../../assets/seonbonsa-temple.jpg'),
     basePrice: 60000,
     precautions: 'As this is a traditional temple, special attention must be paid to cultural property protection.', // 전통사찰로 문화재 보호에 각별히 유의해야 합니다.
     description: 'This is a historic temple located on the slopes of Palgongsan Mountain, continuing the tradition of meditation and practice in the majestic nature.', // 팔공산 기슭에 자리한 유서 깊은 도량으로, 장엄한 자연 속에서 선과 정진의 전통을 이어가는 사찰입니다.
@@ -797,7 +797,7 @@ export const TEMPLES_DATA: Temple[] = [
     longitude: 128.135791,
     areaCd: 47,
     sigunguCd: 47720,
-    imageUrl: require('../../assets/심원사.jpg'),
+    imageUrl: require('../../assets/simwonsa-temple.jpg'),
     basePrice: 60000,
     precautions: 'As this is a traditional temple, special attention must be paid to cultural property protection.', // 전통사찰로 문화재 보호에 각별히 유의해야 합니다.
     description: 'This is a serene mountain temple located deep in the Gayasan foothills, a meditation ground where clear valleys and lush forests come together', // 가야산 자락 깊숙이 자리한 고즈넉한 산사로, 맑은 계곡과 울창한 숲이 어우러진 명상의 도량입니다
@@ -917,7 +917,9 @@ export const getTempleByIdWithImages = async (id: number): Promise<Temple | unde
  * 모든 사찰에 이미지 데이터 추가
  */
 export const getAllTemplesWithImages = async (): Promise<Temple[]> => {
-  console.log('🖼️ 모든 사찰 이미지 데이터 로딩 시작...');
+  if (__DEV__) {
+    console.log('🖼️ 모든 사찰 이미지 데이터 로딩 시작...');
+  }
   
   const promises = TEMPLES_DATA.map(async (temple) => {
     try {
@@ -933,7 +935,9 @@ export const getAllTemplesWithImages = async (): Promise<Temple[]> => {
     .filter(result => result.status === 'fulfilled')
     .map(result => (result as PromiseFulfilledResult<Temple>).value);
   
-  console.log(`✅ 사찰 이미지 로딩 완료: ${results.length}/${TEMPLES_DATA.length}`);
+  if (__DEV__) {
+    console.log(`✅ 사찰 이미지 로딩 완료: ${results.length}/${TEMPLES_DATA.length}`);
+  }
   return results;
 };
 

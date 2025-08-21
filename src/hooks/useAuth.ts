@@ -15,18 +15,24 @@ export const useAuth = () => {
         // Check if we have a stored session
         const storedSession = await AsyncStorage.getItem('auth_session');
         if (storedSession) {
-          console.log('🔐 Found stored session, attempting auto-login...');
+          if (__DEV__) {
+            console.log('🔐 Found stored session, attempting auto-login...');
+          }
         }
 
         const currentUser = await AuthService.getCurrentUser();
         if (currentUser) {
-          console.log('✅ Auto-login successful:', currentUser.email);
+          if (__DEV__) {
+            console.log('✅ Auto-login successful:', currentUser.email);
+          }
           login(currentUser);
           
           // Update last login timestamp
           await AsyncStorage.setItem('last_login', new Date().toISOString());
         } else {
-          console.log('❌ No valid session found, logging out...');
+          if (__DEV__) {
+            console.log('❌ No valid session found, logging out...');
+          }
           logout();
           await AsyncStorage.removeItem('auth_session');
         }
@@ -45,11 +51,15 @@ export const useAuth = () => {
     // 인증 상태 변경 리스너 설정
     const { data: { subscription } } = AuthService.onAuthStateChange(
       async (event, session) => {
-        console.log('🔄 Auth state change:', event);
+        if (__DEV__) {
+          console.log('🔄 Auth state change:', event);
+        }
         
         if (event === 'SIGNED_IN' && session?.user) {
           try {
-            console.log('✅ User signed in, loading profile...');
+            if (__DEV__) {
+              console.log('✅ User signed in, loading profile...');
+            }
             
             // Store session info for auto-login
             await AsyncStorage.setItem('auth_session', JSON.stringify({
@@ -61,18 +71,24 @@ export const useAuth = () => {
             if (userProfile) {
               login(userProfile);
               await AsyncStorage.setItem('last_login', new Date().toISOString());
-              console.log('✅ User profile loaded and stored');
+              if (__DEV__) {
+                console.log('✅ User profile loaded and stored');
+              }
             }
           } catch (error) {
             console.error('❌ Error loading user profile:', error);
           }
         } else if (event === 'SIGNED_OUT') {
-          console.log('👋 User signed out, clearing session...');
+          if (__DEV__) {
+            console.log('👋 User signed out, clearing session...');
+          }
           logout();
           await AsyncStorage.removeItem('auth_session');
           await AsyncStorage.removeItem('last_login');
         } else if (event === 'TOKEN_REFRESHED') {
-          console.log('🔄 Token refreshed, updating session...');
+          if (__DEV__) {
+            console.log('🔄 Token refreshed, updating session...');
+          }
           await AsyncStorage.setItem('auth_session', JSON.stringify({
             timestamp: new Date().toISOString(),
             userId: session?.user?.id,
@@ -108,7 +124,9 @@ export const useAuth = () => {
   const toggleAutoLogin = async (enabled: boolean) => {
     try {
       await AsyncStorage.setItem('auto_login_enabled', enabled.toString());
-      console.log(`Auto-login ${enabled ? 'enabled' : 'disabled'}`);
+      if (__DEV__) {
+        console.log(`Auto-login ${enabled ? 'enabled' : 'disabled'}`);
+      }
     } catch (error) {
       console.error('Error toggling auto-login:', error);
     }

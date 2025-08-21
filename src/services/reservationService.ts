@@ -4,7 +4,9 @@ import { Reservation } from '../types';
 export class ReservationService {
   // 예약 생성
   static async createReservation(reservationData: any): Promise<Reservation> {
-    console.log('🔄 Creating reservation with data:', reservationData);
+    if (__DEV__) {
+      console.log('🔄 Creating reservation with data:', reservationData);
+    }
     
     const {
       userId,
@@ -47,7 +49,9 @@ export class ReservationService {
       insertData.user_phone = userPhone;
     }
     
-    console.log('📝 Reservation data prepared:', insertData);
+    if (__DEV__) {
+      console.log('📝 Reservation data prepared:', insertData);
+    }
 
     const { data, error } = await supabase
       .from('reservations')
@@ -60,13 +64,17 @@ export class ReservationService {
       throw error;
     }
 
-    console.log('✅ Reservation created successfully:', data);
+    if (__DEV__) {
+      console.log('✅ Reservation created successfully:', data);
+    }
     return data as Reservation;
   }
 
   // 사용자 예약 목록 조회
   static async getUserReservations(userId: string): Promise<Reservation[]> {
-    console.log('🔄 Fetching reservations for user:', userId);
+    if (__DEV__) {
+      console.log('🔄 Fetching reservations for user:', userId);
+    }
     
     const { data, error } = await supabase
       .from('reservations')
@@ -79,7 +87,9 @@ export class ReservationService {
       throw error;
     }
 
-    console.log('✅ User reservations fetched:', data?.length || 0, 'reservations');
+    if (__DEV__) {
+      console.log('✅ User reservations fetched:', data?.length || 0, 'reservations');
+    }
     return data as Reservation[];
   }
 

@@ -42,7 +42,9 @@ const translateText = async (text: string): Promise<string> => {
     
     return text; // 번역 실패시 원본 반환
   } catch (error) {
-    console.log('Translation failed, using original text:', error);
+    if (__DEV__) {
+      console.log('Translation failed, using original text:', error);
+    }
     return text; // 에러시 원본 반환
   }
 };
@@ -99,7 +101,7 @@ const AttractionCard = memo<{
 
   // 이미지 소스 결정 (기존 firstimage 또는 새로 추가된 로컬 이미지)
   const enrichedAttraction = isTourAttraction ? enrichAttractionWithImage(attraction) : attraction;
-  const imageSource = enrichedAttraction.imageUrl || enrichedAttraction.firstimage;
+  const imageSource = (enrichedAttraction as any).imageUrl || (enrichedAttraction as any).firstimage;
 
   return (
     <View className="bg-white rounded-2xl p-4 mr-3 w-72 border border-stone-200">
@@ -313,15 +315,21 @@ const ReservationDetailScreen = () => {
       }
       
       try {
-        console.log('🏛️ 사찰 상세 데이터 로딩:', templeId);
+        if (__DEV__) {
+          console.log('🏛️ 사찰 상세 데이터 로딩:', templeId);
+        }
         
         let templeToUse: Temple;
         
         // templeData가 있으면 우선 사용, 없으면 TEMPLES_DATA에서 찾기
         if (templeData) {
           templeToUse = templeData;
-          console.log('✅ 전달받은 사찰 데이터 사용:', templeData.name);
-          console.log('🔍 templeData.programDetails:', templeData.programDetails);
+          if (__DEV__) {
+            console.log('✅ 전달받은 사찰 데이터 사용:', templeData.name);
+          }
+          if (__DEV__) {
+            console.log('🔍 templeData.programDetails:', templeData.programDetails);
+          }
         } else {
           const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
           if (!basicTemple) {
@@ -331,23 +339,35 @@ const ReservationDetailScreen = () => {
             return;
           }
           templeToUse = basicTemple;
-          console.log('✅ TEMPLES_DATA에서 사찰 데이터 로드 완료:', basicTemple.name);
+          if (__DEV__) {
+            console.log('✅ TEMPLES_DATA에서 사찰 데이터 로드 완료:', basicTemple.name);
+          }
         }
         
         // TEMPLES_DATA에서 programDetails 보충 (가격 정보 유지를 위해)
         const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
         if (basicTemple && basicTemple.programDetails) {
           templeToUse = { ...templeToUse, programDetails: basicTemple.programDetails };
-          console.log('✅ TEMPLES_DATA에서 programDetails 보충 완료');
-          console.log('🔍 보충된 programDetails 키들:', Object.keys(basicTemple.programDetails));
+          if (__DEV__) {
+            console.log('✅ TEMPLES_DATA에서 programDetails 보충 완료');
+          }
+          if (__DEV__) {
+            console.log('🔍 보충된 programDetails 키들:', Object.keys(basicTemple.programDetails));
+          }
         }
         
         // TempleImageService를 사용하여 이미지와 설명 보강
         try {
           const enrichedTemple = await enrichTempleWithImages(templeToUse);
-          console.log('✅ TempleImageService를 통한 데이터 보강 완료');
-          console.log('🔍 보강된 사찰 데이터 templestay:', enrichedTemple.templestay);
-          console.log('🔍 보강된 사찰 데이터 programDetails:', enrichedTemple.programDetails);
+          if (__DEV__) {
+            console.log('✅ TempleImageService를 통한 데이터 보강 완료');
+          }
+          if (__DEV__) {
+            console.log('🔍 보강된 사찰 데이터 templestay:', enrichedTemple.templestay);
+          }
+          if (__DEV__) {
+            console.log('🔍 보강된 사찰 데이터 programDetails:', enrichedTemple.programDetails);
+          }
           
           // 기본 사찰 정보 설정 (보강된 데이터)
           setTemple(enrichedTemple);
@@ -364,9 +384,13 @@ const ReservationDetailScreen = () => {
           // } catch (error) {
           //   console.log('⚠️ Supabase 프로그램 로딩 실패, 기본 데이터 사용:', error);
           // }
-          console.log('✅ 로컬 영어 데이터 사용 (Supabase 비활성화)');
+          if (__DEV__) {
+            console.log('✅ 로컬 영어 데이터 사용 (Supabase 비활성화)');
+          }
         } catch (error) {
-          console.log('⚠️ TempleImageService 보강 실패, 기본 데이터 사용:', error);
+          if (__DEV__) {
+            console.log('⚠️ TempleImageService 보강 실패, 기본 데이터 사용:', error);
+          }
           setTemple(templeToUse);
         }
         
@@ -375,12 +399,16 @@ const ReservationDetailScreen = () => {
         // 에러 발생 시에도 기본 데이터 사용 시도
         if (templeData) {
           setTemple(templeData);
-          console.log('✅ 에러 후 전달받은 데이터 사용:', templeData.name);
+          if (__DEV__) {
+            console.log('✅ 에러 후 전달받은 데이터 사용:', templeData.name);
+          }
         } else {
           const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
           if (basicTemple) {
             setTemple(basicTemple);
-            console.log('✅ 에러 후 TEMPLES_DATA 사용:', basicTemple.name);
+            if (__DEV__) {
+              console.log('✅ 에러 후 TEMPLES_DATA 사용:', basicTemple.name);
+            }
           } else {
             setTemple(null);
           }
@@ -398,7 +426,9 @@ const ReservationDetailScreen = () => {
       if (temple && typeof temple.areaCd === 'number') {
         setAttractionsLoading(true);
         try {
-          console.log(`🏞️ 지역코드 기반 주변 관광지 검색 시작: areaCd=${temple.areaCd}, sigunguCd=${temple.sigunguCd}`);
+          if (__DEV__) {
+            console.log(`🏞️ 지역코드 기반 주변 관광지 검색 시작: areaCd=${temple.areaCd}, sigunguCd=${temple.sigunguCd}`);
+          }
 
           // 1. 시군구 단위로 정확하게 검색
           let nearbyAttractions: TourAttraction[] = await TourApiService.getHubAttractionsByAreaWithFallback(
@@ -444,9 +474,13 @@ const ReservationDetailScreen = () => {
           
           if (enriched.length > 0) {
             setAttractions(enriched);
-            console.log(`✅ 주변 관광지 ${enriched.length}개 로드 완료 (이미지 보강 포함)`);
+            if (__DEV__) {
+              console.log(`✅ 주변 관광지 ${enriched.length}개 로드 완료 (이미지 보강 포함)`);
+            }
           } else {
-            console.log('⚠️ 주변 관광지 없음 → fallback 사용');
+            if (__DEV__) {
+              console.log('⚠️ 주변 관광지 없음 → fallback 사용');
+            }
             setAttractions([]);
           }
         } catch (error) {
@@ -523,11 +557,15 @@ const ReservationDetailScreen = () => {
     if (isDateInRange) {
       // 선택된 날짜 범위를 다시 터치하면 선택 해제
       setSelectedDate([]);
-      console.log('📅 날짜 선택 해제');
+      if (__DEV__) {
+        console.log('📅 날짜 선택 해제');
+      }
     } else {
       // 새로운 날짜 범위 선택
       setSelectedDate([date, nextDay]);
-      console.log('📅 선택된 날짜 범위:', date.toDateString(), '~', nextDay.toDateString());
+      if (__DEV__) {
+        console.log('📅 선택된 날짜 범위:', date.toDateString(), '~', nextDay.toDateString());
+      }
     }
     
     // 날짜 관련 경고문 초기화
@@ -553,25 +591,43 @@ const ReservationDetailScreen = () => {
     if (selectedProgram && selectedProgram.title === program.title) {
       // 같은 프로그램을 다시 클릭하면 선택 해제
       setSelectedProgram(null);
-      console.log('📋 프로그램 선택 해제:', program.title);
+      if (__DEV__) {
+        console.log('📋 프로그램 선택 해제:', program.title);
+      }
     } else {
       // 새로운 프로그램 선택
       setSelectedProgram(program);
-      console.log('📋 선택된 프로그램:', program);
-      console.log('📋 선택된 프로그램 제목:', program.title);
-      console.log('📋 선택된 프로그램 설명:', program.description);
+      if (__DEV__) {
+        console.log('📋 선택된 프로그램:', program);
+      }
+      if (__DEV__) {
+        console.log('📋 선택된 프로그램 제목:', program.title);
+      }
+      if (__DEV__) {
+        console.log('📋 선택된 프로그램 설명:', program.description);
+      }
       
       // programDetails에서 해당 프로그램의 가격 정보 찾기
-      console.log('🔍 programDetails 찾기:', program.title);
-      console.log('🔍 현재 temple 객체:', temple);
-      console.log('🔍 temple.programDetails:', temple?.programDetails);
+      if (__DEV__) {
+        console.log('🔍 programDetails 찾기:', program.title);
+      }
+      if (__DEV__) {
+        console.log('🔍 현재 temple 객체:', temple);
+      }
+      if (__DEV__) {
+        console.log('🔍 temple.programDetails:', temple?.programDetails);
+      }
       
       const programDetail = temple?.programDetails?.[program.title];
-      console.log('🔍 programDetails 결과:', programDetail);
+      if (__DEV__) {
+        console.log('🔍 programDetails 결과:', programDetail);
+      }
       
       if (!programDetail) {
         console.log('❌ programDetails에서 가격 정보를 찾을 수 없음');
-        console.log('🔍 사용 가능한 programDetails 키들:', Object.keys(temple?.programDetails || {}));
+        if (__DEV__) {
+          console.log('🔍 사용 가능한 programDetails 키들:', Object.keys(temple?.programDetails || {}));
+        }
         
         // TEMPLES_DATA에서 직접 찾기
         const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
@@ -661,12 +717,14 @@ const ReservationDetailScreen = () => {
       {/* 전체 사진칸 */}
       <View className="relative h-80 bg-stone-200">
         {(() => {
-          console.log('🔍 사찰 이미지 디버깅:', {
-            templeName: temple.name,
-            imageUrl: temple.imageUrl,
-            imageUrlType: typeof temple.imageUrl,
-            hasImageUrl: !!temple.imageUrl
-          });
+          if (__DEV__) {
+            console.log('🔍 사찰 이미지 디버깅:', {
+              templeName: temple.name,
+              imageUrl: temple.imageUrl,
+              imageUrlType: typeof temple.imageUrl,
+              hasImageUrl: !!temple.imageUrl
+            });
+          }
           
           return temple.imageUrl ? (
             <Image 
@@ -674,9 +732,15 @@ const ReservationDetailScreen = () => {
               className="w-full h-full" 
               resizeMode="cover"
               onError={(error) => {
-                console.log('❌ Image loading error:', error);
-                console.log('🔍 temple.imageUrl:', temple.imageUrl);
-                console.log('🔍 temple.name:', temple.name);
+                if (__DEV__) {
+                  console.log('❌ Image loading error:', error);
+                }
+                if (__DEV__) {
+                  console.log('🔍 temple.imageUrl:', temple.imageUrl);
+                }
+                if (__DEV__) {
+                  console.log('🔍 temple.name:', temple.name);
+                }
               }}
               onLoad={() => console.log('✅ Image loaded successfully:', temple.imageUrl)}
             />
@@ -774,14 +838,16 @@ const ReservationDetailScreen = () => {
                         const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
                         const programDetail = basicTemple?.programDetails?.[selectedProgram.title];
                         
-                        console.log('🔍 Adult 가격 계산:', {
-                          templeId,
-                          selectedProgramTitle: selectedProgram.title,
-                          basicTemple: basicTemple?.name,
-                          programDetail,
-                          adultPrice: programDetail?.pricing?.adult,
-                          fallbackPrice: selectedProgram.price
-                        });
+                        if (__DEV__) {
+                          console.log('🔍 Adult 가격 계산:', {
+                            templeId,
+                            selectedProgramTitle: selectedProgram.title,
+                            basicTemple: basicTemple?.name,
+                            programDetail,
+                            adultPrice: programDetail?.pricing?.adult,
+                            fallbackPrice: selectedProgram.price
+                          });
+                        }
                         
                         if (programDetail?.pricing?.adult) {
                           return programDetail.pricing.adult.toLocaleString();
@@ -796,12 +862,14 @@ const ReservationDetailScreen = () => {
                         const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
                         const programDetail = basicTemple?.programDetails?.[selectedProgram.title];
                         
-                        console.log('🔍 Teenager 가격 계산:', {
-                          templeId,
-                          selectedProgramTitle: selectedProgram.title,
-                          teenagerPrice: programDetail?.pricing?.teenager,
-                          fallbackPrice: selectedProgram.price ? Math.floor(selectedProgram.price * 0.9) : 'N/A'
-                        });
+                        if (__DEV__) {
+                          console.log('🔍 Teenager 가격 계산:', {
+                            templeId,
+                            selectedProgramTitle: selectedProgram.title,
+                            teenagerPrice: programDetail?.pricing?.teenager,
+                            fallbackPrice: selectedProgram.price ? Math.floor(selectedProgram.price * 0.9) : 'N/A'
+                          });
+                        }
                         
                         if (programDetail?.pricing?.teenager) {
                           return programDetail.pricing.teenager.toLocaleString();
@@ -817,12 +885,14 @@ const ReservationDetailScreen = () => {
                         const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
                         const programDetail = basicTemple?.programDetails?.[selectedProgram.title];
                         
-                        console.log('🔍 Child 가격 계산:', {
-                          templeId,
-                          selectedProgramTitle: selectedProgram.title,
-                          childPrice: programDetail?.pricing?.child,
-                          fallbackPrice: selectedProgram.price ? Math.floor(selectedProgram.price * 0.8) : 'N/A'
-                        });
+                        if (__DEV__) {
+                          console.log('🔍 Child 가격 계산:', {
+                            templeId,
+                            selectedProgramTitle: selectedProgram.title,
+                            childPrice: programDetail?.pricing?.child,
+                            fallbackPrice: selectedProgram.price ? Math.floor(selectedProgram.price * 0.8) : 'N/A'
+                          });
+                        }
                         
                         if (programDetail?.pricing?.child) {
                           return programDetail.pricing.child.toLocaleString();
@@ -838,12 +908,14 @@ const ReservationDetailScreen = () => {
                         const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
                         const programDetail = basicTemple?.programDetails?.[selectedProgram.title];
                         
-                        console.log('🔍 Preschool 가격 계산:', {
-                          templeId,
-                          selectedProgramTitle: selectedProgram.title,
-                          preschoolPrice: programDetail?.pricing?.preschool,
-                          fallbackPrice: selectedProgram.price ? Math.floor(selectedProgram.price * 0.7) : 'N/A'
-                        });
+                        if (__DEV__) {
+                          console.log('🔍 Preschool 가격 계산:', {
+                            templeId,
+                            selectedProgramTitle: selectedProgram.title,
+                            preschoolPrice: programDetail?.pricing?.preschool,
+                            fallbackPrice: selectedProgram.price ? Math.floor(selectedProgram.price * 0.7) : 'N/A'
+                          });
+                        }
                         
                         if (programDetail?.pricing?.preschool) {
                           return programDetail.pricing.preschool.toLocaleString();

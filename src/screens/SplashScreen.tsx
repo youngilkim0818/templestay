@@ -33,7 +33,9 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    console.log('🎬 SplashScreen 마운트됨');
+    if (__DEV__) {
+      console.log('🎬 SplashScreen 마운트됨');
+    }
     
     const checkUserStatus = async () => {
       try {
@@ -41,17 +43,23 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
         const { data: { session } } = await supabase.auth.getSession();
         const isLoggedIn = !!session;
         
-        console.log('🔍 사용자 로그인 상태 확인:', { isLoggedIn, user: session?.user?.email });
+        if (__DEV__) {
+          console.log('🔍 사용자 로그인 상태 확인:', { isLoggedIn, user: session?.user?.email });
+        }
         
         if (isLoggedIn) {
           // 이미 로그인한 사용자: 2초 후 자동으로 홈으로 이동
-          console.log('✅ 로그인된 사용자 → 홈으로 자동 이동');
+          if (__DEV__) {
+            console.log('✅ 로그인된 사용자 → 홈으로 자동 이동');
+          }
           setTimeout(() => {
             navigation.replace('Main');
           }, 2000);
         } else {
           // 처음 사용자: 1초 후 로그인 버튼 표시
-          console.log('🆕 처음 사용자 → 로그인 버튼 표시');
+          if (__DEV__) {
+            console.log('🆕 처음 사용자 → 로그인 버튼 표시');
+          }
           setTimeout(() => {
             setShowStartButton(true);
             Animated.timing(fadeAnim, {
@@ -59,7 +67,9 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
               duration: 550,
               useNativeDriver: true,
             }).start(() => {
-              console.log('✨ 애니메이션 완료');
+              if (__DEV__) {
+                console.log('✨ 애니메이션 완료');
+              }
             });
           }, 1000);
         }
@@ -80,15 +90,21 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
     checkUserStatus();
 
     return () => {
-      console.log('🧹 SplashScreen 언마운트');
+      if (__DEV__) {
+        console.log('🧹 SplashScreen 언마운트');
+      }
     };
   }, []);
 
   const handleStartPress = async () => {
-    console.log('🖱️ Sign in to TempleBuk 버튼 클릭됨');
+    if (__DEV__) {
+      console.log('🖱️ Sign in to TempleBuk 버튼 클릭됨');
+    }
     try {
       // 로그인 화면으로 이동
-      console.log('🔐 로그인 화면으로 이동');
+      if (__DEV__) {
+        console.log('🔐 로그인 화면으로 이동');
+      }
       navigation.replace('Login');
     } catch (error) {
       console.error('네비게이션 실패:', error);
@@ -97,7 +113,9 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  console.log('🔄 SplashScreen 렌더링, showStartButton:', showStartButton);
+  if (__DEV__) {
+    console.log('🔄 SplashScreen 렌더링, showStartButton:', showStartButton);
+  }
 
   return (
     <View

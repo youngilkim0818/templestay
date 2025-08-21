@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../../constants/colors';
+import { COLORS, LEGACY_COLORS } from '../../constants/colors';
 
 interface LanguageSelectorProps {
   visible: boolean;
@@ -62,7 +62,7 @@ const LanguageSelector = memo<LanguageSelectorProps>(({ visible, onClose }) => {
                   {language.name}
                 </Text>
                 {i18n.language === language.code && (
-                  <Ionicons name="checkmark" size={20} color={COLORS.primary} />
+                  <Ionicons name="checkmark" size={20} color={LEGACY_COLORS.primary} />
                 )}
               </TouchableOpacity>
             ))}
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   container: {
-    backgroundColor: COLORS.white,
+    backgroundColor: LEGACY_COLORS.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingBottom: 40,
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   selectedLanguage: {
-    backgroundColor: COLORS.primary + '10',
+    backgroundColor: LEGACY_COLORS.primary + '10',
   },
   flag: {
     fontSize: 24,
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     color: COLORS.text.primary,
   },
   selectedLanguageName: {
-    color: COLORS.primary,
+    color: LEGACY_COLORS.primary,
     fontWeight: '600',
   },
 });

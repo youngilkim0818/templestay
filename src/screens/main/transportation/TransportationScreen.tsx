@@ -13,10 +13,10 @@ const TAXI_DATA = [
     title: 'Andong Tourist Taxi',
     desc: 'Andong Tour Taxi – A convenient ride for travelers on foot',
     price: '₩20,000 ~ ₩50,000',
-    website: 'http://andongtourtaxi.com',
+    website: 'https://andongtourtaxi.com',
     phone: null,
     distance: 15,
-    imageUrl: require('../../../../assets/안동.png'),
+    imageUrl: require('../../../../assets/andong.png'),
   },
   {
     id: '2',
@@ -28,7 +28,7 @@ const TAXI_DATA = [
     website: 'https://www.yc.go.kr/tour/contents.do?mId=0607000000',
     phone: null,
     distance: 25,
-    imageUrl: require('../../../../assets/영천.png'),
+    imageUrl: require('../../../../assets/yeongcheon.png'),
   },
   {
     id: '3',
@@ -40,7 +40,7 @@ const TAXI_DATA = [
     website: 'https://www.cheongdo.go.kr/tour/contents.do?mid=0603000000',
     phone: '054-370-6000',
     distance: 35,
-    imageUrl: require('../../../../assets/청도.png'),
+    imageUrl: require('../../../../assets/cheongdo.png'),
   },
   {
     id: '4',
@@ -52,7 +52,7 @@ const TAXI_DATA = [
     website: 'https://www.yeongju.go.kr/open_content/yeyak/page.do?mnu_uid=11434&app_type=3',
     phone: '054-639-6603',
     distance: 45,
-    imageUrl: require('../../../../assets/영주.png'),
+    imageUrl: require('../../../../assets/yeongju.png'),
   },
   {
     id: '5',
@@ -64,7 +64,7 @@ const TAXI_DATA = [
     website: 'https://ydtaxi.imweb.me/TourTaxiOverview',
     phone: '054-730-6000',
     distance: 85,
-    imageUrl: require('../../../../assets/영덕.png'),
+    imageUrl: require('../../../../assets/yeongdeok.png'),
   },
 ];
 

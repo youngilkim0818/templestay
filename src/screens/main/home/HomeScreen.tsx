@@ -211,9 +211,9 @@ const HomeScreen = ({ navigation }: any) => {
   const [currentScrollPosition, setCurrentScrollPosition] = useState(0);
   const bannerRef = React.useRef<FlatList>(null);
   const bannerImages = [
-    require('../../../../assets/배너 1.jpg'),
-    require('../../../../assets/배너 2.jpg'),
-    require('../../../../assets/배너 3.jpg'),
+    require('../../../../assets/banner-1.jpg'),
+    require('../../../../assets/banner-2.jpg'),
+    require('../../../../assets/banner-3.jpg'),
   ];
   
   // 무한 스크롤을 위한 확장된 배열
@@ -227,28 +227,28 @@ const HomeScreen = ({ navigation }: any) => {
   const reviewData = [
     {
       id: '1',
-      image: require('../../../../assets/불국사.jpg'),
+      image: require('../../../../assets/bulguksa-temple.jpg'),
       title: 'Bulguksa Temple Stay was really great!',
       temple: 'Bulguksa',
       rating: 4
     },
     {
       id: '2',
-      image: require('../../../../assets/보경사.jpg'),
+      image: require('../../../../assets/bogyeongsa-temple.jpg'),
       title: 'Peaceful time at Bogyeongsa Temple',
       temple: 'Bogyeongsa',
       rating: 5
     },
     {
       id: '3',
-      image: require('../../../../assets/대승사.jpg'),
+      image: require('../../../../assets/daeseungsa-temple.jpg'),
       title: 'Temple Stay experience at Daeseungsa',
       temple: 'Daeseungsa',
       rating: 5
     },
     {
       id: '4',
-      image: require('../../../../assets/직지사.jpg'),
+      image: require('../../../../assets/jikjisa-temple.jpg'),
       title: 'Finding peace of mind at Jikjisa',
       temple: 'Jikjisa',
       rating: 4
@@ -440,7 +440,7 @@ const HomeScreen = ({ navigation }: any) => {
                   onPress={() => { try { navigation?.navigate('TempleStack', { screen: 'RecommendTemples', params: { boxType: 'popular' } }); } catch {} }}
                   activeOpacity={0.8}
                 >
-                  <Image source={require('../../../../assets/직지사.jpg')} className="w-full h-full" resizeMode="cover" />
+                  <Image source={require('../../../../assets/jikjisa-temple.jpg')} className="w-full h-full" resizeMode="cover" />
                   <View className="absolute bottom-2 left-2">
                                           <View className="bg-black/25 px-3 py-1 rounded-2xl">
                         <Text className="text-white text-lg font-bold">Popular</Text>
@@ -474,7 +474,7 @@ const HomeScreen = ({ navigation }: any) => {
                   onPress={() => { try { navigation?.navigate('TempleStack', { screen: 'RecommendTemples', params: { boxType: 'oneday' } }); } catch {} }}
                   activeOpacity={0.8}
                 >
-                  <Image source={require('../../../../assets/당일.jpg')} className="w-full h-full" resizeMode="cover" />
+                  <Image source={require('../../../../assets/day-trip.jpg')} className="w-full h-full" resizeMode="cover" />
                   <View className="absolute bottom-2 left-2">
                                           <View className="bg-black/25 px-3 py-1 rounded-2xl">
                         <Text className="text-white text-lg font-bold">One-Day</Text>
@@ -582,7 +582,7 @@ const HomeScreen = ({ navigation }: any) => {
                     activeOpacity={0.8}
                   >
                     <Image 
-                      source={require('../../../../assets/섹터1.jpg')}
+                      source={require('../../../../assets/sector-1.jpg')}
                       className="w-20 h-20 rounded-md"
                       resizeMode="cover"
                     />
@@ -602,7 +602,7 @@ const HomeScreen = ({ navigation }: any) => {
                     activeOpacity={0.8}
                   >
                     <Image 
-                      source={require('../../../../assets/섹터2.jpg')}
+                      source={require('../../../../assets/sector-2.jpg')}
                       className="w-20 h-20 rounded-md"
                       resizeMode="cover"
                     />
@@ -622,7 +622,7 @@ const HomeScreen = ({ navigation }: any) => {
                     activeOpacity={0.8}
                   >
                     <Image 
-                      source={require('../../../../assets/섹터3.jpg')}
+                      source={require('../../../../assets/sector-3.jpg')}
                       className="w-20 h-20 rounded-md"
                       resizeMode="cover"
                     />
@@ -642,7 +642,7 @@ const HomeScreen = ({ navigation }: any) => {
                     activeOpacity={0.8}
                   >
                     <Image 
-                      source={require('../../../../assets/섹터4.jpg')}
+                      source={require('../../../../assets/sector-4.jpg')}
                       className="w-20 h-20 rounded-md"
                       resizeMode="cover"
                     />
@@ -662,7 +662,7 @@ const HomeScreen = ({ navigation }: any) => {
                     activeOpacity={0.8}
                   >
                     <Image 
-                      source={require('../../../../assets/섹터5.jpg')}
+                      source={require('../../../../assets/sector-5.jpg')}
                       className="w-20 h-20 rounded-md"
                       resizeMode="cover"
                     />

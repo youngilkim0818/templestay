@@ -3,8 +3,8 @@ require('dotenv/config');
 
 module.exports = {
   expo: {
-    name: "템플스테이",
-    slug: "templestay-app",
+    name: "templebuk",
+    slug: "templebuk-app",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
@@ -57,9 +57,12 @@ module.exports = {
       favicon: "./assets/favicon.png"
     },
     extra: {
-      supabaseUrl: "https://sbeeewzhmjophlytqhys.supabase.co",
-      supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiZWVld3pobWpvcGhseXRxaHlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE0MzY3OTgsImV4cCI6MjA2NzAxMjc5OH0.eeXlhAxO8hB39sUvP81NNSO2vmHPnCMBzUdP6RvJgG4",
-      googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY
+      supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
+      supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
+      googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
+      eas: {
+        projectId: "5d33f64c-2310-4fc0-bf8f-9463d09ac0f7"
+      }
     }
   }
 };

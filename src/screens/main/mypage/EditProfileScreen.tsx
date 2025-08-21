@@ -52,8 +52,12 @@ const EditProfileScreen = ({ navigation }: any) => {
             const userName = await AsyncStorage.getItem('userName');
             const userProfileImage = await AsyncStorage.getItem('userProfileImage');
             
-            console.log('Loaded userName:', userName);
-            console.log('Loaded userProfileImage:', userProfileImage);
+            if (__DEV__) {
+              console.log('Loaded userName:', userName);
+            }
+            if (__DEV__) {
+              console.log('Loaded userProfileImage:', userProfileImage);
+            }
             
             if (userName) {
                 setName(userName);

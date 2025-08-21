@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { ApiError, ApiResponse } from '../api/httpClient';
 import { APIUtils } from '../api';
 
@@ -50,7 +50,7 @@ export function useAPI<T = any>(options: UseAPIOptions = {}) {
           
           setState(prev => ({
             ...prev,
-            data: response.data,
+            data: response.data as unknown as T,
             loading: false,
             error: null,
             success: true,
@@ -227,7 +227,7 @@ export function useSearchAPI<T = any>(
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   // 디바운스된 검색어 업데이트
-  useState(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
     }, debounceDelay);
