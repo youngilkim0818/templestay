@@ -5,6 +5,7 @@ import MyReservationsScreen from '../screens/main/mypage/MyReservationsScreen';
 import EditProfileScreen from '../screens/main/mypage/EditProfileScreen';
 import ChangePasswordScreen from '../screens/main/mypage/ChangePasswordScreen';
 import CommonListScreen from '../screens/main/mypage/CommonListScreen';
+import WriteReviewScreen from '../screens/main/mypage/WriteReviewScreen';
 
 export type MyPageStackParamList = {
   MyPage: undefined;
@@ -12,6 +13,7 @@ export type MyPageStackParamList = {
   EditProfile: undefined;
   ChangePassword: undefined;
   CommonList: { initialTab: number };
+  WriteReview: { templeId: string; templeName: string; reservationDate: string; programName: string };
 };
 
 const Stack = createNativeStackNavigator<MyPageStackParamList>();
@@ -52,6 +54,16 @@ const MyPageStackNavigator = () => {
       <Stack.Screen 
         name="CommonList" 
         component={CommonListScreen} 
+        options={{ 
+          headerShown: false,
+          header: () => null,
+          headerTitle: '',
+          headerBackVisible: false,
+        }}
+      />
+      <Stack.Screen 
+        name="WriteReview" 
+        component={WriteReviewScreen} 
         options={{ 
           headerShown: false,
           header: () => null,
