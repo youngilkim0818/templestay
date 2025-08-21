@@ -15,6 +15,10 @@ const MyPageScreen = ({ navigation }: any) => {
     profileImage: null as string | null
   });
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const [showCustomerSupport, setShowCustomerSupport] = useState(false);
+  const [showNotificationSettings, setShowNotificationSettings] = useState(false);
+  const [receiveEmailNotifications, setReceiveEmailNotifications] = useState(false);
 
   const { reservations, fetchUserReservations, loading } = useReservationStore();
   const { user: currentUser, logout: logoutUser } = useUserStore();
@@ -177,19 +181,28 @@ const MyPageScreen = ({ navigation }: any) => {
         {/* 설정 메뉴들 */}
         <View className="mx-4 mb-6">
           <View className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <TouchableOpacity className="flex-row items-center p-4 border-b border-gray-100">
+            <TouchableOpacity 
+              className="flex-row items-center p-4 border-b border-gray-100"
+              onPress={() => setShowNotificationSettings(true)}
+            >
               <Ionicons name="notifications-outline" size={20} color="#6b7280" />
               <Text className="text-base text-neutral-900 ml-3 flex-1">Notification Settings</Text>
               <Ionicons name="chevron-forward" size={16} color="#6b7280" />
             </TouchableOpacity>
             
-            <TouchableOpacity className="flex-row items-center p-4 border-b border-gray-100">
+            <TouchableOpacity 
+              className="flex-row items-center p-4 border-b border-gray-100"
+              onPress={() => setShowPrivacyPolicy(true)}
+            >
               <Ionicons name="shield-outline" size={20} color="#6b7280" />
-              <Text className="text-base text-neutral-900 ml-3 flex-1">Privacy Settings</Text>
+              <Text className="text-base text-neutral-900 ml-3 flex-1">Privacy Policy</Text>
               <Ionicons name="chevron-forward" size={16} color="#6b7280" />
             </TouchableOpacity>
             
-            <TouchableOpacity className="flex-row items-center p-4 border-b border-gray-100">
+            <TouchableOpacity 
+              className="flex-row items-center p-4 border-b border-gray-100"
+              onPress={() => setShowCustomerSupport(true)}
+            >
               <Ionicons name="help-circle-outline" size={20} color="#6b7280" />
               <Text className="text-base text-neutral-900 ml-3 flex-1">Customer Support</Text>
               <Ionicons name="chevron-forward" size={16} color="#6b7280" />
@@ -256,7 +269,153 @@ const MyPageScreen = ({ navigation }: any) => {
           </View>
         </View>
       </Modal>
-    </SafeAreaView>
+
+      {/* Privacy Policy Modal */}
+      <Modal
+        visible={showPrivacyPolicy}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowPrivacyPolicy(false)}
+      >
+        <View className="flex-1 bg-black/50 justify-center items-center">
+          <View className="bg-white rounded-2xl mx-4 max-h-[90%] w-[95%]">
+            {/* Header */}
+            <View className="flex-row justify-between items-center p-4 border-b border-stone-200">
+              <Text className="text-xl font-bold text-neutral-900">Privacy Policy</Text>
+              <TouchableOpacity onPress={() => setShowPrivacyPolicy(false)}>
+                <Ionicons name="close" size={24} color="#6b7280" />
+              </TouchableOpacity>
+            </View>
+            
+            {/* Content */}
+            <ScrollView className="p-4" showsVerticalScrollIndicator={false}>
+              <Text className="text-sm text-neutral-700 leading-6 mb-4">
+                Templebuk ("the Company") complies with the Personal Information Protection Act and is committed to protecting users' personal information and rights, as well as smoothly handling user complaints related to personal data.
+              </Text>
+              
+              <Text className="text-base font-bold text-neutral-900 mb-2">1. Purpose of Processing Personal Information</Text>
+              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+                The Company processes personal information for the following purposes. Personal data will not be used for any purposes other than those stated below, and if the purpose of use changes, necessary actions such as obtaining additional consent will be taken in accordance with Article 18 of the Personal Information Protection Act.
+              </Text>
+              
+              <Text className="text-base font-bold text-neutral-900 mb-2">2. Types of Personal Information Collected</Text>
+              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+                • Account information: email, name, phone number{'\n'}
+                • Profile information: profile picture{'\n'}
+                • Reservation information: temple, date, time, participants{'\n'}
+                • Location information: GPS coordinates (with consent)
+              </Text>
+              
+              <Text className="text-base font-bold text-neutral-900 mb-2">3. How We Use Your Information</Text>
+              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+                • Provide temple stay reservation services{'\n'}
+                • Send booking confirmations and notifications{'\n'}
+                • Improve our services and user experience{'\n'}
+                • Respond to customer inquiries and support requests
+              </Text>
+              
+              <Text className="text-base font-bold text-neutral-900 mb-2">4. Data Security</Text>
+              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+                We implement appropriate security measures to protect your personal information, including encryption, access controls, and regular security audits.
+              </Text>
+              
+              <Text className="text-base font-bold text-neutral-900 mb-2">5. Your Rights</Text>
+              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+                You have the right to access, correct, or delete your personal information at any time through your account settings.
+              </Text>
+              
+              <Text className="text-base font-bold text-neutral-900 mb-2">Effective Date</Text>
+              <Text className="text-sm text-neutral-700 leading-6 mb-4">
+                This Privacy Policy will be effective as of August 19, 2025.
+              </Text>
+                         </ScrollView>
+           </View>
+         </View>
+       </Modal>
+
+       {/* Customer Support Modal */}
+       <Modal
+         visible={showCustomerSupport}
+         animationType="fade"
+         transparent={true}
+         onRequestClose={() => setShowCustomerSupport(false)}
+       >
+         <View className="flex-1 bg-black/50 justify-center items-center">
+           <View className="bg-white rounded-2xl p-6 mx-8 w-80 shadow-lg">
+             <View className="items-center mb-4">
+                               <View className="w-16 h-16 bg-sage-100 rounded-full items-center justify-center mb-3">
+                  <Ionicons name="mail-outline" size={32} color="#4A5D23" />
+                </View>
+               <Text className="text-xl font-bold text-neutral-800 mb-2">
+                 Customer Support
+               </Text>
+               <Text className="text-sm text-neutral-600 text-center leading-5">
+                 Contact us at templebuk@gmail.com
+               </Text>
+             </View>
+             
+             <TouchableOpacity
+               className="bg-sage-600 py-3 rounded-xl items-center"
+               onPress={() => setShowCustomerSupport(false)}
+             >
+               <Text className="text-white font-semibold text-base">
+                 OK
+               </Text>
+                           </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Notification Settings Modal */}
+        <Modal
+          visible={showNotificationSettings}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={() => setShowNotificationSettings(false)}
+        >
+          <View className="flex-1 bg-black/50 justify-center items-center">
+            <View className="bg-white rounded-2xl p-6 mx-8 w-80 shadow-lg">
+              <View className="items-center mb-4">
+                <View className="w-16 h-16 bg-sage-100 rounded-full items-center justify-center mb-3">
+                  <Ionicons name="notifications-outline" size={32} color="#4A5D23" />
+                </View>
+                <Text className="text-xl font-bold text-neutral-800 mb-2">
+                  Notification Settings
+                </Text>
+                <Text className="text-sm text-neutral-600 text-center leading-5 mb-4">
+                  Please check if you agree to receive emails
+                </Text>
+                
+                {/* Email Notifications Checkbox */}
+                <TouchableOpacity 
+                  className="flex-row items-center w-full p-3 bg-stone-50 rounded-xl"
+                  onPress={() => setReceiveEmailNotifications(!receiveEmailNotifications)}
+                >
+                  <View className={`w-5 h-5 border-2 rounded mr-3 items-center justify-center ${
+                    receiveEmailNotifications ? 'bg-sage-600 border-sage-600' : 'border-stone-300'
+                  }`}>
+                    {receiveEmailNotifications && (
+                      <Ionicons name="checkmark" size={14} color="white" />
+                    )}
+                  </View>
+                  <Text className="text-base text-neutral-900">
+                    Receive Email notifications
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              
+              <TouchableOpacity
+                className="bg-sage-600 py-3 rounded-xl items-center"
+                onPress={() => setShowNotificationSettings(false)}
+              >
+                <Text className="text-white font-semibold text-base">
+                  Save
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </SafeAreaView>
   );
 };
 

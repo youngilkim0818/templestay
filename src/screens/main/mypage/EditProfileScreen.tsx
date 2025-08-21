@@ -177,10 +177,7 @@ const EditProfileScreen = ({ navigation }: any) => {
         setIsEditingName(false);
     };
 
-    // 비밀번호 변경
-    const handlePasswordChange = () => {
-        navigation.navigate('ChangePassword');
-    };
+
 
 
 
@@ -290,11 +287,7 @@ const EditProfileScreen = ({ navigation }: any) => {
                                 </View>
                             </TouchableOpacity>
 
-                            {/* 비밀번호 변경 */}
-                            <TouchableOpacity className="flex-row items-center p-6" onPress={handlePasswordChange}>
-                                <Text className="text-lg text-neutral-900 flex-1">Change Password</Text>
-                                <Ionicons name="chevron-forward" size={18} color="#6b7280" />
-                            </TouchableOpacity>
+
                         </View>
 
 
