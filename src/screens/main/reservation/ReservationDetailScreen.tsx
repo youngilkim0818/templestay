@@ -290,6 +290,9 @@ const ReservationDetailScreen = () => {
 
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showReservationModal, setShowReservationModal] = useState(false);
+  
+  // 실제 리뷰 데이터 (현재는 빈 배열)
+  const [reviews] = useState([]);
 
   // 네비게이션 헤더 수정
   useLayoutEffect(() => {
@@ -1058,6 +1061,63 @@ const ReservationDetailScreen = () => {
 
         </View>
 
+
+        {/* 하단: User Reviews */}
+        <View className="mb-6">
+          <Text className="text-xl font-bold text-neutral-900 mb-3">User Reviews</Text>
+          {reviews.length === 0 ? (
+                         <View className="bg-stone-50 border border-stone-200 rounded-lg p-4">
+               {/* 리뷰가 없을 때 */}
+               <View className="items-center py-6">
+                 <Text className="text-neutral-500 mt-2 text-center">No reviews yet</Text>
+                 <Text className="text-xs text-neutral-400 text-center mt-1">Be the first to share your experience!</Text>
+               </View>
+             </View>
+          ) : (
+            <FlatList
+              horizontal
+              data={reviews}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item: review }) => (
+                <View className="bg-white border border-stone-200 rounded-lg p-4 mr-3 w-80">
+                                     {/* 리뷰 헤더 */}
+                   <View className="flex-row justify-between items-start mb-2">
+                     <View className="flex-1">
+                       <Text className="text-sm font-semibold text-neutral-900">{review.userName}</Text>
+                       <Text className="text-xs text-neutral-500">{selectedProgram ? selectedProgram.title : review.programName}</Text>
+                     </View>
+                    <View className="flex-row items-center">
+                      {/* 별점 표시 */}
+                      {[...Array(5)].map((_, index) => (
+                        <Ionicons
+                          key={index}
+                          name={index < review.rating ? "star" : "star-outline"}
+                          size={14}
+                          color={index < review.rating ? "#F59E0B" : "#D1D5DB"}
+                        />
+                      ))}
+                      <Text className="text-xs text-neutral-600 ml-1">{review.rating}</Text>
+                    </View>
+                  </View>
+                  
+                  {/* 리뷰 내용 */}
+                  <Text className="text-sm text-neutral-700 mb-2 leading-5" numberOfLines={4}>{review.comment}</Text>
+                  
+                  {/* 리뷰 날짜 */}
+                  <Text className="text-xs text-neutral-500 text-right">{review.date}</Text>
+                </View>
+              )}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingRight: 20 }}
+              // 성능 최적화
+              removeClippedSubviews={true}
+              maxToRenderPerBatch={3}
+              updateCellsBatchingPeriod={100}
+              initialNumToRender={3}
+              windowSize={5}
+            />
+          )}
+        </View>
 
         {/* 하단: Nearby Attractions */}
         <View className="mb-4">
