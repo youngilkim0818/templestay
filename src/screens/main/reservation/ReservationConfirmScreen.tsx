@@ -900,14 +900,14 @@ const ReservationConfirmScreen = () => {
          onRequestClose={() => setShowReservationCompleteModal(false)}
        >
          <View className="flex-1 bg-black/50 justify-center items-center px-6">
-           <View className="bg-amber-50 rounded-2xl p-6 w-full max-w-sm border border-amber-200">
+           <View className="bg-stone-50 rounded-2xl p-6 w-full max-w-sm border border-stone-200">
              {/* 모달 헤더 */}
              <View className="items-center mb-6">
-               <View className="w-16 h-16 bg-green-200 rounded-full items-center justify-center mb-3">
-                 <Ionicons name="checkmark-circle" size={32} color="#059669" />
+               <View className="w-16 h-16 bg-sage-200 rounded-full items-center justify-center mb-3">
+                 <Ionicons name="checkmark-circle" size={32} color="#4A5D23" />
                </View>
-               <Text className="text-xl font-bold text-amber-800">Reservation Complete!</Text>
-               <Text className="text-sm text-amber-700 text-center mt-2">
+               <Text className="text-xl font-bold text-sage-800">Reservation Complete!</Text>
+               <Text className="text-sm text-stone-700 text-center mt-2">
                  Your reservation has been successfully completed
                </Text>
              </View>
@@ -915,7 +915,7 @@ const ReservationConfirmScreen = () => {
              {/* 버튼들 */}
              <View className="space-y-3">
                <TouchableOpacity 
-                 className="w-full bg-green-600 py-4 rounded-xl"
+                 className="w-full bg-sage-600 py-4 rounded-xl"
                  onPress={() => {
                    setShowReservationCompleteModal(false);
                    navigation.getParent()?.navigate('Main', { screen: 'Home' });
