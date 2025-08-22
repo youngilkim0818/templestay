@@ -413,7 +413,14 @@ export default function MapScreen({ navigation, route }: any) {
         {/* 왼쪽 썸네일: 정사각 형태로, 카드 대비 좁은 폭 */}
         {item.imageUrl ? (
           <View className="w-32 h-48 bg-stone-100 overflow-hidden mr-3">
-            <Image source={{ uri: item.imageUrl }} className="w-full h-full" resizeMode="cover" />
+            <Image 
+              source={typeof item.imageUrl === 'string' && item.imageUrl.startsWith('http') 
+                ? { uri: item.imageUrl } 
+                : item.imageUrl
+              } 
+              className="w-full h-full" 
+              resizeMode="cover" 
+            />
           </View>
         ) : (
           <View className="w-24 h-48 bg-stone-100 overflow-hidden mr-3 items-center justify-center">
