@@ -4,52 +4,52 @@ import { Image } from 'react-native';
 // 새로 추가된 관광지 이미지 매핑 (모든 이미지 파일 매핑)
 const ATTRACTION_IMAGE_MAP: Record<string, any> = {
   // 포항 관련
-  '포항역': require('../../니어 어트랙션 사진모음/pohangStation.jpg'),
-  '포항시외버스터미널': require('../../니어 어트랙션 사진모음/pohangIntercityBusTerminal.jpg'),
-  '포항경주공항': require('../../니어 어트랙션 사진모음/pohangGyeongjuAirport.jpg'),
-  '구룡포시장': require('../../니어 어트랙션 사진모음/guryongpoMarket.jpg'),
-  '구룡포 일본인가옥거리': require('../../니어 어트랙션 사진모음/kuryongpoJapan.jpg'),
-  '해나드 컨트리클럽': require('../../니어 어트랙션 사진모음/haenaedaCc.jpg'),
+  '포항역': require('../../attraction-images/pohangStation.jpg'),
+  '포항시외버스터미널': require('../../attraction-images/pohangIntercityBusTerminal.jpg'),
+  '포항경주공항': require('../../attraction-images/pohangGyeongjuAirport.jpg'),
+  '구룡포시장': require('../../attraction-images/guryongpoMarket.jpg'),
+  '구룡포 일본인가옥거리': require('../../attraction-images/kuryongpoJapan.jpg'),
+  '해나드 컨트리클럽': require('../../attraction-images/haenaedaCc.jpg'),
   
   // 김천 관련  
-  '김천역': require('../../니어 어트랙션 사진모음/gimcheonStation.jpg'),
-  '김천구미역': require('../../니어 어트랙션 사진모음/gimcheonGumiStation.jpg'),
-  '김천포 컨트리클럽': require('../../니어 어트랙션 사진모음/gimcheonpoCc.jpg'),
+  '김천역': require('../../attraction-images/gimcheonStation.jpg'),
+  '김천구미역': require('../../attraction-images/gimcheonGumiStation.jpg'),
+  '김천포 컨트리클럽': require('../../attraction-images/gimcheonpoCc.jpg'),
   
   // 경산 관련
-  '경산역': require('../../니어 어트랙션 사진모음/gyeongsanStation.jpg'),
-  '경산 중앙시장': require('../../니어 어트랙션 사진모음/gyeongsanPublicMarket.jpg'),
+  '경산역': require('../../attraction-images/gyeongsanStation.jpg'),
+  '경산 중앙시장': require('../../attraction-images/gyeongsanPublicMarket.jpg'),
   
   // 문경 관련
-  '문경 에코랄라': require('../../니어 어트랙션 사진모음/mungyeongEcoWorld.jpg'),
-  '문경 오미자터널': require('../../니어 어트랙션 사진모음/mungyeongOmizaTunnel.jpg'),
-  'STX 리조트 문경': require('../../니어 어트랙션 사진모음/STXMungyeongResort.jpg'),
+  '문경 에코랄라': require('../../attraction-images/mungyeongEcoWorld.jpg'),
+  '문경 오미자터널': require('../../attraction-images/mungyeongOmizaTunnel.jpg'),
+  'STX 리조트 문경': require('../../attraction-images/STXMungyeongResort.jpg'),
   
   // 기타 관광지
-  '봉명산': require('../../니어 어트랙션 사진모음/bongmyeongMountain.jpg'),
-  '부항댐 출렁다리': require('../../니어 어트랙션 사진모음/buhangDamRockBridge.jpg'),
-  '치어파크 스페이스워크': require('../../니어 어트랙션 사진모음/cheerparkSpacewalk.jpg'),
-  '브리프리': require('../../니어 어트랙션 사진모음/briefly.jpg'),
+  '봉명산': require('../../attraction-images/bongmyeongMountain.jpg'),
+  '부항댐 출렁다리': require('../../attraction-images/buhangDamRockBridge.jpg'),
+  '치어파크 스페이스워크': require('../../attraction-images/cheerparkSpacewalk.jpg'),
+  '브리프리': require('../../attraction-images/briefly.jpg'),
   
   // 파일명 기반 직접 매핑 (fallback)
-  'STXMungyeongResort': require('../../니어 어트랙션 사진모음/STXMungyeongResort.jpg'),
-  'bongmyeongMountain': require('../../니어 어트랙션 사진모음/bongmyeongMountain.jpg'),
-  'briefly': require('../../니어 어트랙션 사진모음/briefly.jpg'),
-  'buhangDamRockBridge': require('../../니어 어트랙션 사진모음/buhangDamRockBridge.jpg'),
-  'cheerparkSpacewalk': require('../../니어 어트랙션 사진모음/cheerparkSpacewalk.jpg'),
-  'gimcheonGumiStation': require('../../니어 어트랙션 사진모음/gimcheonGumiStation.jpg'),
-  'gimcheonStation': require('../../니어 어트랙션 사진모음/gimcheonStation.jpg'),
-  'gimcheonpoCc': require('../../니어 어트랙션 사진모음/gimcheonpoCc.jpg'),
-  'guryongpoMarket': require('../../니어 어트랙션 사진모음/guryongpoMarket.jpg'),
-  'gyeongsanPublicMarket': require('../../니어 어트랙션 사진모음/gyeongsanPublicMarket.jpg'),
-  'gyeongsanStation': require('../../니어 어트랙션 사진모음/gyeongsanStation.jpg'),
-  'haenaedaCc': require('../../니어 어트랙션 사진모음/haenaedaCc.jpg'),
-  'kuryongpoJapan': require('../../니어 어트랙션 사진모음/kuryongpoJapan.jpg'),
-  'mungyeongEcoWorld': require('../../니어 어트랙션 사진모음/mungyeongEcoWorld.jpg'),
-  'mungyeongOmizaTunnel': require('../../니어 어트랙션 사진모음/mungyeongOmizaTunnel.jpg'),
-  'pohangGyeongjuAirport': require('../../니어 어트랙션 사진모음/pohangGyeongjuAirport.jpg'),
-  'pohangIntercityBusTerminal': require('../../니어 어트랙션 사진모음/pohangIntercityBusTerminal.jpg'),
-  'pohangStation': require('../../니어 어트랙션 사진모음/pohangStation.jpg'),
+  'STXMungyeongResort': require('../../attraction-images/STXMungyeongResort.jpg'),
+  'bongmyeongMountain': require('../../attraction-images/bongmyeongMountain.jpg'),
+  'briefly': require('../../attraction-images/briefly.jpg'),
+  'buhangDamRockBridge': require('../../attraction-images/buhangDamRockBridge.jpg'),
+  'cheerparkSpacewalk': require('../../attraction-images/cheerparkSpacewalk.jpg'),
+  'gimcheonGumiStation': require('../../attraction-images/gimcheonGumiStation.jpg'),
+  'gimcheonStation': require('../../attraction-images/gimcheonStation.jpg'),
+  'gimcheonpoCc': require('../../attraction-images/gimcheonpoCc.jpg'),
+  'guryongpoMarket': require('../../attraction-images/guryongpoMarket.jpg'),
+  'gyeongsanPublicMarket': require('../../attraction-images/gyeongsanPublicMarket.jpg'),
+  'gyeongsanStation': require('../../attraction-images/gyeongsanStation.jpg'),
+  'haenaedaCc': require('../../attraction-images/haenaedaCc.jpg'),
+  'kuryongpoJapan': require('../../attraction-images/kuryongpoJapan.jpg'),
+  'mungyeongEcoWorld': require('../../attraction-images/mungyeongEcoWorld.jpg'),
+  'mungyeongOmizaTunnel': require('../../attraction-images/mungyeongOmizaTunnel.jpg'),
+  'pohangGyeongjuAirport': require('../../attraction-images/pohangGyeongjuAirport.jpg'),
+  'pohangIntercityBusTerminal': require('../../attraction-images/pohangIntercityBusTerminal.jpg'),
+  'pohangStation': require('../../attraction-images/pohangStation.jpg'),
 };
 
 // 키워드 기반 매칭을 위한 키워드 맵 (확장된 키워드)
