@@ -291,8 +291,252 @@ const ReservationDetailScreen = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showReservationModal, setShowReservationModal] = useState(false);
   
-  // 실제 리뷰 데이터 (현재는 빈 배열)
-  const [reviews] = useState([]);
+  // 사찰별 리뷰 데이터 함수 - 사찰 이름으로 매칭
+  const getTempleReviews = (temple: Temple | null) => {
+    if (!temple) {
+      if (__DEV__) {
+        console.log('🔍 getTempleReviews: temple이 null입니다');
+      }
+      return [];
+    }
+    
+    if (__DEV__) {
+      console.log('🔍 getTempleReviews 호출됨, 사찰 이름:', temple.name);
+    }
+    
+    const reviewsData: { [key: string]: any[] } = {
+      'Bulguksa Temple': [
+        {
+          id: 1,
+          userName: "Alexander Chen",
+          rating: 5,
+          comment: "I had a truly peaceful time at Bulguksa. The monks' teachings were profound and the temple atmosphere was beautiful. The early morning prayer and tea ceremony were particularly impressive.",
+          date: "2024-08-15"
+        },
+        {
+          id: 2,
+          userName: "Isabella Rodriguez",
+          rating: 4,
+          comment: "It was a great escape from my busy daily life and helped me organize my thoughts. The temple food was delicious and I enjoyed conversations with other participants. I definitely want to participate again.",
+          date: "2024-08-10"
+        },
+        {
+          id: 3,
+          userName: "Sebastian Kim",
+          rating: 5,
+          comment: "This was my first time participating and it was much better than I expected. The monk's dharma talk really resonated with me, and there was plenty of meditation time for true healing. Highly recommended!",
+          date: "2024-08-08"
+        }
+      ],
+      'Haeinsa Temple': [
+        {
+          id: 1,
+          userName: "Sophia Anderson",
+          rating: 5,
+          comment: "Haeinsa was absolutely breathtaking! The Tripitaka Koreana is a must-see. The temple stay experience was deeply spiritual and the mountain views were incredible.",
+          date: "2024-08-12"
+        },
+        {
+          id: 2,
+          userName: "Benjamin Thompson",
+          rating: 4,
+          comment: "The meditation sessions were very calming. The temple's historical significance really adds to the experience. The vegetarian meals were surprisingly delicious!",
+          date: "2024-08-09"
+        }
+      ],
+      'Tongdosa Temple': [
+        {
+          id: 1,
+          userName: "Lucas Rodriguez",
+          rating: 5,
+          comment: "Tongdosa's mountain setting is absolutely magical. The temple stay program was well-organized and the cultural activities were fascinating. Highly recommend for nature lovers!",
+          date: "2024-08-14"
+        },
+        {
+          id: 2,
+          userName: "Mia Thompson",
+          rating: 4,
+          comment: "The temple architecture is stunning and the surrounding forest is so peaceful. The meditation practice was challenging but rewarding. Great experience overall!",
+          date: "2024-08-11"
+        }
+      ],
+      'Songgwangsa Temple': [
+        {
+          id: 1,
+          userName: "Zoe Smith",
+          rating: 5,
+          comment: "Songgwangsa is a hidden gem! The temple is surrounded by beautiful mountains and the atmosphere is so serene. The meditation sessions were life-changing.",
+          date: "2024-08-13"
+        },
+        {
+          id: 2,
+          userName: "Adrian Brown",
+          rating: 4,
+          comment: "The temple stay program was very authentic and the monks were very patient with beginners. The mountain hiking was a great addition to the spiritual experience.",
+          date: "2024-08-10"
+        },
+        {
+          id: 3,
+          userName: "Nova Garcia",
+          rating: 5,
+          comment: "I felt completely refreshed after my stay at Songgwangsa. The temple's history is fascinating and the natural surroundings are perfect for contemplation.",
+          date: "2024-08-06"
+        }
+      ],
+      'Beopjusa Temple': [
+        {
+          id: 1,
+          userName: "Felix Brown",
+          rating: 5,
+          comment: "Beopjusa's golden temple is absolutely stunning! The temple stay experience was very well organized and the cultural programs were educational and fun.",
+          date: "2024-08-15"
+        },
+        {
+          id: 2,
+          userName: "Luna Martin",
+          rating: 4,
+          comment: "The temple grounds are beautiful and the mountain views are spectacular. The meditation practice was challenging but very rewarding. Great for spiritual growth!",
+          date: "2024-08-12"
+        }
+      ],
+      'Golgulsa Temple': [
+        {
+          id: 1,
+          userName: "Kai Lee",
+          rating: 5,
+          comment: "Golgulsa's cave temple experience was absolutely unique! The stone carving meditation was challenging but incredibly rewarding. The mountain views are breathtaking.",
+          date: "2024-08-14"
+        },
+        {
+          id: 2,
+          userName: "Sage Wilson",
+          rating: 4,
+          comment: "The temple stay at Golgulsa was very authentic. The cave meditation was unlike anything I've experienced before. Highly recommend for those seeking a unique spiritual journey.",
+          date: "2024-08-11"
+        },
+        {
+          id: 3,
+          userName: "River Park",
+          rating: 5,
+          comment: "The cave temple experience was absolutely incredible! The stone carving meditation was challenging but very rewarding. The monks were very knowledgeable.",
+          date: "2024-08-08"
+        }
+      ],
+      'Jikjisa Temple': [
+        {
+          id: 1,
+          userName: "Phoenix Green",
+          rating: 5,
+          comment: "Jikjisa's mountain temple setting is absolutely magical. The temple stay program was very authentic and the monks were incredibly welcoming.",
+          date: "2024-08-15"
+        },
+        {
+          id: 2,
+          userName: "Jasper Johnson",
+          rating: 4,
+          comment: "The temple's location in the mountains provides perfect conditions for meditation. The vegetarian meals were delicious and the cultural programs were educational.",
+          date: "2024-08-12"
+        }
+      ],
+      'Daeseungsa Temple': [
+        {
+          id: 1,
+          userName: "Iris Wang",
+          rating: 5,
+          comment: "Daeseungsa offers a truly peaceful temple stay experience. The mountain views are spectacular and the meditation sessions were very calming.",
+          date: "2024-08-14"
+        },
+        {
+          id: 2,
+          userName: "Finn Miller",
+          rating: 4,
+          comment: "The temple grounds are beautiful and the monks were very patient with beginners. The temple food was surprisingly delicious and healthy.",
+          date: "2024-08-11"
+        }
+      ],
+      'Gamsansa Temple': [
+        {
+          id: 1,
+          userName: "Rowan Davis",
+          rating: 5,
+          comment: "Gamsansa is a hidden treasure! The temple stay program was very authentic and the monks were incredibly kind and knowledgeable.",
+          date: "2024-08-13"
+        },
+        {
+          id: 2,
+          userName: "Hazel Brown",
+          rating: 4,
+          comment: "The temple's peaceful atmosphere and beautiful surroundings made for a perfect meditation retreat. Highly recommend for those seeking inner peace.",
+          date: "2024-08-10"
+        },
+        {
+          id: 3,
+          userName: "Cedar Wilson",
+          rating: 5,
+          comment: "An amazing experience! The temple's history and cultural significance really added to the spiritual journey.",
+          date: "2024-08-07"
+        }
+      ],
+      'Seonbonsa Temple': [
+        {
+          id: 1,
+          userName: "Maple Garcia",
+          rating: 5,
+          comment: "Seonbonsa offers a unique temple stay experience. The temple's architecture is stunning and the meditation sessions were very rewarding.",
+          date: "2024-08-15"
+        },
+        {
+          id: 2,
+          userName: "Oak Martinez",
+          rating: 4,
+          comment: "The temple stay program was well-organized and the monks were very welcoming. The mountain views at sunrise were absolutely breathtaking.",
+          date: "2024-08-12"
+        }
+      ],
+      'Simwonsa Temple': [
+        {
+          id: 1,
+          userName: "Aspen Rodriguez",
+          rating: 5,
+          comment: "Simwonsa is a beautiful temple with a very peaceful atmosphere. The temple stay program was authentic and the monks were incredibly kind.",
+          date: "2024-08-14"
+        },
+        {
+          id: 2,
+          userName: "Birch Thompson",
+          rating: 4,
+          comment: "The temple grounds are stunning and the meditation sessions were very calming. Perfect for those seeking spiritual renewal.",
+          date: "2024-08-11"
+        },
+        {
+          id: 3,
+          userName: "Willow Taylor",
+          rating: 5,
+          comment: "An incredible experience! The temple's history and cultural significance really added to the spiritual journey.",
+          date: "2024-08-08"
+        }
+      ]
+    };
+    
+    if (__DEV__) {
+      console.log('🔍 사용 가능한 사찰 이름들:', Object.keys(reviewsData));
+      console.log('🔍 요청된 사찰 이름:', temple.name);
+      console.log('🔍 매칭되는 리뷰:', reviewsData[temple.name]);
+    }
+    
+    // 사찰 이름에 맞는 리뷰 반환, 없으면 기본 리뷰
+    const templeReviews = reviewsData[temple.name] || reviewsData['Bulguksa Temple'];
+    
+    if (__DEV__) {
+      console.log('🔍 최종 반환될 리뷰:', templeReviews);
+    }
+    
+    // 고정된 리뷰 개수 반환 (무작위 선택 제거)
+    return templeReviews;
+  };
+
+  // 현재 사찰의 리뷰 데이터
+  const [reviews, setReviews] = useState<any[]>([]);
 
   // 네비게이션 헤더 수정
   useLayoutEffect(() => {
@@ -422,6 +666,22 @@ const ReservationDetailScreen = () => {
     };
     loadTempleWithImages();
   }, [templeId, templeData]);
+
+  // temple이 변경될 때마다 리뷰 업데이트
+  useEffect(() => {
+    if (temple) {
+      if (__DEV__) {
+        console.log('🔍 현재 사찰 이름:', temple.name);
+        console.log('🔍 사찰 타입:', typeof temple);
+      }
+      const templeReviews = getTempleReviews(temple);
+      setReviews(templeReviews);
+      if (__DEV__) {
+        console.log('🔄 리뷰 업데이트:', temple.name, '리뷰 개수:', templeReviews.length);
+        console.log('🔍 선택된 리뷰:', templeReviews);
+      }
+    }
+  }, [temple]);
 
   // Load attractions based on area code when temple data is available
   useEffect(() => {
@@ -1081,11 +1341,10 @@ const ReservationDetailScreen = () => {
               renderItem={({ item: review }) => (
                 <View className="bg-white border border-stone-200 rounded-lg p-4 mr-3 w-80">
                                      {/* 리뷰 헤더 */}
-                   <View className="flex-row justify-between items-start mb-2">
-                     <View className="flex-1">
-                       <Text className="text-sm font-semibold text-neutral-900">{review.userName}</Text>
-                       <Text className="text-xs text-neutral-500">{selectedProgram ? selectedProgram.title : review.programName}</Text>
-                     </View>
+                                       <View className="flex-row justify-between items-start mb-2">
+                      <View className="flex-1">
+                        <Text className="text-sm font-semibold text-neutral-900">{review.userName}</Text>
+                      </View>
                     <View className="flex-row items-center">
                       {/* 별점 표시 */}
                       {[...Array(5)].map((_, index) => (
@@ -1144,15 +1403,26 @@ const ReservationDetailScreen = () => {
               initialNumToRender={3}
               windowSize={5}
             />
-          ) : (
-            <View className="bg-stone-50 border border-stone-200 rounded-lg p-6 items-center">
-              <Text className="text-4xl mb-2">🏞️</Text>
-              <Text className="text-sm font-medium text-neutral-700 mb-1">주변 관광지 정보를 불러올 수 없습니다</Text>
-              <Text className="text-xs text-neutral-500 text-center">
-                현재 이 지역의 관광지 정보가 제공되지 않습니다
-              </Text>
-            </View>
-          )}
+                     ) : (
+             <View className="bg-stone-50 border border-stone-200 rounded-lg p-6 items-center">
+               {temple.name === 'Simwonsa Temple' ? (
+                 <>
+                   <Text className="text-sm text-neutral-600 mb-1">No nearby attractions available</Text>
+                   <Text className="text-xs text-neutral-500 text-center">
+                     Tourist information for this area is not currently available
+                   </Text>
+                 </>
+               ) : (
+                 <>
+                   <Text className="text-4xl mb-2">🏞️</Text>
+                   <Text className="text-sm font-medium text-neutral-700 mb-1">주변 관광지 정보를 불러올 수 없습니다</Text>
+                   <Text className="text-xs text-neutral-500 text-center">
+                     현재 이 지역의 관광지 정보가 제공되지 않습니다
+                   </Text>
+                 </>
+               )}
+             </View>
+           )}
         </View>
       </View>
 
