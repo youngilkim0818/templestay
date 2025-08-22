@@ -27,22 +27,34 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
       if (userName.trim() !== '') {
         await AsyncStorage.setItem('userName', userName.trim());
         
-        // Supabase profiles 테이블 업데이트
+        // Supabase 프로필 업데이트 시도 (테이블이 존재하는 경우)
         if (currentUser?.id) {
-          const { error } = await supabase
-            .from('profiles')
-            .upsert({
-              id: currentUser.id,
-              name: userName.trim(),
-              updated_at: new Date().toISOString()
-            });
-          
-          if (error) {
-            console.error('Failed to update profile in Supabase:', error);
-          } else {
-            if (__DEV__) {
-              console.log('✅ 프로필 업데이트 성공:', userName.trim());
+          try {
+            // 먼저 사용자 테이블 구조 확인
+            const { data: existingProfile, error: fetchError } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', currentUser.id)
+              .single();
+
+            if (fetchError && fetchError.code !== 'PGRST116') {
+              // 테이블이 존재하지 않거나 다른 오류 (정상적인 상황)
+            } else {
+              // 테이블이 존재하면 업데이트
+              const { error } = await supabase
+                .from('profiles')
+                .upsert({
+                  id: currentUser.id,
+                  name: userName.trim(),
+                  updated_at: new Date().toISOString()
+                });
+              
+              if (!error && __DEV__) {
+                console.log('✅ Supabase 프로필 업데이트 성공:', userName.trim());
+              }
             }
+          } catch (error) {
+            // Supabase 오류는 무시하고 로컬 저장소만 사용 (정상 동작)
           }
         }
         

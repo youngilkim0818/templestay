@@ -187,7 +187,7 @@ const CommonListScreen = ({ navigation, route }: any) => {
               <View key={temple.id} className="bg-white rounded-xl p-4 mb-3 border border-gray-200">
                                  <TouchableOpacity
                    onPress={() => navigation.navigate('TempleStack', { 
-                     screen: 'ReservationDetail', 
+                     screen: 'TempleDetail', 
                      params: { templeId: temple.id } 
                    })}
                    activeOpacity={0.7}

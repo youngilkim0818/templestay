@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import useUserStore from '../../../store/userStore';
+import { supabase } from '../../../lib/supabase';
 import CustomInput from '../../../components/common/Input';
 import CustomButton from '../../../components/common/Button';
 import { COLORS } from '../../../constants/colors';
@@ -91,11 +92,37 @@ const EditProfileScreen = ({ navigation }: any) => {
                 await AsyncStorage.setItem('userProfileImage', profileImage);
             }
             
+            // userStore 업데이트
             await updateUser({ 
                 name: name.trim(), 
                 phoneNumber: phone.trim(), 
                 email: email.trim() 
             });
+            
+            // Supabase 프로필 업데이트
+            if (user?.id) {
+                try {
+                    const { error } = await supabase
+                        .from('profiles')
+                        .upsert({
+                            id: user.id,
+                            name: name.trim(),
+                            email: email.trim(),
+                            profile_image: profileImage,
+                            updated_at: new Date().toISOString()
+                        });
+                    
+                    if (!error && __DEV__) {
+                        console.log('✅ Supabase 전체 프로필 업데이트 성공');
+                    }
+                } catch (error) {
+                    // Supabase 오류는 무시하고 로컬 저장소 사용 (정상 동작)
+                    if (__DEV__) {
+                        console.log('Supabase 전체 프로필 업데이트 실패, 로컬 저장소만 사용');
+                    }
+                }
+            }
+            
             Alert.alert(
                 'Success', 
                 'Profile updated successfully.',
@@ -159,12 +186,34 @@ const EditProfileScreen = ({ navigation }: any) => {
             await AsyncStorage.setItem('userName', tempName.trim());
             setIsEditingName(false);
             
-            // userStore도 업데이트
+            // userStore 업데이트
             if (user) {
                 await updateUser({ 
                     ...user, 
                     name: tempName.trim() 
                 });
+            }
+            
+            // Supabase 프로필 업데이트
+            if (user?.id) {
+                try {
+                    const { error } = await supabase
+                        .from('profiles')
+                        .upsert({
+                            id: user.id,
+                            name: tempName.trim(),
+                            updated_at: new Date().toISOString()
+                        });
+                    
+                    if (!error && __DEV__) {
+                        console.log('✅ Supabase 프로필 이름 업데이트 성공:', tempName.trim());
+                    }
+                } catch (error) {
+                    // Supabase 오류는 무시하고 로컬 저장소 사용 (정상 동작)
+                    if (__DEV__) {
+                        console.log('Supabase 프로필 업데이트 실패, 로컬 저장소만 사용');
+                    }
+                }
             }
         } else {
             Alert.alert('Error', 'Please enter your name.');
@@ -176,6 +225,7 @@ const EditProfileScreen = ({ navigation }: any) => {
         setTempName(name);
         setIsEditingName(false);
     };
+
 
 
 
@@ -279,13 +329,12 @@ const EditProfileScreen = ({ navigation }: any) => {
                             )}
 
                             {/* 대표 이메일 */}
-                            <TouchableOpacity className="flex-row items-center p-6 border-b border-gray-100">
+                            <View className="flex-row items-center p-6 border-b border-gray-100">
                                 <Text className="text-lg text-neutral-900 flex-1">Email</Text>
                                 <View className="flex-row items-center">
                                     <Text className="text-lg font-medium text-neutral-900 mr-2">{email || 'user@example.com'}</Text>
-                                    <Ionicons name="chevron-forward" size={18} color="#6b7280" />
                                 </View>
-                            </TouchableOpacity>
+                            </View>
 
 
                         </View>

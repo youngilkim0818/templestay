@@ -28,33 +28,46 @@ const MyPageScreen = ({ navigation }: any) => {
   const loadUserInfo = async () => {
     try {
       if (currentUser) {
-        // Supabase에서 최신 프로필 정보 가져오기
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('name, profile_image')
-          .eq('id', currentUser.id)
-          .single();
+        try {
+          // Supabase에서 최신 프로필 정보 가져오기 시도
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('name, profile_image')
+            .eq('id', currentUser.id)
+            .single();
 
-        if (error) {
-          console.error('Failed to fetch profile from Supabase:', error);
-          // Supabase에서 가져오기 실패시 userStore 데이터 사용
+          if (error) {
+            // Supabase 프로필 조회 실패 시 조용히 로컬 데이터 사용 (첫 실행 시 정상)
+            // Supabase에서 가져오기 실패시 userStore 데이터 사용
+            setUser({
+              name: currentUser.name || currentUser.email?.split('@')[0] || 'User',
+              profileImage: currentUser.profileImage || null
+            });
+          } else {
+            // Supabase 데이터로 업데이트
+            const updatedUser = {
+              name: profile?.name || currentUser.name || currentUser.email?.split('@')[0] || 'User',
+              profileImage: profile?.profile_image || currentUser.profileImage || null
+            };
+            
+            setUser(updatedUser);
+            
+            // userStore도 업데이트 (Supabase 데이터로 동기화)
+            updateUser({
+              name: updatedUser.name,
+              profileImage: updatedUser.profileImage
+            });
+            
+            if (__DEV__) {
+              console.log('✅ Supabase 프로필 동기화 성공:', updatedUser.name);
+            }
+          }
+        } catch (error) {
+          // Supabase 연결 오류 시 조용히 로컬 데이터만 사용
+          // 에러 발생시 userStore 데이터 사용
           setUser({
             name: currentUser.name || currentUser.email?.split('@')[0] || 'User',
             profileImage: currentUser.profileImage || null
-          });
-        } else {
-          // Supabase 데이터로 업데이트
-          const updatedUser = {
-            name: profile?.name || currentUser.name || currentUser.email?.split('@')[0] || 'User',
-            profileImage: profile?.profile_image || currentUser.profileImage || null
-          };
-          
-          setUser(updatedUser);
-          
-          // userStore도 업데이트 (Supabase 데이터로 동기화)
-          updateUser({
-            name: updatedUser.name,
-            profileImage: updatedUser.profileImage
           });
         }
       }

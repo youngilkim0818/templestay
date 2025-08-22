@@ -26,7 +26,9 @@
       "Bash(grep:*)",
       "Bash(npm run preview:*)",
       "Bash(git restore:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(git pull:*)",
+      "Bash(npx react-native:*)"
     ],
     "deny": []
   }
