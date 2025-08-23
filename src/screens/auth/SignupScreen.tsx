@@ -250,8 +250,8 @@ const RegistrationScreen = ({ navigation }: any) => {
           <View className="space-y-4 items-center">
             <TouchableOpacity
               onPress={() => navigation.navigate('Login')}
-              className="bg-stone-600 rounded-full py-4 px-8 items-center"
-              style={{ width: 280 }}
+              className="rounded-full py-4 px-8 items-center"
+              style={{ width: 280, backgroundColor: '#5A4636' }}
             >
               <Text className="text-white font-semibold text-lg">
                 Back to Login
@@ -263,8 +263,8 @@ const RegistrationScreen = ({ navigation }: any) => {
             <TouchableOpacity
               onPress={handleResendEmail}
               disabled={resendingEmail}
-              className="bg-stone-600 rounded-full py-4 px-8 items-center"
-              style={{ width: 280 }}
+              className="rounded-full py-4 px-8 items-center"
+              style={{ width: 280, backgroundColor: '#5A4636' }}
             >
               <Text className="text-white font-semibold text-lg">
                 {resendingEmail ? 'Sending...' : 'Resend Verification Email'}
