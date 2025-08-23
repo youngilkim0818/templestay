@@ -15,6 +15,40 @@ const { width, height } = Dimensions.get('window');
 const CARD_WIDTH = Math.min(width - 48, 360);
 const CARD_GAP = 16; // mx-2 좌우(8px+8px)
 
+// Google Translate 무료 API 사용
+const translateText = async (text: string): Promise<string> => {
+  if (!text || text.trim() === '') return text;
+  
+  // 이미 영어인지 간단히 체크 (한글이 포함되어 있는지 확인)
+  const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(text);
+  if (!hasKorean) return text;
+  
+  try {
+    // Google Translate 무료 API - API 키 불필요
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=${encodeURIComponent(text)}`;
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+    
+    const result = await response.json();
+    
+    if (result && result[0] && result[0][0] && result[0][0][0]) {
+      return result[0][0][0];
+    }
+    
+    return text; // 번역 실패시 원본 반환
+  } catch (error) {
+    if (__DEV__) {
+      console.log('Translation failed, using original text:', error);
+    }
+    return text; // 에러시 원본 반환
+  }
+};
+
 // 허브(LocgoHubTarService1) 지역 코드 매핑 (도/광역시 코드)
 const REGION_TO_HUB_AREA: Record<string, number> = {
   '서울': 11,
@@ -102,6 +136,62 @@ const getNearbyTemples = (userLocation: Location.LocationObjectCoords | null, te
     .sort((a, b) => a.distanceKm - b.distanceKm)
     .slice(0, 10);
 };
+
+// 주변 관광지 카드 컴포넌트
+const AttractionCard = memo<{ item: any; onPress: () => void }>(({ item, onPress }) => {
+  const [translatedTitle, setTranslatedTitle] = useState<string>('');
+  const [translatedDesc, setTranslatedDesc] = useState<string>('');
+  
+  useEffect(() => {
+    const translateContent = async () => {
+      const [title, desc] = await Promise.all([
+        translateText(item.title || ''),
+        translateText(item.desc || '')
+      ]);
+      setTranslatedTitle(title);
+      setTranslatedDesc(desc);
+    };
+    translateContent();
+  }, [item.title, item.desc]);
+  
+  return (
+    <TouchableOpacity
+      className="bg-white p-3 mx-2 border border-stone-200 shadow-md"
+      style={{ width: CARD_WIDTH }}
+      onPress={onPress}
+    >
+      <View className="flex-row">
+        {item.imageUrl ? (
+          <View className="w-32 h-48 bg-stone-100 overflow-hidden mr-3">
+            <Image source={{ uri: item.imageUrl }} className="w-full h-full" resizeMode="cover" />
+          </View>
+        ) : (
+          <View className="w-32 h-48 bg-stone-100 overflow-hidden mr-3 items-center justify-center px-2">
+            <Text className="text-xs text-neutral-500 text-center leading-tight">
+              This attraction does not provide photos
+            </Text>
+          </View>
+        )}
+        <View className="flex-1">
+          <View className="flex-row justify-between items-start mb-1">
+            <Text className="text-lg font-bold text-sage-600 flex-1" numberOfLines={1}>
+              {translatedTitle || item.title}
+            </Text>
+          </View>
+          {translatedDesc || item.desc ? (
+            <Text className="text-sm text-neutral-600 mb-1.5 leading-5" numberOfLines={3}>
+              {translatedDesc || item.desc}
+            </Text>
+          ) : null}
+          <View className="flex-row items-center">
+            <Ionicons name="location-outline" size={16} color={COLORS.brand.sage} />
+            <Text className="text-base text-sage-600 ml-1 font-medium">{item.distance || ''}</Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+});
 
 export default function MapScreen({ navigation, route }: any) {
   const { t, i18n } = useTranslation();
@@ -622,9 +712,8 @@ export default function MapScreen({ navigation, route }: any) {
             horizontal
             data={nearbyAttractions}
             renderItem={({ item }) => (
-              <TouchableOpacity
-                className="bg-white p-3 mx-2 border border-stone-200 shadow-md"
-                style={{ width: CARD_WIDTH }}
+              <AttractionCard
+                item={item}
                 onPress={() => {
                   if (item.latitude && item.longitude) {
                     mapRef.current?.animateToRegion({
@@ -635,31 +724,7 @@ export default function MapScreen({ navigation, route }: any) {
                     }, 400);
                   }
                 }}
-              >
-                <View className="flex-row">
-                  {item.imageUrl ? (
-                    <View className="w-32 h-48 bg-stone-100 overflow-hidden mr-3">
-                      <Image source={{ uri: item.imageUrl }} className="w-full h-full" resizeMode="cover" />
-                    </View>
-                  ) : (
-                    <View className="w-32 h-48 bg-stone-100 overflow-hidden mr-3 items-center justify-center">
-                      <Ionicons name="image-outline" size={22} color={COLORS.neutral[500]} />
-                    </View>
-                  )}
-                  <View className="flex-1">
-                    <View className="flex-row justify-between items-start mb-1">
-                      <Text className="text-lg font-bold text-sage-600 flex-1" numberOfLines={1}>{item.title}</Text>
-                    </View>
-                    {item.desc ? (
-                      <Text className="text-sm text-neutral-600 mb-1.5 leading-5" numberOfLines={3}>{item.desc}</Text>
-                    ) : null}
-                    <View className="flex-row items-center">
-                      <Ionicons name="location-outline" size={16} color={COLORS.brand.sage} />
-                      <Text className="text-base text-sage-600 ml-1 font-medium">{item.distance || ''}</Text>
-                    </View>
-                  </View>
-                </View>
-              </TouchableOpacity>
+              />
             )}
             keyExtractor={(item: any) => item.id}
             showsHorizontalScrollIndicator={false}
