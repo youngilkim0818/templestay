@@ -33,7 +33,7 @@ module.exports = {
       infoPlist: {
         NSLocationWhenInUseUsageDescription: "가까운 사찰을 찾기 위해 현재 위치가 필요합니다.",
         NSLocationAlwaysAndWhenInUseUsageDescription: "가까운 사찰을 찾기 위해 현재 위치가 필요합니다.",
-        ITSAppUsesNonExemptEncryption: false
+        ITSAppUsesNonExemptEncryption: true
       }
     },
     android: {
