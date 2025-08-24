@@ -10,12 +10,14 @@ type RootStackParamList = {
   Splash: undefined;
   Login: undefined;
   Signup: undefined;
+  ChangePassword: undefined;
   Onboarding1: undefined;
   Onboarding2: undefined;
   Onboarding3: undefined;
   Onboarding4: undefined;
   Onboarding5: undefined;
   Main: undefined;
+  TempleStack: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
