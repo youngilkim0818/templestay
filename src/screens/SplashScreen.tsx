@@ -44,9 +44,34 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
         const { data: { session } } = await supabase.auth.getSession();
         const isLoggedIn = !!session;
         
-        if (isLoggedIn) {
-          const hasCompletedOnboarding = await AsyncStorage.getItem('hasCompletedOnboarding');
-          if (hasCompletedOnboarding === 'true') {
+        if (isLoggedIn && session?.user?.id) {
+          let hasCompletedOnboarding = false;
+          
+          try {
+            // Supabase에서 온보딩 완료 여부 확인
+            const { data: profile, error } = await supabase
+              .from('profiles')
+              .select('has_completed_onboarding')
+              .eq('id', session.user.id)
+              .single();
+            
+            if (!error && profile) {
+              hasCompletedOnboarding = profile.has_completed_onboarding;
+              if (__DEV__) console.log('🔍 Supabase에서 온보딩 상태 확인:', hasCompletedOnboarding);
+            } else {
+              // Supabase 실패시 로컬 저장소 확인 (fallback)
+              const localOnboarding = await AsyncStorage.getItem('hasCompletedOnboarding');
+              hasCompletedOnboarding = localOnboarding === 'true';
+              if (__DEV__) console.log('🔍 로컬 저장소에서 온보딩 상태 확인:', hasCompletedOnboarding);
+            }
+          } catch (error) {
+            // 에러 발생시 로컬 저장소 사용
+            const localOnboarding = await AsyncStorage.getItem('hasCompletedOnboarding');
+            hasCompletedOnboarding = localOnboarding === 'true';
+            if (__DEV__) console.log('🔍 에러 발생, 로컬 저장소 사용:', hasCompletedOnboarding);
+          }
+          
+          if (hasCompletedOnboarding) {
             if (__DEV__) console.log('✅ 온보딩 완료 사용자 → 홈으로 이동');
             navigation.replace('Main');
           } else {

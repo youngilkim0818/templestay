@@ -18,11 +18,6 @@ module.exports = {
     plugins: [
       "expo-location"
     ],
-    splash: {
-      image: "./assets/splash-icon.png",
-      resizeMode: "contain",
-      backgroundColor: "#F5F1EB"
-    },
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.templestay.app",
@@ -38,10 +33,6 @@ module.exports = {
     },
     android: {
       package: "com.templestay.app",
-      adaptiveIcon: {
-        foregroundImage: "./assets/adaptive-icon.png",
-        backgroundColor: "#ffffff"
-      },
       edgeToEdgeEnabled: true,
       config: {
         googleMaps: {
@@ -55,7 +46,6 @@ module.exports = {
       ]
     },
     web: {
-      favicon: "./assets/favicon.png"
     },
     extra: {
       supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,

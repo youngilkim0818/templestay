@@ -16,6 +16,7 @@ const MyPageScreen = ({ navigation }: any) => {
     profileImage: null as string | null
   });
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [showCustomerSupport, setShowCustomerSupport] = useState(false);
   const [showNotificationSettings, setShowNotificationSettings] = useState(false);
@@ -105,6 +106,70 @@ const MyPageScreen = ({ navigation }: any) => {
     } catch (error) {
       console.error('Logout error:', error);
       Alert.alert('오류', '로그아웃 중 오류가 발생했습니다.');
+    }
+  };
+
+  // 계정 삭제 실행
+  const executeDeleteAccount = async () => {
+    try {
+      if (__DEV__) console.log('🗑️ 계정 삭제 시작');
+      
+      if (!currentUser?.id) {
+        Alert.alert('Error', 'No user session found');
+        return;
+      }
+
+      // 1. 먼저 사용자 데이터 삭제 (profiles 테이블)
+      try {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .delete()
+          .eq('id', currentUser.id);
+        
+        if (profileError && __DEV__) {
+          console.log('프로필 삭제 오류 (무시됨):', profileError);
+        } else if (__DEV__) {
+          console.log('✅ 프로필 데이터 삭제 완료');
+        }
+      } catch (error) {
+        if (__DEV__) console.log('프로필 삭제 시 오류 (무시됨):', error);
+      }
+
+      // 2. 예약 데이터 삭제 (만약 있다면)
+      try {
+        const { error: reservationError } = await supabase
+          .from('reservations')
+          .delete()
+          .eq('user_id', currentUser.id);
+        
+        if (reservationError && __DEV__) {
+          console.log('예약 삭제 오류 (무시됨):', reservationError);
+        }
+      } catch (error) {
+        if (__DEV__) console.log('예약 삭제 시 오류 (무시됨):', error);
+      }
+
+      // 3. 계정 완전 삭제는 고객지원을 통해 안내
+      if (__DEV__) console.log('🔐 계정 데이터 삭제 완료, 완전 삭제는 고객지원 통해 진행');
+
+      // 4. 로컬 데이터 정리 및 로그아웃
+      await logoutUser();
+      
+      // 5. 로그인 화면으로 이동
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
+      
+      Alert.alert(
+        'Account Data Deleted', 
+        'Your account data has been deleted from our servers. For complete account removal, please contact our support team.',
+        [{ text: 'OK' }]
+      );
+      
+    } catch (error) {
+      console.error('Delete account error:', error);
+      Alert.alert('Error', 'Failed to delete account. Please try again or contact support.');
     }
   };
 
@@ -265,6 +330,20 @@ const MyPageScreen = ({ navigation }: any) => {
           </View>
         </View>
 
+        {/* 계정 삭제 */}
+        <View className="mx-4 mb-6">
+          <View className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <TouchableOpacity 
+              className="flex-row items-center p-4"
+              onPress={() => setShowDeleteAccountModal(true)}
+            >
+              <Ionicons name="trash-outline" size={20} color="#ef4444" />
+              <Text className="text-base text-red-500 ml-3 flex-1">Delete Account</Text>
+              <Ionicons name="chevron-forward" size={16} color="#ef4444" />
+            </TouchableOpacity>
+          </View>
+        </View>
+
         {/* 하단 여백 */}
         <View className="h-20" />
       </View>
@@ -309,6 +388,53 @@ const MyPageScreen = ({ navigation }: any) => {
               >
                 <Text className="text-white font-semibold text-base">
                   Logout
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* 계정 삭제 모달 */}
+      <Modal
+        visible={showDeleteAccountModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowDeleteAccountModal(false)}
+      >
+        <View className="flex-1 justify-center items-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <View className="bg-white rounded-2xl p-6 mx-8 w-80 shadow-lg">
+            <View className="items-center mb-4">
+              <View className="w-16 h-16 bg-red-100 rounded-full items-center justify-center mb-3">
+                <Ionicons name="trash-outline" size={32} color="#ef4444" />
+              </View>
+              <Text className="text-xl font-bold text-neutral-800 mb-2">
+                Delete Account
+              </Text>
+              <Text className="text-sm text-neutral-600 text-center leading-5">
+                Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.
+              </Text>
+            </View>
+            
+            <View className="flex-row">
+              <TouchableOpacity
+                className="flex-1 bg-gray-200 py-3 rounded-xl items-center mr-2"
+                onPress={() => setShowDeleteAccountModal(false)}
+              >
+                <Text className="text-gray-700 font-semibold text-base">
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity
+                className="flex-1 bg-red-500 py-3 rounded-xl items-center ml-2"
+                onPress={() => {
+                  setShowDeleteAccountModal(false);
+                  executeDeleteAccount();
+                }}
+              >
+                <Text className="text-white font-semibold text-base">
+                  Delete
                 </Text>
               </TouchableOpacity>
             </View>

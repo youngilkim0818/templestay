@@ -46,6 +46,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                 .upsert({
                   id: currentUser.id,
                   name: userName.trim(),
+                  has_completed_onboarding: true,
                   updated_at: new Date().toISOString()
                 });
               
@@ -79,28 +80,44 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
 
   const pickImage = async () => {
     try {
+      if (__DEV__) console.log('🖼️ 이미지 선택 시작');
+      
       // 갤러리 접근 권한 요청
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (__DEV__) console.log('📋 권한 상태:', status);
       
       if (status !== 'granted') {
         Alert.alert('Permission needed', 'Please grant permission to access your photo library');
         return;
       }
 
-      // 이미지 선택
+      // 이미지 선택 - iPad 호환성을 위해 더 안전한 설정
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1, 1],
-        quality: 0.8,
+        quality: 0.5, // iPad 메모리 절약을 위해 품질 낮춤
+        allowsMultipleSelection: false,
+        selectionLimit: 1,
       });
 
-      if (!result.canceled && result.assets[0]) {
-        setProfileImage(result.assets[0].uri);
+      if (__DEV__) console.log('🖼️ 이미지 선택 결과:', result);
+
+      if (!result.canceled && result.assets && result.assets[0]) {
+        const selectedImage = result.assets[0];
+        if (__DEV__) console.log('🖼️ 선택된 이미지 URI:', selectedImage.uri);
+        
+        // URI 유효성 검사
+        if (selectedImage.uri && selectedImage.uri.length > 0) {
+          setProfileImage(selectedImage.uri);
+        } else {
+          if (__DEV__) console.log('⚠️ 유효하지 않은 이미지 URI');
+          Alert.alert('Error', 'Invalid image selected');
+        }
       }
     } catch (error) {
-      console.error('Error picking image:', error);
-      Alert.alert('Error', 'Failed to pick image');
+      console.error('❌ 이미지 선택 에러:', error);
+      Alert.alert('Error', 'Failed to pick image. Please try again.');
     }
   };
 

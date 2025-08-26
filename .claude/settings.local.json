@@ -29,7 +29,14 @@
       "Bash(npm run build:*)",
       "Bash(git pull:*)",
       "Bash(npx react-native:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(npm audit:*)",
+      "Bash(eas secret:create:*)",
+      "Bash(eas env:create:*)",
+      "Bash(eas env:list:*)",
+      "mcp__supabase__execute_sql",
+      "mcp__supabase__apply_migration",
+      "Bash(brew install:*)"
     ],
     "deny": []
   }
