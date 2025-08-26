@@ -320,19 +320,14 @@ const MyPageScreen = ({ navigation }: any) => {
             </TouchableOpacity>
 
             <TouchableOpacity 
-              className="flex-row items-center p-4"
+              className="flex-row items-center p-4 border-b border-gray-100"
               onPress={handleLogout}
             >
               <Ionicons name="log-out-outline" size={20} color="#ef4444" />
               <Text className="text-base text-red-500 ml-3 flex-1">Logout</Text>
               <Ionicons name="chevron-forward" size={16} color="#ef4444" />
             </TouchableOpacity>
-          </View>
-        </View>
 
-        {/* 계정 삭제 */}
-        <View className="mx-4 mb-6">
-          <View className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <TouchableOpacity 
               className="flex-row items-center p-4"
               onPress={() => setShowDeleteAccountModal(true)}
