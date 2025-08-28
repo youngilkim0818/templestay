@@ -124,8 +124,18 @@ const AccountSettingsScreen = ({ navigation }: any) => {
   // 실제 회원탈퇴 실행
   const executeDeleteAccount = async () => {
     try {
-      // AuthService를 통해 회원탈퇴 실행
-      await AuthService.deleteAccount();
+      // 현재 사용자 정보 가져오기
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error('사용자 정보를 찾을 수 없습니다.');
+      }
+
+      // Supabase에서 사용자 계정 삭제
+      const { error } = await supabase.auth.admin.deleteUser(user.id);
+      if (error) {
+        console.error('Delete account error:', error);
+        throw error;
+      }
       
       // 로컬 스토어에서 로그아웃
       await logoutUser();

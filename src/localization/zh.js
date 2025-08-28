@@ -324,5 +324,18 @@ export default {
     "transportation": "交通",
     "market": "市场",
     "myPage": "我的页面"
+  },
+  "onboarding": {
+    "welcomeTitle": "欢迎来到TempleBuk",
+    "welcomeSubtitle": "开始您愉快的寺庙住宿体验！",
+    "profileImage": "个人资料图片",
+    "openGallery": "打开相册",
+    "setDefaultImage": "设置默认图片",
+    "enterName": "请输入您的姓名",
+    "start": "开始",
+    "permissionNeeded": "需要权限",
+    "photoLibraryPermission": "请授予访问照片库的权限",
+    "invalidImage": "选择的图片无效",
+    "failedToPickImage": "选择图片失败，请重试"
   }
 };

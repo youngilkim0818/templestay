@@ -73,12 +73,12 @@ const EditProfileScreen = ({ navigation }: any) => {
 
     const handleSave = async () => {
         if (!name.trim()) {
-            Alert.alert('Error', 'Please enter your name.');
+            Alert.alert('Error', t('onboarding.enterName'));
             return;
         }
         
         if (!phone.trim()) {
-            Alert.alert('Error', 'Please enter your phone number.');
+            Alert.alert('Error', t('profile.phoneNumberRequired'));
             return;
         }
 
@@ -141,7 +141,7 @@ const EditProfileScreen = ({ navigation }: any) => {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
             
             if (status !== 'granted') {
-                Alert.alert('Permission needed', 'Please grant permission to access your photo library');
+                Alert.alert(t('onboarding.permissionNeeded'), t('onboarding.photoLibraryPermission'));
                 return;
             }
 
@@ -169,7 +169,7 @@ const EditProfileScreen = ({ navigation }: any) => {
             }
         } catch (error) {
             console.error('Error picking image:', error);
-            Alert.alert('Error', 'Failed to pick image');
+            Alert.alert('Error', t('onboarding.failedToPickImage'));
         }
     };
 
@@ -216,7 +216,7 @@ const EditProfileScreen = ({ navigation }: any) => {
                 }
             }
         } else {
-            Alert.alert('Error', 'Please enter your name.');
+            Alert.alert('Error', t('onboarding.enterName'));
         }
     };
 

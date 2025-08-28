@@ -318,5 +318,18 @@ export default {
       "new": "신상품",
       "bestseller": "베스트셀러"
     }
+  },
+  "onboarding": {
+    "welcomeTitle": "TempleBuk에 오신 것을 환영합니다",
+    "welcomeSubtitle": "즐거운 템플스테이 경험을 시작해보세요!",
+    "profileImage": "프로필 이미지",
+    "openGallery": "갤러리 열기",
+    "setDefaultImage": "기본 이미지 설정",
+    "enterName": "이름을 입력하세요",
+    "start": "시작하기",
+    "permissionNeeded": "권한이 필요합니다",
+    "photoLibraryPermission": "사진 라이브러리에 접근할 수 있도록 권한을 허용해주세요",
+    "invalidImage": "유효하지 않은 이미지입니다",
+    "failedToPickImage": "이미지 선택에 실패했습니다. 다시 시도해주세요"
   }
 };

@@ -324,5 +324,18 @@ export default {
     "transportation": "交通",
     "market": "マーケット",
     "myPage": "マイページ"
+  },
+  "onboarding": {
+    "welcomeTitle": "TempleBukへようこそ",
+    "welcomeSubtitle": "楽しいテンプルステイ体験を始めましょう！",
+    "profileImage": "プロフィール画像",
+    "openGallery": "ギャラリーを開く",
+    "setDefaultImage": "デフォルト画像を設定",
+    "enterName": "お名前を入力してください",
+    "start": "開始",
+    "permissionNeeded": "権限が必要です",
+    "photoLibraryPermission": "写真ライブラリにアクセスする権限を許可してください",
+    "invalidImage": "無効な画像が選択されました",
+    "failedToPickImage": "画像の選択に失敗しました。もう一度お試しください"
   }
 };

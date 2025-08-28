@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import useUserStore from '../../store/userStore';
 import { supabase } from '../../lib/supabase';
-
+import { useTranslation } from 'react-i18next';
 
 
 const ImportantFactor2Screen = ({ navigation }: any) => {
@@ -14,6 +14,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>('');
   const [showImageModal, setShowImageModal] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   const handleStart = async () => {
     try {
@@ -87,7 +88,10 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
       if (__DEV__) console.log('📋 권한 상태:', status);
       
       if (status !== 'granted') {
-        Alert.alert('Permission needed', 'Please grant permission to access your photo library');
+        Alert.alert(
+          t('onboarding.permissionNeeded'), 
+          t('onboarding.photoLibraryPermission')
+        );
         return;
       }
 
@@ -103,21 +107,33 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
 
       if (__DEV__) console.log('🖼️ 이미지 선택 결과:', result);
 
-      if (!result.canceled && result.assets && result.assets[0]) {
+      // 결과 검증을 더 안전하게 처리
+      if (result && !result.canceled && result.assets && Array.isArray(result.assets) && result.assets.length > 0) {
         const selectedImage = result.assets[0];
         if (__DEV__) console.log('🖼️ 선택된 이미지 URI:', selectedImage.uri);
         
-        // URI 유효성 검사
-        if (selectedImage.uri && selectedImage.uri.length > 0) {
+        // URI 유효성 검사를 더 엄격하게
+        if (selectedImage && selectedImage.uri && typeof selectedImage.uri === 'string' && selectedImage.uri.length > 0) {
           setProfileImage(selectedImage.uri);
         } else {
           if (__DEV__) console.log('⚠️ 유효하지 않은 이미지 URI');
-          Alert.alert('Error', 'Invalid image selected');
+          Alert.alert('Error', t('onboarding.invalidImage'));
         }
+      } else if (result && result.canceled) {
+        if (__DEV__) console.log('🖼️ 사용자가 이미지 선택을 취소함');
+        // 사용자가 취소한 경우는 정상적인 동작이므로 아무것도 하지 않음
+      } else {
+        if (__DEV__) console.log('⚠️ 예상치 못한 이미지 선택 결과');
+        Alert.alert('Error', t('onboarding.failedToPickImage'));
       }
     } catch (error) {
       console.error('❌ 이미지 선택 에러:', error);
-      Alert.alert('Error', 'Failed to pick image. Please try again.');
+      // 에러 타입에 따른 더 구체적인 메시지 제공
+      let errorMessage = t('onboarding.failedToPickImage');
+      if (error instanceof Error) {
+        errorMessage = `${errorMessage}\n\n${error.message}`;
+      }
+      Alert.alert('Error', errorMessage);
     }
   };
 
@@ -138,10 +154,10 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
          {/* 타이틀 섹션 */}
          <View className="py-10">
            <Text className="text-4xl font-bold text-neutral-900 ml-5 leading-10 mb-1">
-             Welcome to TempleBuk
+             {t('onboarding.welcomeTitle')}
            </Text>
            <Text className="text-2xl font-bold text-neutral-900 ml-5 leading-10">
-             Begin your joyful templestay experience!
+             {t('onboarding.welcomeSubtitle')}
            </Text>
          </View>
 
@@ -182,7 +198,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                    zIndex: 1000,
                    textAlign: 'center',
                  }}
-                 placeholder="Enter your name"
+                 placeholder={t('onboarding.enterName')}
                  placeholderTextColor="#78716C"
                  value={userName}
                  onChangeText={(text) => {
@@ -227,7 +243,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
             </TouchableOpacity>
             
             <Text className="text-2xl font-bold text-stone-800 text-center mb-6">
-              Profile Image
+              {t('onboarding.profileImage')}
             </Text>
               
               <TouchableOpacity 
@@ -238,7 +254,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                 }}
               >
                 <Text className="text-white text-lg font-semibold text-center">
-                  Open Gallery
+                  {t('onboarding.openGallery')}
                 </Text>
               </TouchableOpacity>
               
@@ -250,7 +266,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                 }}
               >
                 <Text className="text-white text-lg font-semibold text-center">
-                  Set Default Image
+                  {t('onboarding.setDefaultImage')}
               </Text>
               </TouchableOpacity>
               
@@ -272,7 +288,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
             <Text className={`text-2xl font-bold ${
               userName.trim() !== '' ? 'text-white' : 'text-gray-500'
             }`}>
-              Start
+              {t('onboarding.start')}
             </Text>
           </TouchableOpacity>
         </View>

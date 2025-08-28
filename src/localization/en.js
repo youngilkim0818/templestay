@@ -339,5 +339,18 @@ export default {
     "transportation": "Transportation",
     "market": "Market",
     "myPage": "My Page"
+  },
+  "onboarding": {
+    "welcomeTitle": "Welcome to TempleBuk",
+    "welcomeSubtitle": "Begin your joyful templestay experience!",
+    "profileImage": "Profile Image",
+    "openGallery": "Open Gallery",
+    "setDefaultImage": "Set Default Image",
+    "enterName": "Enter your name",
+    "start": "Start",
+    "permissionNeeded": "Permission needed",
+    "photoLibraryPermission": "Please grant permission to access your photo library",
+    "invalidImage": "Invalid image selected",
+    "failedToPickImage": "Failed to pick image. Please try again."
   }
 };

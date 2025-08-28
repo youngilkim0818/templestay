@@ -239,4 +239,26 @@ export class AuthService {
 
     return { success: true };
   }
+
+  // 계정 삭제
+  static async deleteAccount() {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error('사용자를 찾을 수 없습니다.');
+      }
+
+      // Supabase에서 사용자 계정 삭제
+      const { error } = await supabase.auth.admin.deleteUser(user.id);
+      if (error) {
+        console.error('Error deleting account:', error);
+        throw error;
+      }
+
+      return { success: true };
+    } catch (error) {
+      console.error('Delete account error:', error);
+      throw error;
+    }
+  }
 }
