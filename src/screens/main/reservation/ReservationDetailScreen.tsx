@@ -1512,7 +1512,7 @@ const ReservationDetailScreen = () => {
                 className="w-full bg-sage-600 py-4 rounded-xl mb-4"
                 onPress={() => {
                   setShowLoginModal(false);
-                  navigation.navigate('Login');
+                  navigation.getParent()?.navigate('Login');
                 }}
               >
                 <Text className="text-white font-semibold text-center">Sign In</Text>
