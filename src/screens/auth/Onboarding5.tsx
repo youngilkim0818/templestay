@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -24,6 +24,23 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
   const [userName, setUserName] = useState<string>('');
   const [showImageModal, setShowImageModal] = useState<boolean>(false);
   const [isPicking, setIsPicking] = useState<boolean>(false); // ★ 중복 방지
+  const [isGuestMode, setIsGuestMode] = useState<boolean>(false);
+
+  // 게스트 모드 확인
+  useEffect(() => {
+    const checkGuestMode = async () => {
+      try {
+        const guestMode = await AsyncStorage.getItem('isGuestMode');
+        if (guestMode === 'true') {
+          setIsGuestMode(true);
+          setUserName('Guest'); // 게스트 모드일 때 이름을 Guest로 고정
+        }
+      } catch (error) {
+        console.error('게스트 모드 확인 실패:', error);
+      }
+    };
+    checkGuestMode();
+  }, []);
 
   // 온보딩 완료 처리
   const handleStart = async () => {
@@ -136,13 +153,15 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
             <Text className="text-4xl font-bold text-neutral-900 ml-5 leading-10 mb-1">
               Welcome to TempleBuk!
             </Text>
-            <Text className="text-2xl font-bold text-neutral-900 ml-5 leading-10">
-              Set up your profile
-            </Text>
+            {!isGuestMode && (
+              <Text className="text-2xl font-bold text-neutral-900 ml-5 leading-10">
+                Set up your profile
+              </Text>
+            )}
           </View>
 
           {/* Profile section */}
-          <View className="py-6 px-2 items-center">
+          <View className={`px-2 items-center ${isGuestMode ? 'py-8' : 'py-6'}`}>
             <View className="relative mb-6">
               <View className="w-32 h-32 bg-stone-100 rounded-full border-2 border-stone-300 items-center justify-center overflow-hidden">
                 {profileImage ? (
@@ -152,36 +171,39 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                 )}
               </View>
 
-              <TouchableOpacity
-                className="absolute bottom-0 right-0 w-8 h-8 bg-sage-600 rounded-full items-center justify-center border-2 border-white"
-                onPress={() => setShowImageModal(true)}
-              >
-                <Ionicons name="camera" size={16} color="white" />
-              </TouchableOpacity>
+              {!isGuestMode && (
+                <TouchableOpacity
+                  className="absolute bottom-0 right-0 w-8 h-8 bg-sage-600 rounded-full items-center justify-center border-2 border-white"
+                  onPress={() => setShowImageModal(true)}
+                >
+                  <Ionicons name="camera" size={16} color="white" />
+                </TouchableOpacity>
+              )}
             </View>
 
             {/* Name input */}
             <View className="w-48">
               <TextInput
                 style={{
-                  backgroundColor: '#F5F5F4',
+                  backgroundColor: isGuestMode ? '#E7E5E4' : '#F5F5F4',
                   borderRadius: 25,
                   borderWidth: 2,
-                  borderColor: '#E7E5E4',
+                  borderColor: isGuestMode ? '#D6D3D1' : '#E7E5E4',
                   paddingHorizontal: 20,
                   paddingVertical: 15,
                   fontSize: 18,
-                  color: '#292524',
+                  color: isGuestMode ? '#78716C' : '#292524',
                   minHeight: 50,
                   textAlign: 'center',
                 }}
-                placeholder="Enter your name"
+                placeholder={isGuestMode ? "Guest" : "Enter your name"}
                 placeholderTextColor="#78716C"
                 value={userName}
-                onChangeText={(text) => setUserName(text)}
+                onChangeText={(text) => !isGuestMode && setUserName(text)}
                 autoCapitalize="words"
                 autoCorrect={false}
                 returnKeyType="done"
+                editable={!isGuestMode}
               />
             </View>
           </View>
@@ -197,7 +219,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
         </View>
 
         {/* Image picker modal */}
-        {showImageModal && (
+        {showImageModal && !isGuestMode && (
           <View className="absolute inset-0 items-center justify-center z-[9999] pt-4">
             <View className="bg-stone-100 rounded-2xl p-6 mx-8 w-80 border-2 border-stone-300">
               <TouchableOpacity
@@ -243,16 +265,16 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
         >
           <TouchableOpacity
             className={`flex-row items-center justify-center rounded-4xl py-6 px-6 border-2 ${
-              userName.trim() !== ''
+              isGuestMode || userName.trim() !== ''
                 ? 'bg-sage-600 active:bg-sage-700 border-sage-600'
                 : 'bg-gray-300 border-gray-300'
             }`}
             onPress={handleStart}
-            disabled={userName.trim() === ''}
+            disabled={!isGuestMode && userName.trim() === ''}
           >
             <Text
               className={`text-2xl font-bold ${
-                userName.trim() !== '' ? 'text-white' : 'text-gray-500'
+                isGuestMode || userName.trim() !== '' ? 'text-white' : 'text-gray-500'
               }`}
             >
               Start

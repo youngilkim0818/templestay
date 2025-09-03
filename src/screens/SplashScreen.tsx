@@ -141,20 +141,20 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
     try {
       // 게스트 모드 플래그 설정
       await AsyncStorage.setItem('isGuestMode', 'true');
-      await AsyncStorage.setItem('hasCompletedOnboarding', 'true'); // 온보딩 완료로 표시
+      // 온보딩 완료 플래그는 제거 - 온보딩을 거치도록 함
       
       // userStore에도 게스트 모드 설정
       const { setGuestMode } = useUserStore.getState();
       setGuestMode(true);
       
       if (__DEV__) {
-        console.log('👤 게스트 모드 설정 완료, 메인 화면으로 이동');
+        console.log('👤 게스트 모드 설정 완료, 온보딩으로 이동');
       }
-      navigation.replace('Main');
+      navigation.replace('Onboarding1');
     } catch (error) {
       console.error('네비게이션 실패:', error);
-      // 에러 발생시 메인으로 이동
-      navigation.replace('Main');
+      // 에러 발생시 온보딩으로 이동
+      navigation.replace('Onboarding1');
     }
   };
 
