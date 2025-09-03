@@ -26,8 +26,10 @@ module.exports = {
         googleMapsDefaultLanguage: "en"
       },
       infoPlist: {
-        NSLocationWhenInUseUsageDescription: "가까운 사찰을 찾기 위해 현재 위치가 필요합니다.",
-        NSLocationAlwaysAndWhenInUseUsageDescription: "가까운 사찰을 찾기 위해 현재 위치가 필요합니다.",
+        NSLocationWhenInUseUsageDescription: "This app needs location access to find nearby temples.",
+        NSLocationAlwaysAndWhenInUseUsageDescription: "This app needs location access to find nearby temples.",
+        NSPhotoLibraryUsageDescription: "This app needs photo library access to select a profile image.",
+        NSPhotoLibraryAddUsageDescription: "This app needs photo library access to save profile images.",
         ITSAppUsesNonExemptEncryption: false
       }
     },

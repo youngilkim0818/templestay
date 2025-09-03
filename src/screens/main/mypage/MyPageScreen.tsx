@@ -23,11 +23,20 @@ const MyPageScreen = ({ navigation }: any) => {
   const [receiveEmailNotifications, setReceiveEmailNotifications] = useState(false);
 
   const { reservations, fetchUserReservations, loading } = useReservationStore();
-  const { user: currentUser, logout: logoutUser, updateUser } = useUserStore();
+  const { user: currentUser, logout: logoutUser, updateUser, isGuestMode } = useUserStore();
 
   // 사용자 정보 불러오기 - Supabase 연동
   const loadUserInfo = async () => {
     try {
+      // 게스트 모드인 경우
+      if (isGuestMode) {
+        setUser({
+          name: 'Guest',
+          profileImage: null
+        });
+        return;
+      }
+
       if (currentUser) {
         try {
           // Supabase에서 최신 프로필 정보 가져오기 시도
@@ -176,11 +185,17 @@ const MyPageScreen = ({ navigation }: any) => {
   // 화면이 포커스될 때마다 예약 데이터와 사용자 정보 새로고침
   useFocusEffect(
     React.useCallback(() => {
+      // 게스트 모드인 경우 사용자 정보만 로드
+      if (isGuestMode) {
+        loadUserInfo();
+        return;
+      }
+      
       if (currentUser?.id) {
         fetchUserReservations(currentUser.id);
         loadUserInfo();
       }
-    }, [currentUser?.id, fetchUserReservations])
+    }, [currentUser?.id, fetchUserReservations, isGuestMode])
   );
 
   // 다가오는 예약 가져오기
@@ -215,45 +230,49 @@ const MyPageScreen = ({ navigation }: any) => {
                 <TouchableOpacity className="flex-row items-center">
                   <Text className="text-2xl font-bold text-neutral-900">{user.name}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} className="ml-4">
-                  <Text className="text-base text-gray-600">Edit Profile</Text>
-                </TouchableOpacity>
+                {!isGuestMode && (
+                  <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} className="ml-4">
+                    <Text className="text-base text-gray-600">Edit Profile</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           </View>
         </View>
 
-        {/* 현재 예약 확인 섹션 */}
-        <View className="mx-4 mb-4">
-          <View className="bg-white rounded-xl p-4 border-2 border-sage-200">
-            <View className="flex-row justify-start items-start mb-3">
-              <View className="bg-sage-600 px-3 py-1 rounded-full">
+        {/* 현재 예약 확인 섹션 - 게스트 모드가 아닐 때만 표시 */}
+        {!isGuestMode && (
+          <View className="mx-4 mb-4">
+            <View className="bg-white rounded-xl p-4 border-2 border-sage-200">
+              <View className="flex-row justify-start items-start mb-3">
+                <View className="bg-sage-600 px-3 py-1 rounded-full">
+                  <View className="flex-row items-center">
+                    <Ionicons name="calendar" size={14} color="white" />
+                    <Text className="text-white text-sm font-semibold ml-1">Current Reservation</Text>
+                  </View>
+                </View>
+              </View>
+              <Text className="text-base font-semibold text-neutral-900 mb-3">
+                                {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? `${upcomingReservation.temple_name || 'Unknown Temple'} - ${upcomingReservation.program_title || 'Temple Stay Program'}` : 'No temple stay reservations yet'}
+              </Text>
+              <View className="border-t-2 border-sage-200 pt-3">
                 <View className="flex-row items-center">
-                  <Ionicons name="calendar" size={14} color="white" />
-                  <Text className="text-white text-sm font-semibold ml-1">Current Reservation</Text>
+                  <Text className="text-sm text-neutral-700">
+                    {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? 'Upcoming Reservation' : 'Try booking a templestay'}
+                  </Text>
+                  {upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? (
+                    <>
+                      <Ionicons name="time" size={16} color="#5A4636" className="ml-2" />
+                      <Text className="text-sm font-semibold text-sage-700 ml-1">
+                        D-{Math.ceil((new Date(upcomingReservation.reservation_date || '').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))}
+                      </Text>
+                    </>
+                  ) : null}
                 </View>
               </View>
             </View>
-            <Text className="text-base font-semibold text-neutral-900 mb-3">
-                              {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? `${upcomingReservation.temple_name || 'Unknown Temple'} - ${upcomingReservation.program_title || 'Temple Stay Program'}` : 'No temple stay reservations yet'}
-            </Text>
-            <View className="border-t-2 border-sage-200 pt-3">
-              <View className="flex-row items-center">
-                <Text className="text-sm text-neutral-700">
-                  {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? 'Upcoming Reservation' : 'Try booking a templestay'}
-                </Text>
-                {upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? (
-                  <>
-                    <Ionicons name="time" size={16} color="#5A4636" className="ml-2" />
-                    <Text className="text-sm font-semibold text-sage-700 ml-1">
-                      D-{Math.ceil((new Date(upcomingReservation.reservation_date || '').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))}
-                    </Text>
-                  </>
-                ) : null}
-              </View>
-            </View>
           </View>
-        </View>
+        )}
 
         {/* 추가 메뉴들 */}
         <View className="mx-4 mb-6">
@@ -319,23 +338,36 @@ const MyPageScreen = ({ navigation }: any) => {
               <Ionicons name="chevron-forward" size={16} color="#6b7280" />
             </TouchableOpacity>
 
-            <TouchableOpacity 
-              className="flex-row items-center p-4 border-b border-gray-100"
-              onPress={handleLogout}
-            >
-              <Ionicons name="log-out-outline" size={20} color="#ef4444" />
-              <Text className="text-base text-red-500 ml-3 flex-1">Logout</Text>
-              <Ionicons name="chevron-forward" size={16} color="#ef4444" />
-            </TouchableOpacity>
+            {isGuestMode ? (
+              <TouchableOpacity 
+                className="flex-row items-center p-4 border-b border-gray-100"
+                onPress={() => navigation.navigate('Login')}
+              >
+                <Ionicons name="log-in-outline" size={20} color="#5A4636" />
+                <Text className="text-base text-sage-600 ml-3 flex-1">Sign In</Text>
+                <Ionicons name="chevron-forward" size={16} color="#5A4636" />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity 
+                className="flex-row items-center p-4 border-b border-gray-100"
+                onPress={handleLogout}
+              >
+                <Ionicons name="log-out-outline" size={20} color="#ef4444" />
+                <Text className="text-base text-red-500 ml-3 flex-1">Logout</Text>
+                <Ionicons name="chevron-forward" size={16} color="#ef4444" />
+              </TouchableOpacity>
+            )}
 
-            <TouchableOpacity 
-              className="flex-row items-center p-4"
-              onPress={() => setShowDeleteAccountModal(true)}
-            >
-              <Ionicons name="trash-outline" size={20} color="#ef4444" />
-              <Text className="text-base text-red-500 ml-3 flex-1">Delete Account</Text>
-              <Ionicons name="chevron-forward" size={16} color="#ef4444" />
-            </TouchableOpacity>
+            {!isGuestMode && (
+              <TouchableOpacity 
+                className="flex-row items-center p-4"
+                onPress={() => setShowDeleteAccountModal(true)}
+              >
+                <Ionicons name="trash-outline" size={20} color="#ef4444" />
+                <Text className="text-base text-red-500 ml-3 flex-1">Delete Account</Text>
+                <Ionicons name="chevron-forward" size={16} color="#ef4444" />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
 

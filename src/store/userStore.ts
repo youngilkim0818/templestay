@@ -7,6 +7,7 @@ interface UserState {
   // 사용자 정보
   user: User | null;
   isLoggedIn: boolean;
+  isGuestMode: boolean;
   preferences: UserPreferences | null;
   
   // 상태 관리
@@ -16,6 +17,7 @@ interface UserState {
   // 액션들
   login: (user: User) => void;
   logout: () => void;
+  setGuestMode: (isGuest: boolean) => void;
   updateUser: (updatedInfo: Partial<User>) => void;
   setPreferences: (preferences: UserPreferences) => void;
   updatePreferences: (updates: Partial<UserPreferences>) => void;
@@ -33,6 +35,7 @@ const useUserStore = create<UserState>()(
       // 초기 상태
       user: null,
       isLoggedIn: false,
+      isGuestMode: false,
       preferences: null,
       loading: {},
       error: {},
@@ -41,6 +44,7 @@ const useUserStore = create<UserState>()(
       login: (user: User) => 
         set({ 
           isLoggedIn: true, 
+          isGuestMode: false, // 로그인 시 게스트 모드 해제
           user,
           error: {} // 로그인 성공 시 에러 초기화
         }),
@@ -51,7 +55,8 @@ const useUserStore = create<UserState>()(
           await AsyncStorage.multiRemove([
             'userName',
             'userProfileImage',
-            'userToken'
+            'userToken',
+            'isGuestMode'
           ]);
         } catch (error) {
           console.error('Error clearing AsyncStorage on logout:', error);
@@ -59,12 +64,21 @@ const useUserStore = create<UserState>()(
         
         set({ 
           isLoggedIn: false, 
+          isGuestMode: false,
           user: null, 
           preferences: null,
           loading: {},
           error: {}
         });
       },
+
+      // 게스트 모드 설정
+      setGuestMode: (isGuest: boolean) =>
+        set({ 
+          isGuestMode: isGuest,
+          isLoggedIn: !isGuest, // 게스트 모드일 때는 로그인 상태가 아님
+          user: isGuest ? null : get().user // 게스트 모드일 때는 사용자 정보 제거
+        }),
       
       updateUser: (updatedInfo: Partial<User>) =>
         set((state) => ({
@@ -123,6 +137,7 @@ const useUserStore = create<UserState>()(
       partialize: (state) => ({
         user: state.user,
         isLoggedIn: state.isLoggedIn,
+        isGuestMode: state.isGuestMode,
         preferences: state.preferences,
         // loading과 error는 persist하지 않음
       }),

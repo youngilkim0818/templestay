@@ -12,6 +12,8 @@ import { COLORS } from '../../../constants/colors';
 
 import { enrichTempleWithImages } from '../../../services/templeImageService';
 import { enrichAttractionWithImage } from '../../../services/attractionImageService';
+import useUserStore from '../../../store/userStore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
@@ -290,6 +292,9 @@ const ReservationDetailScreen = () => {
 
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  
+  const { isGuestMode, isLoggedIn } = useUserStore();
   
   // 사찰별 리뷰 데이터 함수 - 사찰 이름으로 매칭
   const getTempleReviews = (temple: Temple | null) => {
@@ -933,7 +938,29 @@ const ReservationDetailScreen = () => {
   }, [selectedProgram, adultCount, teenagerCount, childCount, preschoolCount, templeId]);
 
   // 예약 처리 함수
-  const handleReservation = useCallback(() => {
+  const handleReservation = useCallback(async () => {
+    // 디버깅을 위한 로그
+    if (__DEV__) {
+      console.log('🔍 handleReservation 호출됨');
+      console.log('🔍 isGuestMode (userStore):', isGuestMode);
+      console.log('🔍 isLoggedIn (userStore):', isLoggedIn);
+    }
+    
+    // 로그인된 상태라면 바로 예약 진행
+    if (isLoggedIn && !isGuestMode) {
+      if (__DEV__) {
+        console.log('🔍 로그인된 사용자, 예약 진행');
+      }
+      // 예약 로직으로 바로 진행
+    } else {
+      // 게스트 모드이거나 로그인되지 않은 경우 로그인 모달 표시
+      if (__DEV__) {
+        console.log('🔍 게스트 모드 또는 비로그인 상태, 로그인 모달 표시');
+      }
+      setShowLoginModal(true);
+      return;
+    }
+    
     if (!selectedProgram) {
       setErrorMessage('Please select a program.');
       return;
@@ -957,7 +984,7 @@ const ReservationDetailScreen = () => {
         totalAmount: 0
       });
     }
-  }, [selectedProgram, navigation, temple]);
+  }, [selectedProgram, navigation, temple, isGuestMode, isLoggedIn]);
 
 
   
@@ -1447,7 +1474,7 @@ const ReservationDetailScreen = () => {
             </View>
 
             {/* 버튼들 */}
-            <View className="space-y-3">
+            <View className="space-y-5">
               <TouchableOpacity 
                 className="w-full bg-green-600 py-4 rounded-xl"
                 onPress={() => setShowReservationModal(false)}
@@ -1458,6 +1485,49 @@ const ReservationDetailScreen = () => {
           </View>
         </View>
              </Modal>
+
+      {/* 로그인 필요 모달 */}
+      <Modal
+        visible={showLoginModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowLoginModal(false)}
+      >
+        <View className="flex-1 bg-black/50 justify-center items-center px-12">
+          <View className="bg-white rounded-2xl p-6 w-full max-w-sm border border-gray-200" style={{ maxWidth: 280 }}>
+            {/* 모달 헤더 */}
+            <View className="items-center mb-6">
+              <View className="w-16 h-16 bg-stone-200 rounded-full items-center justify-center mb-3">
+                <Ionicons name="log-in-outline" size={32} color="#5A4636" />
+              </View>
+              <Text className="text-xl font-bold text-neutral-900">Login Required</Text>
+              <Text className="text-sm text-stone-600 text-center mt-2">
+                Please sign in to make a reservation
+              </Text>
+            </View>
+
+            {/* 버튼들 */}
+            <View className="px-4">
+              <TouchableOpacity 
+                className="w-full bg-sage-600 py-4 rounded-xl mb-4"
+                onPress={() => {
+                  setShowLoginModal(false);
+                  navigation.navigate('Login');
+                }}
+              >
+                <Text className="text-white font-semibold text-center">Sign In</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                className="w-full bg-stone-200 py-4 rounded-xl"
+                onPress={() => setShowLoginModal(false)}
+              >
+                <Text className="text-stone-700 font-semibold text-center">Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
      </ScrollView>
    );
  };

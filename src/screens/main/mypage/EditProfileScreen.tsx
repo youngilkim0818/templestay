@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, Text, Alert, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, Image, TextInput } from 'react-native';
+import { View, Text, Alert, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, Image, TextInput, InteractionManager } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import useUserStore from '../../../store/userStore';
@@ -24,7 +23,6 @@ const EditProfileScreen = ({ navigation }: any) => {
         });
     }, [navigation]);
     
-    const { t } = useTranslation();
     const { user, updateUser } = useUserStore();
     
     const [name, setName] = useState('');
@@ -34,6 +32,7 @@ const EditProfileScreen = ({ navigation }: any) => {
     const [loading, setLoading] = useState(false);
     const [isEditingName, setIsEditingName] = useState(false);
     const [tempName, setTempName] = useState('');
+    const [isPicking, setIsPicking] = useState<boolean>(false); // ★ 중복 방지
 
     useEffect(() => {
         // AsyncStorage에서 사용자 정보를 먼저 불러오기
@@ -73,12 +72,12 @@ const EditProfileScreen = ({ navigation }: any) => {
 
     const handleSave = async () => {
         if (!name.trim()) {
-            Alert.alert('Error', t('onboarding.enterName'));
+            Alert.alert('Error', 'Please enter your name');
             return;
         }
         
         if (!phone.trim()) {
-            Alert.alert('Error', t('profile.phoneNumberRequired'));
+            Alert.alert('Error', 'Please enter your phone number');
             return;
         }
 
@@ -135,24 +134,43 @@ const EditProfileScreen = ({ navigation }: any) => {
         }
     };
 
+    // 권한 체크 & 요청 (영어 전용)
+    const ensurePhotoPermission = async () => {
+        const current = await ImagePicker.getMediaLibraryPermissionsAsync();
+        if (current.granted || (current.status as string) === 'limited') return current.status;
+
+        if (current.canAskAgain) {
+            const req = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            return req.status;
+        }
+        return current.status;
+    };
+
     // 프로필 이미지 선택
     const pickImage = async () => {
+        if (isPicking) return;
+        setIsPicking(true);
+
         try {
-            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            
-            if (status !== 'granted') {
-                Alert.alert(t('onboarding.permissionNeeded'), t('onboarding.photoLibraryPermission'));
+            const status = await ensurePhotoPermission();
+            if ((status as string) !== 'granted' && (status as string) !== 'limited') {
+                Alert.alert(
+                    'Permission Needed',
+                    'Please allow photo library access in Settings to select a profile image.'
+                );
                 return;
             }
 
+            const isPad = Platform.OS === 'ios' && (Platform as any).isPad;
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
+                allowsEditing: isPad ? false : true, // ★ iPad는 false 권장
                 aspect: [1, 1],
-                quality: 0.8,
+                quality: 0.85,
+                presentationStyle: ImagePicker.UIImagePickerPresentationStyle.FULL_SCREEN,
             });
 
-            if (!result.canceled && result.assets[0]) {
+            if (!result.canceled && result.assets?.length > 0) {
                 const newImageUri = result.assets[0].uri;
                 setProfileImage(newImageUri);
                 
@@ -168,8 +186,10 @@ const EditProfileScreen = ({ navigation }: any) => {
                 }
             }
         } catch (error) {
-            console.error('Error picking image:', error);
-            Alert.alert('Error', t('onboarding.failedToPickImage'));
+            console.error('❌ Image pick error:', error);
+            Alert.alert('Error', 'Failed to open gallery. Please try again.');
+        } finally {
+            setIsPicking(false);
         }
     };
 
@@ -216,7 +236,7 @@ const EditProfileScreen = ({ navigation }: any) => {
                 }
             }
         } else {
-            Alert.alert('Error', t('onboarding.enterName'));
+            Alert.alert('Error', 'Please enter your name');
         }
     };
 
@@ -271,7 +291,15 @@ const EditProfileScreen = ({ navigation }: any) => {
                                 {/* 카메라 아이콘 */}
                                 <TouchableOpacity 
                                     className="absolute bottom-2 right-2 w-8 h-8 bg-sage-600 rounded-full items-center justify-center border-2 border-white"
-                                    onPress={pickImage}
+                                    onPress={() => {
+                                        if (isPicking) return;
+                                        InteractionManager.runAfterInteractions(() => {
+                                            setTimeout(() => {
+                                                pickImage();
+                                            }, 200);
+                                        });
+                                    }}
+                                    disabled={isPicking}
                                 >
                                     <Ionicons name="camera" size={16} color="white" />
                                 </TouchableOpacity>

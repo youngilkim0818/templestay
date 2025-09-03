@@ -41,6 +41,14 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
     
     const checkUserStatus = async () => {
       try {
+        // 게스트 모드 확인
+        const isGuestMode = await AsyncStorage.getItem('isGuestMode');
+        if (isGuestMode === 'true') {
+          if (__DEV__) console.log('👤 게스트 모드 사용자 → 메인으로 이동');
+          navigation.replace('Main');
+          return;
+        }
+
         const { data: { session } } = await supabase.auth.getSession();
         const isLoggedIn = !!session;
         
@@ -126,6 +134,30 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
+  const handleGuestPress = async () => {
+    if (__DEV__) {
+      console.log('🖱️ 게스트로 입장하기 버튼 클릭됨');
+    }
+    try {
+      // 게스트 모드 플래그 설정
+      await AsyncStorage.setItem('isGuestMode', 'true');
+      await AsyncStorage.setItem('hasCompletedOnboarding', 'true'); // 온보딩 완료로 표시
+      
+      // userStore에도 게스트 모드 설정
+      const { setGuestMode } = useUserStore.getState();
+      setGuestMode(true);
+      
+      if (__DEV__) {
+        console.log('👤 게스트 모드 설정 완료, 메인 화면으로 이동');
+      }
+      navigation.replace('Main');
+    } catch (error) {
+      console.error('네비게이션 실패:', error);
+      // 에러 발생시 메인으로 이동
+      navigation.replace('Main');
+    }
+  };
+
   if (__DEV__) {
     console.log('🔄 SplashScreen 렌더링, showStartButton:', showStartButton);
   }
@@ -169,6 +201,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
             ],
           }}
         >
+          {/* Sign in to TempleBuk 버튼 */}
           <TouchableOpacity
             onPress={handleStartPress}
             style={{
@@ -184,6 +217,11 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
               elevation: 5,
+              marginBottom: 15,
+              minWidth: 280, // 게스트 버튼과 동일한 최소 너비
+              minHeight: 60, // 게스트 버튼과 동일한 최소 높이
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <Text
@@ -195,6 +233,42 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
               }}
             >
               Sign in to TempleBuk
+            </Text>
+          </TouchableOpacity>
+
+          {/* 게스트로 입장하기 버튼 */}
+          <TouchableOpacity
+            onPress={handleGuestPress}
+            style={{
+              backgroundColor: 'transparent',
+              paddingHorizontal: 80,
+              paddingVertical: 20,
+              borderRadius: 30,
+              borderWidth: 2,
+              borderColor: '#5A4636',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+              minWidth: 280, // Sign in 버튼과 동일한 최소 너비
+              minHeight: 60, // Sign in 버튼과 동일한 최소 높이
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text
+              style={{
+                color: '#5A4636',
+                fontSize: 16,
+                fontWeight: '700',
+                textAlign: 'center',
+              }}
+            >
+              Continue as Guest
             </Text>
           </TouchableOpacity>
         </Animated.View>
