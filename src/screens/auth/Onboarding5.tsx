@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -147,7 +148,12 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView className="flex-1 bg-stone-100">
-        <View className="flex-1 px-4 bg-stone-100">
+                <ScrollView
+          className="flex-1 px-4 bg-stone-100"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          keyboardShouldPersistTaps="handled"
+        >
           {/* Title */}
           <View className="py-10">
             <Text className="text-4xl font-bold text-neutral-900 ml-5 leading-10 mb-1">
@@ -208,15 +214,36 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
             </View>
           </View>
 
-          {/* Onboarding image */}
-          <View className="py-8 items-center -mt-28">
+          {/* Onboarding image with button overlay */}
+          <View className="py-8 items-center relative">
             <Image
               source={require('../../../assets/onboarding.png')}
               style={{ width: 410, height: 410 }}
               resizeMode="contain"
             />
+            
+            {/* Start button overlay */}
+            <View className="absolute bottom-16 left-0 right-0 px-7">
+              <TouchableOpacity
+                className={`flex-row items-center justify-center rounded-4xl py-6 px-6 border-2 ${
+                  isGuestMode || userName.trim() !== ''
+                    ? 'bg-sage-600 active:bg-sage-700 border-sage-600'
+                    : 'bg-gray-300 border-gray-300'
+                }`}
+                onPress={handleStart}
+                disabled={!isGuestMode && userName.trim() === ''}
+              >
+                <Text
+                  className={`text-2xl font-bold ${
+                    isGuestMode || userName.trim() !== '' ? 'text-white' : 'text-gray-500'
+                  }`}
+                >
+                  Start
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </ScrollView>
 
         {/* Image picker modal */}
         {showImageModal && !isGuestMode && (
@@ -258,29 +285,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
           </View>
         )}
 
-        {/* Bottom button */}
-        <View
-          className="px-7 pt-7 pb-8 bg-stone-100"
-          style={{ height: 135, position: 'absolute', bottom: 0, left: 0, right: 0 }}
-        >
-          <TouchableOpacity
-            className={`flex-row items-center justify-center rounded-4xl py-6 px-6 border-2 ${
-              isGuestMode || userName.trim() !== ''
-                ? 'bg-sage-600 active:bg-sage-700 border-sage-600'
-                : 'bg-gray-300 border-gray-300'
-            }`}
-            onPress={handleStart}
-            disabled={!isGuestMode && userName.trim() === ''}
-          >
-            <Text
-              className={`text-2xl font-bold ${
-                isGuestMode || userName.trim() !== '' ? 'text-white' : 'text-gray-500'
-              }`}
-            >
-              Start
-            </Text>
-          </TouchableOpacity>
-        </View>
+
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

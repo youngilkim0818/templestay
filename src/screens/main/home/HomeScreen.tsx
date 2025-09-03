@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, memo, useRef } from 'react';
-import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Pressable, FlatList, Animated, Modal, ScrollView } from 'react-native';
+import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Pressable, FlatList, Animated, Modal, ScrollView, Alert, Linking } from 'react-native';
+import * as Location from 'expo-location';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -107,7 +108,8 @@ const HomeScreen = ({ navigation }: any) => {
   const [loading, setLoading] = useState(true);
   const [isOneDayMode, setIsOneDayMode] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
-  const { coords } = useLocationStore();
+
+  const { coords, initialize, forceRequestPermission, permissionStatus } = useLocationStore();
   const { toggleFavorite, isFavorite } = useTempleStore();
 
   const safeCoords = coords || null;
@@ -164,6 +166,47 @@ const HomeScreen = ({ navigation }: any) => {
 
   useEffect(() => { loadTemples(); }, [loadTemples]);
 
+  // 홈 화면 진입 시 위치 권한 요청
+  useEffect(() => {
+    const requestLocationPermission = async () => {
+      try {
+        console.log('🏠 HomeScreen: 위치 권한 요청 시작');
+        
+        // 현재 권한 상태 확인
+        const currentStatus = await Location.getForegroundPermissionsAsync();
+        console.log('🏠 HomeScreen: 현재 위치 권한 상태:', currentStatus.status);
+        
+        if (currentStatus.status === Location.PermissionStatus.GRANTED) {
+          console.log('🏠 HomeScreen: 위치 권한 이미 허용됨');
+          return;
+        }
+        
+        // 권한이 거부된 경우 알림 표시
+        if (currentStatus.status === Location.PermissionStatus.DENIED) {
+          console.log('🏠 HomeScreen: 위치 권한 거부됨 - 알림 표시');
+          setTimeout(() => {
+            showLocationPermissionAlert();
+          }, 1000);
+          return;
+        }
+        
+        // 권한 요청
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        console.log('🏠 HomeScreen: 위치 권한 요청 결과:', status);
+        
+        if (status === Location.PermissionStatus.DENIED) {
+          setTimeout(() => {
+            showLocationPermissionAlert();
+          }, 1000);
+        }
+      } catch (error) {
+        console.error('🏠 HomeScreen: 위치 권한 요청 실패:', error);
+      }
+    };
+    
+    requestLocationPermission();
+  }, []);
+
   const handleRegionSelect = useCallback((region: string) => { 
     setSelectedRegion(region); 
   }, []);
@@ -187,6 +230,24 @@ const HomeScreen = ({ navigation }: any) => {
   const handleRegularModePress = useCallback(() => {
     setIsOneDayMode(false);
     setSelectedRegion('Gyeongbuk'); // 기본 지역으로 초기화
+  }, []);
+
+  // 위치 권한 Alert 표시
+  const showLocationPermissionAlert = useCallback(() => {
+    Alert.alert(
+      'Location Access Required',
+      'We need your location to help you find nearby temples and attractions in Gyeongbuk. Please allow location access for TempleBuk in your device settings.',
+      [
+        {
+          text: 'Later',
+          style: 'cancel',
+        },
+        {
+          text: 'Open Settings',
+          onPress: () => Linking.openSettings(),
+        },
+      ]
+    );
   }, []);
 
   const templeCards = useMemo(() =>
@@ -926,6 +987,8 @@ const HomeScreen = ({ navigation }: any) => {
           </View>
         </View>
       </Modal>
+
+
     </SafeAreaView>
   );
 };

@@ -158,6 +158,8 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
+
+
   if (__DEV__) {
     console.log('🔄 SplashScreen 렌더링, showStartButton:', showStartButton);
   }
@@ -271,6 +273,8 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
               Continue as Guest
             </Text>
           </TouchableOpacity>
+
+
         </Animated.View>
       )}
     </View>

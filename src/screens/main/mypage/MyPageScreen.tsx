@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image, Alert, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
@@ -26,7 +26,7 @@ const MyPageScreen = ({ navigation }: any) => {
   const { user: currentUser, logout: logoutUser, updateUser, isGuestMode } = useUserStore();
 
   // 사용자 정보 불러오기 - Supabase 연동
-  const loadUserInfo = async () => {
+  const loadUserInfo = useCallback(async () => {
     try {
       // 게스트 모드인 경우
       if (isGuestMode) {
@@ -91,7 +91,7 @@ const MyPageScreen = ({ navigation }: any) => {
         });
       }
     }
-  };
+  }, [currentUser, isGuestMode, updateUser]);
 
   // 로그아웃 처리
   const handleLogout = () => {
@@ -195,7 +195,7 @@ const MyPageScreen = ({ navigation }: any) => {
         fetchUserReservations(currentUser.id);
         loadUserInfo();
       }
-    }, [currentUser?.id, fetchUserReservations, isGuestMode])
+    }, [currentUser?.id, fetchUserReservations, isGuestMode, loadUserInfo])
   );
 
   // 다가오는 예약 가져오기

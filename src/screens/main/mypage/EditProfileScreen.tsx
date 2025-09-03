@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import { View, Text, Alert, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, Image, TextInput, InteractionManager } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
+import { useFocusEffect } from '@react-navigation/native';
 import useUserStore from '../../../store/userStore';
 import { supabase } from '../../../lib/supabase';
 import CustomInput from '../../../components/common/Input';
@@ -46,8 +47,15 @@ const EditProfileScreen = ({ navigation }: any) => {
         }
     }, []);
 
+    // 화면이 포커스될 때마다 사용자 정보 새로고침
+    useFocusEffect(
+        useCallback(() => {
+            loadUserInfo();
+        }, [loadUserInfo])
+    );
+
     // AsyncStorage에서 사용자 정보 불러오기
-    const loadUserInfo = async () => {
+    const loadUserInfo = useCallback(async () => {
         try {
             const userName = await AsyncStorage.getItem('userName');
             const userProfileImage = await AsyncStorage.getItem('userProfileImage');
@@ -68,7 +76,7 @@ const EditProfileScreen = ({ navigation }: any) => {
         } catch (error) {
             console.error('Failed to load user info:', error);
         }
-    };
+    }, []);
 
     const handleSave = async () => {
         if (!name.trim()) {

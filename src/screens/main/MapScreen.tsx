@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo, memo } from 'react';
-import { View, StyleSheet, Dimensions, ActivityIndicator, TextInput, TouchableOpacity, Keyboard, Animated, PanResponder, FlatList, Text, Image, Pressable } from 'react-native';
+import { View, StyleSheet, Dimensions, ActivityIndicator, TextInput, TouchableOpacity, Keyboard, Animated, PanResponder, FlatList, Text, Image, Pressable, Alert, Linking } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -379,6 +379,34 @@ export default function MapScreen({ navigation, route }: any) {
   }, [getAnchorCoords]);
 
   const moveToMyLocation = useCallback(async () => {
+    // 위치 권한 체크 - DENIED 상태일 때만 Alert 표시
+    const { status } = await Location.getForegroundPermissionsAsync();
+    if (status === Location.PermissionStatus.DENIED) {
+      Alert.alert(
+        'Location Access Required',
+        'We need your location to help you find nearby temples and attractions in Gyeongbuk. Please allow location access for TempleBuk in your device settings.',
+        [
+          {
+            text: 'Later',
+            style: 'cancel',
+          },
+          {
+            text: 'Open Settings',
+            onPress: () => Linking.openSettings(),
+          },
+        ]
+      );
+      return;
+    }
+
+    // UNDETERMINED 상태인 경우 권한 요청
+    if (status === Location.PermissionStatus.UNDETERMINED) {
+      const { status: newStatus } = await Location.requestForegroundPermissionsAsync();
+      if (newStatus !== Location.PermissionStatus.GRANTED) {
+        return;
+      }
+    }
+
     if (!location) return;
     // 지도 이동
     mapRef.current?.animateToRegion({ ...location, latitudeDelta: 0.01, longitudeDelta: 0.01 }, 500);
