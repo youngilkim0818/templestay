@@ -26,11 +26,8 @@ const DistanceTemplesScreen = ({ navigation }: any) => {
           setUserLocation(location);
         } else {
           setLocationPermission(false);
-          Alert.alert(
-            '위치 권한 필요',
-            '가까운 사찰을 찾기 위해 위치 권한이 필요합니다.',
-            [{ text: '확인' }]
-          );
+          // Apple 가이드라인 5.1.1 준수: 재허용 유도 Alert 제거
+          console.log('DistanceTemplesScreen: 위치 권한이 거부되어 기본 템플 목록을 거리순이 아닌 일반 순서로 표시합니다');
         }
       } catch (error) {
         console.error('위치 가져오기 실패:', error);

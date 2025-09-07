@@ -232,22 +232,12 @@ const HomeScreen = ({ navigation }: any) => {
     setSelectedRegion('Gyeongbuk'); // 기본 지역으로 초기화
   }, []);
 
-  // 위치 권한 Alert 표시
+  // Apple 가이드라인 5.1.1 준수: 위치 권한 거부 시 재허용 유도 금지
+  // 권한이 필요한 기능 사용 시에만 간단한 안내만 제공
   const showLocationPermissionAlert = useCallback(() => {
-    Alert.alert(
-      'Location Access Required',
-      'We need your location to help you find nearby temples and attractions in Gyeongbuk. Please allow location access for TempleBuk in your device settings.',
-      [
-        {
-          text: 'Later',
-          style: 'cancel',
-        },
-        {
-          text: 'Open Settings',
-          onPress: () => Linking.openSettings(),
-        },
-      ]
-    );
+    // Apple 가이드라인 준수를 위해 재허용 유도 메시지 제거
+    // 단순히 로그만 남기고 사용자 결정 존중
+    console.log('🏠 HomeScreen: 위치 권한이 거부되어 기본 템플 목록을 표시합니다');
   }, []);
 
   const templeCards = useMemo(() =>
