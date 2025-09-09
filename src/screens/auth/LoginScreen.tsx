@@ -87,10 +87,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
     navigation.navigate('Signup');
   };
 
+
+
   return (
     <SafeAreaView className="flex-1 bg-stone-100">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="flex-1 px-5 bg-stone-100">
+          {/* 뒤로 가기 버튼 */}
+          <View className="pt-4 pl-0">
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Splash')}
+              className="w-10 h-10 rounded-full bg-stone-200 items-center justify-center"
+            >
+              <Ionicons name="arrow-back" size={20} color="#6B7280" />
+            </TouchableOpacity>
+          </View>
+
           {/* 로고 및 타이틀 */}
           <View className="py-16 items-center">
             <Text className="text-4xl font-bold text-neutral-900 mt-8 mr-64">
@@ -240,6 +252,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
           </View>
         </View>
       </TouchableWithoutFeedback>
+
 
                 {/* 하단 버튼 */}
                 <View className="px-7 pt-7 pb-8 bg-stone-100" style={{ height: 165, position: 'absolute', bottom: -30, left: 0, right: 0 }}>

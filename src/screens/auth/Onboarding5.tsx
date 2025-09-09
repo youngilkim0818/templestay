@@ -10,6 +10,7 @@ import {
   Keyboard,
   Platform,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,6 +19,23 @@ import * as ImagePicker from 'expo-image-picker';
 import { InteractionManager } from 'react-native'; // ★ iPad 크래시 방지용
 import useUserStore from '../../store/userStore';
 import { supabase } from '../../lib/supabase';
+
+const { width, height } = Dimensions.get('window');
+const isSmallScreen = height < 700;
+const isLargeScreen = height > 800;
+
+// Responsive sizes
+const headerFontSize = isSmallScreen ? 18 : (isLargeScreen ? 24 : 20);
+const subHeaderFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
+const buttonPadding = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+const buttonFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
+const inputFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const inputPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const iconSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 20);
+const profileImageSize = isSmallScreen ? 60 : (isLargeScreen ? 90 : 75);
+const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
 
 const ImportantFactor2Screen = ({ navigation }: any) => {
   const { user: currentUser, updateUser } = useUserStore();
@@ -155,51 +173,90 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
           keyboardShouldPersistTaps="handled"
         >
           {/* Title */}
-          <View className="py-10">
-            <Text className="text-4xl font-bold text-neutral-900 ml-5 leading-10 mb-1">
+          <View style={{ paddingVertical: sectionPadding * 2 }}>
+            <Text style={{ 
+              fontSize: headerFontSize + 8, 
+              fontWeight: 'bold', 
+              color: '#111827', 
+              marginLeft: sectionPadding, 
+              lineHeight: (headerFontSize + 8) * 1.2, 
+              marginBottom: 4 
+            }}>
               Welcome to TempleBuk!
             </Text>
             {!isGuestMode && (
-              <Text className="text-2xl font-bold text-neutral-900 ml-5 leading-10">
+              <Text style={{ 
+                fontSize: headerFontSize, 
+                fontWeight: 'bold', 
+                color: '#111827', 
+                marginLeft: sectionPadding, 
+                lineHeight: headerFontSize * 1.2 
+              }}>
                 Set up your profile
               </Text>
             )}
           </View>
 
           {/* Profile section */}
-          <View className={`px-2 items-center ${isGuestMode ? 'py-8' : 'py-6'}`}>
-            <View className="relative mb-6">
-              <View className="w-32 h-32 bg-stone-100 rounded-full border-2 border-stone-300 items-center justify-center overflow-hidden">
+          <View style={{ 
+            paddingHorizontal: cardPadding, 
+            alignItems: 'center', 
+            paddingVertical: isGuestMode ? sectionPadding * 2 : sectionPadding * 1.5 
+          }}>
+            <View style={{ position: 'relative', marginBottom: sectionPadding * 1.5 }}>
+              <View style={{
+                width: profileImageSize,
+                height: profileImageSize,
+                backgroundColor: '#F5F5F4',
+                borderRadius: profileImageSize / 2,
+                borderWidth: 2,
+                borderColor: '#D6D3D1',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden'
+              }}>
                 {profileImage ? (
-                  <Image source={{ uri: profileImage }} className="w-full h-full" />
+                  <Image source={{ uri: profileImage }} style={{ width: '100%', height: '100%' }} />
                 ) : (
-                  <Ionicons name="person" size={64} color="#999" />
+                  <Ionicons name="person" size={profileImageSize * 0.6} color="#999" />
                 )}
               </View>
 
               {!isGuestMode && (
                 <TouchableOpacity
-                  className="absolute bottom-0 right-0 w-8 h-8 bg-sage-600 rounded-full items-center justify-center border-2 border-white"
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    right: 0,
+                    width: iconSize + 8,
+                    height: iconSize + 8,
+                    backgroundColor: '#5A4636',
+                    borderRadius: (iconSize + 8) / 2,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderWidth: 2,
+                    borderColor: 'white'
+                  }}
                   onPress={() => setShowImageModal(true)}
                 >
-                  <Ionicons name="camera" size={16} color="white" />
+                  <Ionicons name="camera" size={iconSize} color="white" />
                 </TouchableOpacity>
               )}
             </View>
 
             {/* Name input */}
-            <View className="w-48">
+            <View style={{ width: profileImageSize * 2 }}>
               <TextInput
                 style={{
                   backgroundColor: isGuestMode ? '#E7E5E4' : '#F5F5F4',
                   borderRadius: 25,
                   borderWidth: 2,
                   borderColor: isGuestMode ? '#D6D3D1' : '#E7E5E4',
-                  paddingHorizontal: 20,
-                  paddingVertical: 15,
-                  fontSize: 18,
+                  paddingHorizontal: inputPadding * 1.5,
+                  paddingVertical: inputPadding,
+                  fontSize: inputFontSize,
                   color: isGuestMode ? '#78716C' : '#292524',
-                  minHeight: 50,
+                  minHeight: inputPadding * 3,
                   textAlign: 'center',
                 }}
                 placeholder={isGuestMode ? "Guest" : "Enter your name"}
@@ -215,28 +272,57 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
           </View>
 
           {/* Onboarding image with button overlay */}
-          <View className="py-8 items-center relative">
+          <View style={{ marginTop: -sectionPadding * 2, alignItems: 'center', position: 'relative' }}>
             <Image
               source={require('../../../assets/onboarding.png')}
-              style={{ width: 410, height: 410 }}
+              style={{ 
+                width: isSmallScreen ? 280 : (isLargeScreen ? 420 : 360), 
+                height: isSmallScreen ? 280 : (isLargeScreen ? 420 : 360) 
+              }}
               resizeMode="contain"
             />
             
             {/* Start button overlay */}
-            <View className="absolute bottom-16 left-0 right-0 px-7">
+            <View style={{ 
+              position: 'absolute', 
+              bottom: -sectionPadding * 3, 
+              left: 0, 
+              right: 0, 
+              paddingHorizontal: sectionPadding * 2,
+              alignItems: 'center'
+            }}>
               <TouchableOpacity
-                className={`flex-row items-center justify-center rounded-4xl py-6 px-6 border-2 ${
-                  isGuestMode || userName.trim() !== ''
-                    ? 'bg-sage-600 active:bg-sage-700 border-sage-600'
-                    : 'bg-gray-300 border-gray-300'
-                }`}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 30,
+                  paddingVertical: 18,
+                  paddingHorizontal: 90,
+                  minWidth: 360,
+                  minHeight: 60,
+                  backgroundColor: isGuestMode || userName.trim() !== ''
+                    ? '#4A5D23'
+                    : '#D1D5DB',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
+                }}
                 onPress={handleStart}
                 disabled={!isGuestMode && userName.trim() === ''}
               >
                 <Text
-                  className={`text-2xl font-bold ${
-                    isGuestMode || userName.trim() !== '' ? 'text-white' : 'text-gray-500'
-                  }`}
+                  style={{
+                    color: 'white',
+                    fontSize: 18,
+                    fontWeight: '700',
+                    textAlign: 'center',
+                  }}
                 >
                   Start
                 </Text>
@@ -247,42 +333,97 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
 
         {/* Image picker modal */}
         {showImageModal && !isGuestMode && (
-          <View className="absolute inset-0 items-center justify-center z-[9999] pt-4">
-            <View className="bg-stone-100 rounded-2xl p-6 mx-8 w-80 border-2 border-stone-300">
+          <TouchableOpacity 
+            className="absolute inset-0 items-center justify-center z-[9999] pt-0"
+            activeOpacity={1}
+            onPress={() => setShowImageModal(false)}
+          >
+            <View 
+              style={{
+                backgroundColor: '#F5F5F4',
+                borderRadius: 16,
+                padding: sectionPadding,
+                marginHorizontal: sectionPadding * 3,
+                width: isSmallScreen ? 240 : (isLargeScreen ? 300 : 270),
+                borderWidth: 2,
+                borderColor: '#D6D3D1'
+              }}
+              onStartShouldSetResponder={() => true}
+            >
               <TouchableOpacity
-                className="absolute top-4 right-4 w-8 h-8 bg-stone-200 rounded-full items-center justify-center"
+                style={{
+                  position: 'absolute',
+                  top: sectionPadding,
+                  right: sectionPadding,
+                  width: iconSize + 8,
+                  height: iconSize + 8,
+                  backgroundColor: '#E7E5E4',
+                  borderRadius: (iconSize + 8) / 2,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 10000
+                }}
                 onPress={() => setShowImageModal(false)}
+                onStartShouldSetResponder={() => true}
               >
-                <Ionicons name="close" size={20} color="#78716C" />
+                <Ionicons name="close" size={iconSize} color="#78716C" />
               </TouchableOpacity>
 
-              <Text className="text-2xl font-bold text-stone-800 text-center mb-6">
+              <Text style={{
+                fontSize: headerFontSize,
+                fontWeight: 'bold',
+                color: '#292524',
+                textAlign: 'center',
+                marginBottom: sectionPadding * 1.5
+              }}>
                 Profile Image
               </Text>
 
               <TouchableOpacity
-                className="bg-sage-600 rounded-2xl py-4 px-6 mb-4"
+                style={{
+                  backgroundColor: '#5A4636',
+                  borderRadius: 16,
+                  paddingVertical: buttonPadding,
+                  paddingHorizontal: buttonPadding * 1.5,
+                  marginBottom: cardPadding
+                }}
                 onPress={handleOpenGalleryFromModal}
                 disabled={isPicking}
               >
-                <Text className="text-white text-lg font-semibold text-center">
+                <Text style={{
+                  color: 'white',
+                  fontSize: buttonFontSize + 1,
+                  fontWeight: '600',
+                  textAlign: 'center'
+                }}>
                   Open Gallery
                 </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                className="bg-sage-600 rounded-2xl py-4 px-6 mb-4"
+                style={{
+                  backgroundColor: '#5A4636',
+                  borderRadius: 16,
+                  paddingVertical: buttonPadding,
+                  paddingHorizontal: buttonPadding * 1.5,
+                  marginBottom: cardPadding
+                }}
                 onPress={() => {
                   resetToDefaultImage();
                   setShowImageModal(false);
                 }}
               >
-                <Text className="text-white text-lg font-semibold text-center">
+                <Text style={{
+                  color: 'white',
+                  fontSize: buttonFontSize + 1,
+                  fontWeight: '600',
+                  textAlign: 'center'
+                }}>
                   Reset to Default
                 </Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
 
 

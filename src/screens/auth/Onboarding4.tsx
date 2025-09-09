@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useUserStore from '../../store/userStore';
 
 const FACTOR_OPTIONS = [
   { id: 1, text: 'Quiet environment' },
@@ -16,6 +17,22 @@ const ImportantFactorScreen = ({ navigation }: any) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [dotIndex, setDotIndex] = useState<number>(0);
+  const [isGuestMode, setIsGuestMode] = useState<boolean>(false);
+
+  // 게스트 모드 확인
+  useEffect(() => {
+    const checkGuestMode = async () => {
+      try {
+        const guestMode = await AsyncStorage.getItem('isGuestMode');
+        if (guestMode === 'true') {
+          setIsGuestMode(true);
+        }
+      } catch (error) {
+        console.error('게스트 모드 확인 실패:', error);
+      }
+    };
+    checkGuestMode();
+  }, []);
 
   const handleOptionSelect = (id: number) => {
     if (selectedOption === id) {
@@ -35,7 +52,15 @@ const ImportantFactorScreen = ({ navigation }: any) => {
         // 4초 대기
         setTimeout(() => {
           setIsLoading(false);
-          navigation.navigate('Onboarding5');
+          
+          if (isGuestMode) {
+            // 게스트 모드일 때는 온보딩 완료 처리하고 메인으로 이동
+            AsyncStorage.setItem('hasCompletedOnboarding', 'true');
+            navigation.replace('Main');
+          } else {
+            // 일반 사용자는 온보딩5로 이동
+            navigation.navigate('Onboarding5');
+          }
         }, 4000);
       }
     };
