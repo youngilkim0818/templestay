@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, Alert, Modal } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert, Modal, Dimensions } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,6 +8,28 @@ import { Temple } from '../../../types';
 import { TEMPLES_DATA } from '../../../data/temple-data';
 import useReservationStore from '../../../store/reservationStore';
 import useUserStore from '../../../store/userStore';
+
+const { width, height } = Dimensions.get('window');
+const isSmallScreen = height < 700;
+const isLargeScreen = height > 800;
+
+// Responsive sizes
+const headerFontSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 18);
+const subHeaderFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
+const cardPadding = isSmallScreen ? 8 : (isLargeScreen ? 14 : 10);
+const cardMargin = isSmallScreen ? 3 : (isLargeScreen ? 6 : 4);
+const templeImageHeight = isSmallScreen ? 100 : (isLargeScreen ? 140 : 120);
+const templeTitleSize = isSmallScreen ? 13 : (isLargeScreen ? 17 : 15);
+const templeDescSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const templeDistanceSize = isSmallScreen ? 9 : (isLargeScreen ? 13 : 11);
+const sectionPadding = isSmallScreen ? 8 : (isLargeScreen ? 14 : 10);
+const iconSize = isSmallScreen ? 14 : (isLargeScreen ? 20 : 18);
+const buttonPadding = isSmallScreen ? 6 : (isLargeScreen ? 10 : 8);
+const buttonFontSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const programTitleSize = isSmallScreen ? 13 : (isLargeScreen ? 17 : 15);
+const programDescSize = isSmallScreen ? 9 : (isLargeScreen ? 13 : 11);
+const priceFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
+const totalPriceFontSize = isSmallScreen ? 14 : (isLargeScreen ? 20 : 16);
 
 type ReservationConfirmRouteProp = RouteProp<TempleStackParamList, 'ReservationConfirm'>;
 
@@ -236,26 +258,49 @@ const ReservationConfirmScreen = () => {
                   <Image source={temple.imageUrl} className="w-full h-full" resizeMode="cover" />
                 ) : (
                   <View className="w-full h-full bg-stone-200 items-center justify-center">
-                    <Text className="text-2xl">🏯</Text>
+                    <Text style={{ fontSize: iconSize * 2 }}>🏯</Text>
                   </View>
                 );
               })()}
             </View>
             <View className="flex-1">
-              <Text className="text-lg font-bold text-neutral-900 mb-1">
+              <Text 
+                className="font-bold text-neutral-900 mb-1"
+                style={{ fontSize: templeTitleSize }}
+              >
                 {temple.name.replace(/Temple/g, '').trim()}
               </Text>
-              <Text className="text-sm text-neutral-600">{temple.address}</Text>
+              <Text 
+                className="text-neutral-600"
+                style={{ fontSize: templeDescSize }}
+              >
+                {temple.address}
+              </Text>
             </View>
           </View>
         </View>
 
         {/* 프로그램 정보 */}
         <View className="bg-white rounded-xl p-4 mb-2 border border-stone-200">
-          <Text className="text-lg font-bold text-neutral-900 mb-3">Selected Program</Text>
+          <Text 
+            className="font-bold text-neutral-900 mb-3"
+            style={{ fontSize: programTitleSize }}
+          >
+            Selected Program
+          </Text>
           <View className="bg-stone-50 rounded-lg p-3 border border-stone-200">
-            <Text className="text-base font-semibold text-sage-600 mb-2">{selectedProgram.title}</Text>
-            <Text className="text-sm text-neutral-700">{selectedProgram.description}</Text>
+            <Text 
+              className="font-semibold text-sage-600 mb-2"
+              style={{ fontSize: programTitleSize }}
+            >
+              {selectedProgram.title}
+            </Text>
+            <Text 
+              className="text-neutral-700"
+              style={{ fontSize: programDescSize }}
+            >
+              {selectedProgram.description}
+            </Text>
           </View>
         </View>
 
@@ -267,7 +312,10 @@ const ReservationConfirmScreen = () => {
               className="flex-1 border-r border-stone-300 pr-4"
               onPress={() => setShowDateModal(true)}
             >
-              <Text className="text-lg font-semibold text-neutral-900 text-center">
+              <Text 
+                className="font-semibold text-neutral-900 text-center"
+                style={{ fontSize: templeTitleSize }}
+              >
                 {selectedDate.length === 2 ? `${formatDate(selectedDate[0])} ~ ${formatDate(selectedDate[1])}` : 'No date selected'}
               </Text>
             </TouchableOpacity>
@@ -277,7 +325,10 @@ const ReservationConfirmScreen = () => {
               onPress={() => setShowParticipantsModal(true)}
             >
               <View className="flex-col items-center">
-                <Text className="text-base font-bold text-neutral-900 text-center">
+                <Text 
+                  className="font-bold text-neutral-900 text-center"
+                  style={{ fontSize: templeDescSize }}
+                >
                   {(() => {
                     const parts = [];
                     if (participants.adults > 0) parts.push(`Adult ${participants.adults}`);
@@ -301,7 +352,10 @@ const ReservationConfirmScreen = () => {
                   
                   if (parts.length >= 3) {
                     return (
-                      <Text className="text-base font-bold text-neutral-900 text-center">
+                      <Text 
+                        className="font-bold text-neutral-900 text-center"
+                        style={{ fontSize: templeDescSize }}
+                      >
                         {parts[2]}
                         {parts.length === 4 && `, ${parts[3]}`}
                       </Text>
@@ -316,21 +370,42 @@ const ReservationConfirmScreen = () => {
 
         {/* 예약 상세 */}
         <View className="bg-white rounded-xl p-4 mb-2 border border-stone-200">
-          <Text className="text-lg font-bold text-neutral-900 mb-3">Reservation Details</Text>
+          <Text 
+            className="font-bold text-neutral-900 mb-3"
+            style={{ fontSize: programTitleSize }}
+          >
+            Reservation Details
+          </Text>
           
           {/* 날짜 */}
           <View className="flex-row justify-between items-center py-2 border-b border-stone-100">
-            <Text className="text-sm font-bold text-neutral-600">Date</Text>
-                              <Text className="text-sm font-semibold text-neutral-900">
+            <Text 
+              className="font-bold text-neutral-600"
+              style={{ fontSize: templeDistanceSize }}
+            >
+              Date
+            </Text>
+                              <Text 
+                                className="font-semibold text-neutral-900"
+                                style={{ fontSize: templeDistanceSize }}
+                              >
                     {selectedDate.length === 2 ? `${formatDate(selectedDate[0])} ~ ${formatDate(selectedDate[1])}` : 'No date selected'}
                   </Text>
           </View>
 
           {/* 참가자 */}
           <View className="flex-row justify-between items-center py-2 border-b border-stone-100">
-            <Text className="text-sm font-bold text-neutral-600">Participants</Text>
+            <Text 
+              className="font-bold text-neutral-600"
+              style={{ fontSize: templeDistanceSize }}
+            >
+              Participants
+            </Text>
             <View className="flex-col items-end">
-              <Text className="text-sm font-bold text-neutral-900">
+              <Text 
+                className="font-bold text-neutral-900"
+                style={{ fontSize: templeDistanceSize }}
+              >
                 {(() => {
                   const parts = [];
                   if (participants.adults > 0) parts.push(`Adult ${participants.adults}`);
@@ -354,7 +429,10 @@ const ReservationConfirmScreen = () => {
                 
                 if (parts.length >= 3) {
                   return (
-                    <Text className="text-sm font-bold text-neutral-900">
+                    <Text 
+                      className="font-bold text-neutral-900"
+                      style={{ fontSize: templeDistanceSize }}
+                    >
                       {parts[2]}
                       {parts.length === 4 && `, ${parts[3]}`}
                     </Text>
@@ -367,8 +445,16 @@ const ReservationConfirmScreen = () => {
 
           {/* 총 금액 */}
           <View className="flex-row justify-between items-center py-2">
-            <Text className="text-lg font-bold text-neutral-900">Total Amount</Text>
-            <Text className="text-xl font-bold text-orange-600">
+            <Text 
+              className="font-bold text-neutral-900"
+              style={{ fontSize: programTitleSize }}
+            >
+              Total Amount
+            </Text>
+            <Text 
+              className="font-bold text-orange-600"
+              style={{ fontSize: totalPriceFontSize }}
+            >
               ₩{(() => {
                 // TEMPLES_DATA에서 정확한 가격 가져오기
                 const basicTemple = TEMPLES_DATA.find((item) => item.id === temple?.id);
@@ -397,7 +483,12 @@ const ReservationConfirmScreen = () => {
 
         {/* 결제 방법 선택 */}
         <View className="bg-white rounded-xl p-4 mb-6 border border-stone-200">
-          <Text className="text-lg font-bold text-neutral-900 mb-3">Payment Method</Text>
+          <Text 
+            className="font-bold text-neutral-900 mb-3"
+            style={{ fontSize: programTitleSize }}
+          >
+            Payment Method
+          </Text>
           
           <TouchableOpacity 
             onPress={() => handlePaymentMethodSelect('bank')}
@@ -421,7 +512,12 @@ const ReservationConfirmScreen = () => {
                 <Text className={`font-semibold ${
                   selectedPaymentMethod === 'bank' ? 'text-sage-600' : 'text-neutral-700'
                 }`}>Bank Transfer</Text>
-                <Text className="text-xs text-neutral-500">Transfer to our account within 7 days</Text>
+                <Text 
+                  className="text-neutral-500"
+                  style={{ fontSize: templeDistanceSize - 2 }}
+                >
+                  Transfer to our account within 7 days
+                </Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -448,7 +544,12 @@ const ReservationConfirmScreen = () => {
                 <Text className={`font-semibold ${
                   selectedPaymentMethod === 'onsite' ? 'text-sage-600' : 'text-neutral-700'
                 }`}>Onsite Payment</Text>
-                <Text className="text-xs text-neutral-500">Pay when you arrive at the temple</Text>
+                <Text 
+                  className="text-neutral-500"
+                  style={{ fontSize: templeDistanceSize - 2 }}
+                >
+                  Pay when you arrive at the temple
+                </Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -465,7 +566,10 @@ const ReservationConfirmScreen = () => {
                 : 'bg-gray-400'
             }`}
           >
-            <Text className="text-center font-semibold text-lg text-white">
+            <Text 
+              className="text-center font-semibold text-white"
+              style={{ fontSize: buttonFontSize }}
+            >
               {isLoading ? 'Processing...' : 'Confirm Reservation'}
             </Text>
           </TouchableOpacity>
@@ -477,14 +581,19 @@ const ReservationConfirmScreen = () => {
           animationType="fade"
           transparent={true}
         >
-          <View className="flex-1 justify-end items-center pb-0">
-            <View className="bg-white rounded-3xl w-full h-[700px] mx-4 border border-stone-300">
+         <View className="flex-1 justify-end items-center" style={{ transform: [{ translateY: 50 }] }}>
+           <View className="bg-white rounded-3xl w-full h-[700px] mx-4 border border-stone-300">
             {/* 헤더 */}
             <View className="flex-row items-center justify-between p-4 border-b border-stone-200">
              <TouchableOpacity onPress={() => setShowDateModal(false)}>
                <Ionicons name="close" size={24} color="#6b7280" />
              </TouchableOpacity>
-                           <Text className="text-lg font-bold text-neutral-900">Date Selection</Text>
+                           <Text 
+                             className="font-bold text-neutral-900"
+                             style={{ fontSize: programTitleSize }}
+                           >
+                             Date Selection
+                           </Text>
              <View className="w-6" />
            </View>
 
@@ -499,7 +608,12 @@ const ReservationConfirmScreen = () => {
                 >
                   <Ionicons name="chevron-back" size={20} color="#6b7280" />
                 </TouchableOpacity>
-                <Text className="text-2xl font-bold text-neutral-900">{formatMonthYear(currentMonth)}</Text>
+                <Text 
+                  className="font-bold text-neutral-900"
+                  style={{ fontSize: headerFontSize }}
+                >
+                  {formatMonthYear(currentMonth)}
+                </Text>
                 <TouchableOpacity 
                   onPress={() => changeMonth('next')}
                   className="w-8 h-8 items-center justify-center"
@@ -510,7 +624,10 @@ const ReservationConfirmScreen = () => {
               <View className="flex-row">
                 {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
                   <View key={day} className="flex-1 items-center justify-center py-2">
-                    <Text className={`text-xl font-medium text-center ${index === 0 ? 'text-red-500' : index === 6 ? 'text-blue-500' : 'text-stone-600'}`}>
+                    <Text 
+                      className={`font-medium text-center ${index === 0 ? 'text-red-500' : index === 6 ? 'text-blue-500' : 'text-stone-600'}`}
+                      style={{ fontSize: templeTitleSize }}
+                    >
                       {day}
                     </Text>
                   </View>
@@ -550,12 +667,15 @@ const ReservationConfirmScreen = () => {
                         onPress={() => !isPastOrToday && isReservationAvailable(date) && handleDateSelect(date)}
                         disabled={isPastOrToday || isReservationUnavailable}
                       >
-                        <Text className={`text-xl text-center ${
-                          isSelected ? 'font-extrabold' : 'font-medium'
-                        } ${
-                          isPastOrToday ? 'text-red-500' : 
-                          isReservationUnavailable ? 'text-red-500' : 'text-stone-700'
-                        }`}>
+                        <Text 
+                          className={`text-center ${
+                            isSelected ? 'font-extrabold' : 'font-medium'
+                          } ${
+                            isPastOrToday ? 'text-red-500' : 
+                            isReservationUnavailable ? 'text-red-500' : 'text-stone-700'
+                          }`}
+                          style={{ fontSize: templeTitleSize }}
+                        >
                           {day}
                         </Text>
                         {/* 선택된 날짜 배경 도형 */}
@@ -598,12 +718,15 @@ const ReservationConfirmScreen = () => {
                              onPress={() => !isPastOrToday && isReservationAvailable(date) && handleDateSelect(date)}
                              disabled={isPastOrToday || isReservationUnavailable}
                            >
-                             <Text className={`text-xl text-center ${
-                               isSelected ? 'font-extrabold' : 'font-medium'
-                             } ${
-                               isPastOrToday ? 'text-red-500' : 
-                               isReservationUnavailable ? 'text-red-500' : 'text-stone-700'
-                             }`}>
+                             <Text 
+                               className={`text-center ${
+                                 isSelected ? 'font-extrabold' : 'font-medium'
+                               } ${
+                                 isPastOrToday ? 'text-red-500' : 
+                                 isReservationUnavailable ? 'text-red-500' : 'text-stone-700'
+                               }`}
+                               style={{ fontSize: templeTitleSize }}
+                             >
                                {currentDay}
                              </Text>
                             {/* 선택된 날짜 배경 도형 */}
@@ -641,7 +764,10 @@ const ReservationConfirmScreen = () => {
                    tempSelectedDate.length === 2 ? 'bg-sage-600' : 'bg-gray-400'
                  }`}
                >
-                                  <Text className="text-white text-center font-semibold text-lg">
+                                  <Text 
+                                    className="text-white text-center font-semibold"
+                                    style={{ fontSize: buttonFontSize }}
+                                  >
                     {tempSelectedDate.length > 0 
                       ? `${formatDate(tempSelectedDate[0])} ~ ${formatDate(tempSelectedDate[1])}`
                       : 'Please select a date'
@@ -659,69 +785,116 @@ const ReservationConfirmScreen = () => {
          animationType="fade"
          transparent={true}
        >
-         <View className="flex-1 justify-end items-center pb-0">
+         <View className="flex-1 justify-end items-center" style={{ transform: [{ translateY: 50 }] }}>
            <View className="bg-white rounded-3xl w-full h-[700px] mx-4 border border-stone-300">
              {/* 헤더 */}
-             <View className="flex-row items-center justify-between p-4 border-b border-stone-200">
+             <View className="flex-row items-center justify-between border-b border-stone-200" style={{ padding: cardPadding }}>
                <TouchableOpacity onPress={() => setShowParticipantsModal(false)}>
                  <Ionicons name="close" size={24} color="#6b7280" />
                </TouchableOpacity>
-               <Text className="text-lg font-bold text-neutral-900">Participant Selection</Text>
+               <Text 
+                 className="font-bold text-neutral-900"
+                 style={{ fontSize: programTitleSize }}
+               >
+                 Participant Selection
+               </Text>
                <View className="w-6" />
              </View>
 
              {/* 인원수 선택 */}
-             <View className="mx-4 mt-6">
+             <View style={{ marginHorizontal: cardPadding, marginTop: cardPadding }}>
                {/* Adult 선택 */}
-               <View className="bg-stone-50 p-4 border border-stone-200 rounded-lg mb-4">
+               <View className="bg-stone-50 border border-stone-200 rounded-lg mb-4" style={{ padding: cardPadding }}>
                  <View className="flex-row items-center justify-between">
-                   <Text className="text-lg text-neutral-900">Adult</Text>
+                   <Text 
+                     className="text-neutral-900"
+                     style={{ fontSize: templeTitleSize }}
+                   >
+                     Adult
+                   </Text>
                    <View className="flex-row items-center">
                      <TouchableOpacity
                        onPress={() => handleParticipantsChange('adults', tempParticipants.adults - 1)}
                        className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
                      >
-                       <Text className="text-neutral-600 text-lg">-</Text>
+                       <Text 
+                         className="text-neutral-600"
+                         style={{ fontSize: templeTitleSize }}
+                       >
+                         -
+                       </Text>
                      </TouchableOpacity>
-                     <Text className="text-lg font-semibold text-neutral-900 mx-4">
+                     <Text 
+                       className="font-semibold text-neutral-900 mx-4"
+                       style={{ fontSize: templeTitleSize }}
+                     >
                        {tempParticipants.adults}
                      </Text>
                      <TouchableOpacity
                        onPress={() => handleParticipantsChange('adults', tempParticipants.adults + 1)}
                        className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
                      >
-                       <Text className="text-neutral-600 text-lg">+</Text>
+                       <Text 
+                         className="text-neutral-600"
+                         style={{ fontSize: templeTitleSize }}
+                       >
+                         +
+                       </Text>
                      </TouchableOpacity>
                    </View>
                  </View>
-                 <Text className="text-sm text-neutral-500 mt-2">
+                 <Text 
+                   className="text-neutral-500 mt-2"
+                   style={{ fontSize: templeDistanceSize }}
+                 >
                    ₩{(selectedProgram.price || 0).toLocaleString()}
                  </Text>
                </View>
 
                {/* Teenager 선택 */}
-               <View className="bg-stone-50 p-4 border border-stone-200 rounded-lg mb-4">
+               <View className="bg-stone-50 border border-stone-200 rounded-lg mb-4" style={{ padding: cardPadding }}>
                  <View className="flex-row items-center justify-between">
-                   <Text className="text-lg text-neutral-900">Teenager</Text>
+                   <Text 
+                     className="text-neutral-900"
+                     style={{ fontSize: templeTitleSize }}
+                   >
+                     Teenager
+                   </Text>
                    <View className="flex-row items-center">
                      <TouchableOpacity
                        onPress={() => handleParticipantsChange('teenagers', tempParticipants.teenagers - 1)}
                        className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
                      >
-                       <Text className="text-neutral-600 text-lg">-</Text>
+                       <Text 
+                         className="text-neutral-600"
+                         style={{ fontSize: templeTitleSize }}
+                       >
+                         -
+                       </Text>
                      </TouchableOpacity>
-                     <Text className="text-lg font-semibold text-neutral-900 mx-4">
+                     <Text 
+                       className="font-semibold text-neutral-900 mx-4"
+                       style={{ fontSize: templeTitleSize }}
+                     >
                        {tempParticipants.teenagers}
                      </Text>
                      <TouchableOpacity
                        onPress={() => handleParticipantsChange('teenagers', tempParticipants.teenagers + 1)}
                        className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
                      >
-                       <Text className="text-neutral-600 text-lg">+</Text>
+                       <Text 
+                         className="text-neutral-600"
+                         style={{ fontSize: templeTitleSize }}
+                       >
+                         +
+                       </Text>
                      </TouchableOpacity>
                    </View>
                  </View>
-                 <Text className="text-sm text-neutral-500 mt-2">
+                 <Text 
+                   className="text-neutral-500 mt-2"
+                   style={{ fontSize: templeDistanceSize }}
+                 >
                    ₩{(() => {
                      const basicTemple = TEMPLES_DATA.find((item) => item.id === temple?.id);
                      const programDetail = basicTemple?.programDetails?.[selectedProgram.title];
@@ -734,28 +907,49 @@ const ReservationConfirmScreen = () => {
                </View>
 
                {/* Child 선택 */}
-               <View className="bg-stone-50 p-4 border border-stone-200 rounded-lg mb-4">
+               <View className="bg-stone-50 border border-stone-200 rounded-lg mb-4" style={{ padding: cardPadding }}>
                  <View className="flex-row items-center justify-between">
-                   <Text className="text-lg text-neutral-900">Child</Text>
+                   <Text 
+                     className="text-neutral-900"
+                     style={{ fontSize: templeTitleSize }}
+                   >
+                     Child
+                   </Text>
                    <View className="flex-row items-center">
                      <TouchableOpacity
                        onPress={() => handleParticipantsChange('children', tempParticipants.children - 1)}
                        className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
                      >
-                       <Text className="text-neutral-600 text-lg">-</Text>
+                       <Text 
+                         className="text-neutral-600"
+                         style={{ fontSize: templeTitleSize }}
+                       >
+                         -
+                       </Text>
                      </TouchableOpacity>
-                     <Text className="text-lg font-semibold text-neutral-900 mx-4">
+                     <Text 
+                       className="font-semibold text-neutral-900 mx-4"
+                       style={{ fontSize: templeTitleSize }}
+                     >
                        {tempParticipants.children}
                      </Text>
                      <TouchableOpacity
                        onPress={() => handleParticipantsChange('children', tempParticipants.children + 1)}
                        className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
                      >
-                       <Text className="text-neutral-600 text-lg">+</Text>
+                       <Text 
+                         className="text-neutral-600"
+                         style={{ fontSize: templeTitleSize }}
+                       >
+                         +
+                       </Text>
                      </TouchableOpacity>
                    </View>
                  </View>
-                 <Text className="text-sm text-neutral-500 mt-2">
+                 <Text 
+                   className="text-neutral-500 mt-2"
+                   style={{ fontSize: templeDistanceSize }}
+                 >
                    ₩{(() => {
                      const basicTemple = TEMPLES_DATA.find((item) => item.id === temple?.id);
                      const programDetail = basicTemple?.programDetails?.[selectedProgram.title];
@@ -768,28 +962,49 @@ const ReservationConfirmScreen = () => {
                </View>
 
                {/* Preschool 선택 */}
-               <View className="bg-stone-50 p-4 border border-stone-200 rounded-lg mb-4">
+               <View className="bg-stone-50 border border-stone-200 rounded-lg mb-4" style={{ padding: cardPadding }}>
                  <View className="flex-row items-center justify-between">
-                   <Text className="text-lg text-neutral-900">Preschool</Text>
+                   <Text 
+                     className="text-neutral-900"
+                     style={{ fontSize: templeTitleSize }}
+                   >
+                     Preschool
+                   </Text>
                    <View className="flex-row items-center">
                      <TouchableOpacity
                        onPress={() => handleParticipantsChange('preschool', tempParticipants.preschool - 1)}
                        className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
                      >
-                       <Text className="text-neutral-600 text-lg">-</Text>
+                       <Text 
+                         className="text-neutral-600"
+                         style={{ fontSize: templeTitleSize }}
+                       >
+                         -
+                       </Text>
                      </TouchableOpacity>
-                     <Text className="text-lg font-semibold text-neutral-900 mx-4">
+                     <Text 
+                       className="font-semibold text-neutral-900 mx-4"
+                       style={{ fontSize: templeTitleSize }}
+                     >
                        {tempParticipants.preschool}
                      </Text>
                      <TouchableOpacity
                        onPress={() => handleParticipantsChange('preschool', tempParticipants.preschool + 1)}
                        className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
                      >
-                       <Text className="text-neutral-600 text-lg">+</Text>
+                       <Text 
+                         className="text-neutral-600"
+                         style={{ fontSize: templeTitleSize }}
+                       >
+                         +
+                       </Text>
                      </TouchableOpacity>
                    </View>
                  </View>
-                 <Text className="text-sm text-neutral-500 mt-2">
+                 <Text 
+                   className="text-neutral-500 mt-2"
+                   style={{ fontSize: templeDistanceSize }}
+                 >
                    ₩{(() => {
                      const basicTemple = TEMPLES_DATA.find((item) => item.id === temple?.id);
                      const programDetail = basicTemple?.programDetails?.[selectedProgram.title];
@@ -803,10 +1018,18 @@ const ReservationConfirmScreen = () => {
              </View>
 
              {/* 토탈 금액 계산 */}
-             <View className="mx-4 mt-6 p-4 bg-stone-50 rounded-lg border border-stone-200">
+             <View className="bg-stone-50 rounded-lg border border-stone-200" style={{ marginHorizontal: cardPadding, marginTop: cardPadding, padding: cardPadding }}>
                <View className="flex-row justify-between items-center mb-2">
-                 <Text className="text-lg font-semibold text-neutral-900">Total Amount</Text>
-                 <Text className="text-xl font-bold text-orange-600">
+                 <Text 
+                   className="font-semibold text-neutral-900"
+                   style={{ fontSize: programTitleSize }}
+                 >
+                   Total Amount
+                 </Text>
+                 <Text 
+                   className="font-bold text-orange-600"
+                   style={{ fontSize: totalPriceFontSize }}
+                 >
                    ₩{(() => {
                      // TEMPLES_DATA에서 정확한 가격 가져오기
                      const basicTemple = TEMPLES_DATA.find((item) => item.id === temple?.id);
@@ -839,21 +1062,33 @@ const ReservationConfirmScreen = () => {
                    // 정확한 가격으로 계산식 표시
                    return (
                      <>
-                       <Text className="text-sm text-neutral-600">
+                       <Text 
+                         className="text-neutral-600"
+                         style={{ fontSize: templeDistanceSize }}
+                       >
                          Adult: ₩{programDetail.pricing.adult.toLocaleString()} × {tempParticipants.adults} = ₩{(programDetail.pricing.adult * tempParticipants.adults).toLocaleString()}
                        </Text>
                        {tempParticipants.teenagers > 0 && (
-                         <Text className="text-sm text-neutral-600">
+                         <Text 
+                           className="text-neutral-600"
+                           style={{ fontSize: templeDistanceSize }}
+                         >
                            Teenager: ₩{programDetail.pricing.teenager.toLocaleString()} × {tempParticipants.teenagers} = ₩{(programDetail.pricing.teenager * tempParticipants.teenagers).toLocaleString()}
                          </Text>
                        )}
                        {tempParticipants.children > 0 && (
-                         <Text className="text-sm text-neutral-600">
+                         <Text 
+                           className="text-neutral-600"
+                           style={{ fontSize: templeDistanceSize }}
+                         >
                            Child: ₩{programDetail.pricing.child.toLocaleString()} × {tempParticipants.children} = ₩{(programDetail.pricing.child * tempParticipants.children).toLocaleString()}
                          </Text>
                        )}
                        {tempParticipants.preschool > 0 && (
-                         <Text className="text-sm text-neutral-600">
+                         <Text 
+                           className="text-neutral-600"
+                           style={{ fontSize: templeDistanceSize }}
+                         >
                            Preschool: ₩{programDetail.pricing.preschool.toLocaleString()} × {tempParticipants.preschool} = ₩{(programDetail.pricing.preschool * tempParticipants.preschool).toLocaleString()}
                          </Text>
                        )}
@@ -863,10 +1098,16 @@ const ReservationConfirmScreen = () => {
                    // fallback: 기본 가격으로 계산식 표시
                    return (
                      <>
-                       <Text className="text-sm text-neutral-600">
+                       <Text 
+                         className="text-neutral-600"
+                         style={{ fontSize: templeDistanceSize }}
+                       >
                          Adult: ₩{(selectedProgram.price || 0).toLocaleString()} × {tempParticipants.adults} = ₩{((selectedProgram.price || 0) * tempParticipants.adults).toLocaleString()}
                        </Text>
-                       <Text className="text-sm text-neutral-600">
+                       <Text 
+                         className="text-neutral-600"
+                         style={{ fontSize: templeDistanceSize }}
+                       >
                          Teenager/Child/Preschool: ₩{Math.floor((selectedProgram.price || 0) * 0.7).toLocaleString()} × {tempParticipants.teenagers + tempParticipants.children + tempParticipants.preschool} = ₩{Math.floor((selectedProgram.price || 0) * 0.7 * (tempParticipants.teenagers + tempParticipants.children + tempParticipants.preschool)).toLocaleString()}
                        </Text>
                      </>
@@ -876,14 +1117,18 @@ const ReservationConfirmScreen = () => {
              </View>
 
              {/* 하단 버튼 */}
-             <View className="p-4 border-t border-stone-200 mt-8">
+             <View className="border-t border-stone-200" style={{ padding: cardPadding, marginTop: cardPadding }}>
                <TouchableOpacity
                  onPress={handleParticipantsModalConfirm}
-                 className={`w-full py-5 rounded-2xl ${
+                 className={`w-full rounded-2xl ${
                    (tempParticipants.adults + tempParticipants.teenagers + tempParticipants.children + tempParticipants.preschool) > 0 ? 'bg-sage-600' : 'bg-gray-400'
                  }`}
+                 style={{ paddingVertical: buttonPadding * 2 }}
                >
-                 <Text className="text-white text-center font-semibold text-lg">
+                 <Text 
+                   className="text-white text-center font-semibold"
+                   style={{ fontSize: buttonFontSize }}
+                 >
                    Confirm Participants
                  </Text>
                </TouchableOpacity>
@@ -906,8 +1151,16 @@ const ReservationConfirmScreen = () => {
                <View className="w-16 h-16 bg-sage-200 rounded-full items-center justify-center mb-3">
                  <Ionicons name="checkmark-circle" size={32} color="#4A5D23" />
                </View>
-               <Text className="text-xl font-bold text-sage-800">Reservation Complete!</Text>
-               <Text className="text-sm text-stone-700 text-center mt-2">
+               <Text 
+                 className="font-bold text-sage-800"
+                 style={{ fontSize: programTitleSize }}
+               >
+                 Reservation Complete!
+               </Text>
+               <Text 
+                 className="text-stone-700 text-center mt-2"
+                 style={{ fontSize: templeDescSize }}
+               >
                  Your reservation has been successfully completed
                </Text>
              </View>

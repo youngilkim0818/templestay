@@ -139,6 +139,24 @@ const MarketScreen = ({ navigation }: any) => {
   const [showModal, setShowModal] = useState(false);
   const scrollY = useRef(new Animated.Value(0)).current;
   const HEADER_H = 120; // 헤더 높이
+
+  // 화면 크기 기반 반응형 스타일
+  const screenHeight = Dimensions.get('window').height;
+  const screenWidth = Dimensions.get('window').width;
+  const isSmallScreen = screenHeight < 700;
+  const isLargeScreen = screenHeight > 800;
+  
+  // 동적 크기 계산 (전체적으로 크기 축소)
+  const headerFontSize = isSmallScreen ? 20 : (isLargeScreen ? 26 : 22);
+  const categoryPadding = isSmallScreen ? 6 : (isLargeScreen ? 10 : 8);
+  const categoryFontSize = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+  const categoryIconSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+  const productImageHeight = isSmallScreen ? 80 : (isLargeScreen ? 120 : 100);
+  const productPadding = isSmallScreen ? 6 : (isLargeScreen ? 10 : 8);
+  const productTitleSize = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+  const productPriceSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+  const sortIconSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+  const sortFontSize = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
   
   const products = getProductData(t);
   const filteredAndSortedProducts = useMemo(() => {
@@ -174,26 +192,34 @@ const MarketScreen = ({ navigation }: any) => {
   const renderCategory = useCallback(({ item }: { item: typeof CATEGORIES[0] }) => {
     return (
       <TouchableOpacity
-        className={`flex-row items-center px-4 py-2 mr-2 rounded-3xl border ${
+        className={`flex-row items-center rounded-3xl border ${
           selectedCategory === item.id 
             ? 'bg-sage-600 border-sage-600' 
             : 'bg-white border-stone-200 active:bg-stone-50'
         }`}
+        style={{ 
+          paddingHorizontal: categoryPadding, 
+          paddingVertical: categoryPadding - 2, 
+          marginRight: 8 
+        }}
         onPress={() => setSelectedCategory(item.id)}
       >
         <Ionicons 
           name={item.icon as any} 
-          size={18} 
+          size={categoryIconSize} 
           color={selectedCategory === item.id ? 'white' : COLORS.neutral[600]} 
         />
-        <Text className={`ml-2 text-sm font-medium ${
-          selectedCategory === item.id ? 'text-white font-semibold' : 'text-neutral-600'
-        }`}>
+        <Text style={{ 
+          marginLeft: 6, 
+          fontSize: categoryFontSize, 
+          fontWeight: '500',
+          color: selectedCategory === item.id ? 'white' : '#4B5563'
+        }}>
           {getCategoryName(t, item.id)}
         </Text>
       </TouchableOpacity>
     );
-  }, [selectedCategory, t]);
+  }, [selectedCategory, t, categoryPadding, categoryFontSize, categoryIconSize]);
 
   const handleProductPress = useCallback((product: ReturnType<typeof getProductData>[0]) => {
     setShowModal(true);
@@ -206,41 +232,51 @@ const MarketScreen = ({ navigation }: any) => {
         onPress={() => handleProductPress(item)}
       >
         {/* Product Image */}
-        <View className="relative p-2">
+        <View className="relative" style={{ padding: productPadding }}>
           <Image 
             source={item.image}
-            className="w-full h-32 rounded-lg"
+            className="w-full rounded-lg"
+            style={{ height: productImageHeight }}
             resizeMode="cover"
           />
         </View>
         
         {/* Product Info */}
-        <View className="p-3">
-          <Text className="text-sm text-neutral-900 mb-2" numberOfLines={2}>
+        <View style={{ padding: productPadding }}>
+          <Text style={{ 
+            fontSize: productTitleSize, 
+            color: '#111827', 
+            marginBottom: 8,
+            lineHeight: productTitleSize * 1.2
+          }} numberOfLines={2}>
             {t(item.nameKey)}
           </Text>
           
           {/* Price */}
-          <Text className="text-base font-bold text-neutral-900">
+          <Text style={{ 
+            fontSize: productPriceSize, 
+            fontWeight: 'bold', 
+            color: '#111827' 
+          }}>
             ₩{item.price.toLocaleString()}
           </Text>
         </View>
       </TouchableOpacity>
     );
-  }, [handleProductPress, t]);
+  }, [handleProductPress, t, productPadding, productImageHeight, productTitleSize, productPriceSize]);
 
   return (
     <SafeAreaView className="flex-1 bg-stone-100">
       {/* Header */}
       <View className="px-5 py-4 bg-stone-100">
-        <Text className="text-4xl font-bold text-neutral-800 ml-1">
+        <Text style={{ fontSize: headerFontSize, fontWeight: 'bold', color: '#1F2937', marginLeft: 4 }}>
           Temple Market
         </Text>
       </View>
       
       {/* Controls */}
-      <View className="px-3 py-3 bg-stone-100">
-        <View className="bg-white rounded-2xl p-3 border border-stone-200">
+      <View className="px-6 py-3 bg-stone-100">
+        <View className="bg-white rounded-4xl border border-stone-200" style={{ padding: isSmallScreen ? 8 : 12 }}>
           <View className="flex-row items-center justify-center">
             {/* Category Filter */}
             {CATEGORIES.map((item) => (
@@ -249,28 +285,40 @@ const MarketScreen = ({ navigation }: any) => {
               </View>
             ))}
           </View>
-          
-          {/* Sort Filter */}
-          <View className="flex-row items-center justify-end mr-2 mt-3 pt-3 border-t border-stone-100">
-            <TouchableOpacity 
-              className="flex-row items-center"
-              onPress={() => setSelectedSort(selectedSort === 'popular' ? 'price' : 'popular')}
-            >
-              <Ionicons 
-                name={selectedSort === 'popular' ? "trending-up-outline" : "pricetag-outline"} 
-                size={16} 
-                color="#6B7280" 
-              />
-              <Text className="text-sm text-neutral-600 ml-1 font-bold">
-                {selectedSort === 'popular' ? 'Popular' : 'Price'}
-              </Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
 
       {/* Product List with Beige Section */}
-      <View className="flex-1 bg-[#F5F1EB] rounded-t-[30px] px-3 pt-1">
+      <View className="flex-1 bg-[#F5F1EB] rounded-t-[30px] px-3 pt-0">
+        {/* Sort Filter in Beige Section */}
+        <View className="flex-row items-center justify-end px-2" style={{ paddingTop: 4, paddingBottom: 16 }}>
+          <TouchableOpacity 
+            className="flex-row items-center"
+            style={{ paddingHorizontal: 8, paddingVertical: 4 }}
+            onPress={() => setSelectedSort(selectedSort === 'popular' ? 'price' : 'popular')}
+          >
+            <Ionicons 
+              name={selectedSort === 'popular' ? "trending-up-outline" : "pricetag-outline"} 
+              size={sortIconSize} 
+              color="#6B7280" 
+            />
+            <Text style={{ 
+              fontSize: sortFontSize + 2, 
+              color: '#4B5563', 
+              marginLeft: 4, 
+              fontWeight: 'bold' 
+            }}>
+              {selectedSort === 'popular' ? 'Popular' : 'Price'}
+            </Text>
+            <Ionicons 
+              name="chevron-down-outline" 
+              size={16} 
+              color="#6B7280" 
+              style={{ marginLeft: 4 }}
+            />
+          </TouchableOpacity>
+        </View>
+        
         <FlatList
           data={filteredAndSortedProducts}
           renderItem={({ item }) => (
@@ -283,8 +331,8 @@ const MarketScreen = ({ navigation }: any) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 100 }}
           ListEmptyComponent={
-            <View className="items-center justify-center py-10">
-              <Text className="text-neutral-500">No products available</Text>
+            <View className="items-center justify-center" style={{ paddingVertical: isSmallScreen ? 32 : 40 }}>
+              <Text style={{ fontSize: sortFontSize, color: '#6B7280' }}>No products available</Text>
             </View>
           }
         />
@@ -298,21 +346,39 @@ const MarketScreen = ({ navigation }: any) => {
         onRequestClose={() => setShowModal(false)}
       >
         <View className="flex-1 justify-center items-center">
-          <View className="bg-white rounded-2xl p-6 mx-8 w-80 shadow-lg">
-            <View className="items-center mb-4">
-              <View className="w-16 h-16 bg-red-100 rounded-full items-center justify-center mb-3">
-                <Ionicons name="ban-outline" size={32} color="#ef4444" />
+          <View className="bg-white rounded-2xl shadow-lg" style={{ 
+            padding: productPadding * 3, 
+            marginHorizontal: 20, 
+            maxWidth: 380 
+          }}>
+            <View className="items-center" style={{ marginBottom: 16 }}>
+              <View className="bg-red-100 rounded-full items-center justify-center" style={{ 
+                width: isSmallScreen ? 56 : 72, 
+                height: isSmallScreen ? 56 : 72, 
+                marginBottom: 16 
+              }}>
+                <Ionicons name="ban-outline" size={isSmallScreen ? 28 : 36} color="#ef4444" />
               </View>
-              <Text className="text-xl font-bold text-neutral-800 mb-2">
+              <Text style={{ 
+                fontSize: productTitleSize + 2, 
+                fontWeight: 'bold', 
+                color: '#1F2937', 
+                marginBottom: 12 
+              }}>
                 Currently out of stock
               </Text>
             </View>
             
             <TouchableOpacity
-              className="bg-gray-400 py-3 rounded-xl items-center"
+              className="bg-gray-400 rounded-xl items-center"
+              style={{ paddingVertical: productPadding + 4 }}
               onPress={() => setShowModal(false)}
             >
-              <Text className="text-white font-semibold text-base">
+              <Text style={{ 
+                color: 'white', 
+                fontWeight: '600', 
+                fontSize: productTitleSize + 1 
+              }}>
                 Got it!
               </Text>
             </TouchableOpacity>

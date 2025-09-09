@@ -1,11 +1,28 @@
 import React, { useState, useMemo, useCallback, memo } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 
 import { TEMPLES_DATA, getTemplesWithOneDayPrograms, getTemplesWithOneDayProgramsByRegion } from '../../../data/temple-data';
 import Card from '../../../components/common/Card';
 import { Temple } from '../../../types';
 import { COLORS } from '../../../constants/colors';
 import useTempleStore from '../../../store/templeStore';
+
+const { width, height } = Dimensions.get('window');
+const isSmallScreen = height < 700;
+const isLargeScreen = height > 800;
+
+// Responsive sizes
+const headerFontSize = isSmallScreen ? 18 : (isLargeScreen ? 24 : 20);
+const subHeaderFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
+const templeImageHeight = isSmallScreen ? 120 : (isLargeScreen ? 180 : 150);
+const templeTitleSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
+const templeDescSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
+const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const iconSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 20);
+const buttonPadding = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+const buttonFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
 
 // Styled components for NativeWind
 
@@ -24,20 +41,32 @@ const TempleItem = memo<{
 
   return (
     <TouchableOpacity onPress={handlePress} className="active:opacity-80">
-      <Card variant="elevated" className="mx-4 mb-4 border border-stone-200">
+      <Card variant="elevated" className="border border-stone-200" style={{ marginHorizontal: cardMargin, marginBottom: cardMargin }}>
         <Image 
           source={temple.imageUrl} 
-          className="w-full h-40 rounded-xl mb-4"
+          className="w-full rounded-xl"
+          style={{ height: templeImageHeight, marginBottom: cardPadding }}
           resizeMode="cover"
         />
-        <Text className="text-xl font-semibold text-neutral-900 mb-2">
-          {temple.name}
-        </Text>
-        <Text className="text-base text-neutral-600">
-          {temple.region}
-        </Text>
-        <TouchableOpacity className="absolute right-2 top-2 p-1" onPress={() => onToggleFavorite(temple)}>
-          <Text>
+        <View style={{ padding: cardPadding }}>
+          <Text 
+            className="font-semibold text-neutral-900 mb-2"
+            style={{ fontSize: templeTitleSize }}
+          >
+            {temple.name}
+          </Text>
+          <Text 
+            className="text-neutral-600"
+            style={{ fontSize: templeDescSize }}
+          >
+            {temple.region}
+          </Text>
+        </View>
+        <TouchableOpacity 
+          className="absolute right-2 top-2 p-1" 
+          onPress={() => onToggleFavorite(temple)}
+        >
+          <Text style={{ fontSize: iconSize }}>
             {isFavorite ? '💖' : '🤍'}
           </Text>
         </TouchableOpacity>
@@ -58,16 +87,20 @@ const RegionButton = memo<{
 
   return (
     <TouchableOpacity 
-      className={`px-6 py-3 mx-2 rounded-2xl ${
+      className={`mx-2 rounded-2xl ${
         isSelected 
           ? 'bg-sage-600 active:bg-sage-700' 
           : 'bg-white border border-stone-200 active:bg-stone-50'
       }`}
+      style={{ paddingHorizontal: buttonPadding * 2, paddingVertical: buttonPadding }}
       onPress={handlePress}
     >
-      <Text className={`text-center font-semibold ${
-        isSelected ? 'text-white' : 'text-sage-600'
-      }`}>
+      <Text 
+        className={`text-center font-semibold ${
+          isSelected ? 'text-white' : 'text-sage-600'
+        }`}
+        style={{ fontSize: buttonFontSize }}
+      >
         {region}
       </Text>
     </TouchableOpacity>
@@ -174,17 +207,26 @@ const TempleListScreen = ({ navigation, route }: any) => {
                     keyExtractor={(item) => item.id}
                     className="flex-1"
                     ListHeaderComponent={
-                        <Text className="text-3xl font-light text-neutral-900 text-center my-6 mt-8">
+                        <Text 
+                          className="font-light text-neutral-900 text-center my-6 mt-8"
+                          style={{ fontSize: headerFontSize }}
+                        >
                             {screenTitle}
                         </Text>
                     }
                     ListEmptyComponent={
                         <View className="flex-1 justify-center items-center px-6 mt-20">
                             <View className="bg-white rounded-2xl p-8 items-center">
-                                <Text className="text-xl font-medium text-neutral-600 text-center mb-2">
+                                <Text 
+                                  className="font-medium text-neutral-600 text-center mb-2"
+                                  style={{ fontSize: templeTitleSize }}
+                                >
                                     등록된 사찰이 없습니다
                                 </Text>
-                                <Text className="text-base text-neutral-500 text-center">
+                                <Text 
+                                  className="text-neutral-500 text-center"
+                                  style={{ fontSize: templeDescSize }}
+                                >
                                     {isOneDayMode 
                                         ? '해당 지역에 당일형 프로그램을 가진 사찰이 없습니다.'
                                         : '해당 지역에 등록된 사찰이 없습니다.'

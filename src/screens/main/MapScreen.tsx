@@ -12,8 +12,25 @@ import { TourApiService, calculateDistanceFromApi, formatApiDistance, TourAttrac
 import { enrichAttractionWithImage } from '../../services/attractionImageService';
 
 const { width, height } = Dimensions.get('window');
-const CARD_WIDTH = Math.min(width - 48, 360);
-const CARD_GAP = 16; // mx-2 좌우(8px+8px)
+const isSmallScreen = height < 700;
+const isLargeScreen = height > 800;
+
+// Responsive sizes
+const cardWidth = isSmallScreen ? Math.min(width - 36, 280) : (isLargeScreen ? Math.min(width - 48, 340) : Math.min(width - 44, 320));
+const cardGap = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const searchFontSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
+const searchPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const cardPadding = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
+const titleFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const descFontSize = isSmallScreen ? 9 : (isLargeScreen ? 13 : 11);
+const distanceFontSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const imageWidth = isSmallScreen ? 80 : (isLargeScreen ? 120 : 100);
+const imageHeight = isSmallScreen ? 110 : (isLargeScreen ? 130 : 120);
+const buttonSize = isSmallScreen ? 36 : (isLargeScreen ? 44 : 40);
+const iconSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
+const toggleFontSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const togglePadding = isSmallScreen ? 6 : (isLargeScreen ? 10 : 8);
 
 // Google Translate 무료 API 사용
 const translateText = async (text: string): Promise<string> => {
@@ -156,36 +173,62 @@ const AttractionCard = memo<{ item: any; onPress: () => void }>(({ item, onPress
   
   return (
     <TouchableOpacity
-      className="bg-white p-3 mx-2 border border-stone-200 shadow-md"
-      style={{ width: CARD_WIDTH }}
+      className="bg-white border border-stone-200 shadow-md"
+      style={{ 
+        width: cardWidth, 
+        padding: cardPadding, 
+        marginHorizontal: cardMargin 
+      }}
       onPress={onPress}
     >
       <View className="flex-row">
         {item.imageUrl ? (
-          <View className="w-32 h-48 bg-stone-100 overflow-hidden mr-3">
+          <View 
+            className="bg-stone-100 overflow-hidden mr-3"
+            style={{ width: imageWidth, height: imageHeight }}
+          >
             <Image source={{ uri: item.imageUrl }} className="w-full h-full" resizeMode="cover" />
           </View>
         ) : (
-          <View className="w-32 h-48 bg-stone-100 overflow-hidden mr-3 items-center justify-center px-2">
-            <Text className="text-xs text-neutral-500 text-center leading-tight">
+          <View 
+            className="bg-stone-100 overflow-hidden mr-3 items-center justify-center px-2"
+            style={{ width: imageWidth, height: imageHeight }}
+          >
+            <Text 
+              className="text-neutral-500 text-center leading-tight"
+              style={{ fontSize: descFontSize - 1 }}
+            >
               This attraction does not provide photos
             </Text>
           </View>
         )}
         <View className="flex-1">
           <View className="flex-row justify-between items-start mb-1">
-            <Text className="text-lg font-bold text-sage-600 flex-1" numberOfLines={1}>
+            <Text 
+              className="font-bold text-sage-600 flex-1" 
+              style={{ fontSize: titleFontSize }}
+              numberOfLines={1}
+            >
               {translatedTitle || item.title}
             </Text>
           </View>
           {translatedDesc || item.desc ? (
-            <Text className="text-sm text-neutral-600 mb-1.5 leading-5" numberOfLines={3}>
+            <Text 
+              className="text-neutral-600 mb-1.5 leading-5" 
+              style={{ fontSize: descFontSize }}
+              numberOfLines={3}
+            >
               {translatedDesc || item.desc}
             </Text>
           ) : null}
           <View className="flex-row items-center">
-            <Ionicons name="location-outline" size={16} color={COLORS.brand.sage} />
-            <Text className="text-base text-sage-600 ml-1 font-medium">{item.distance || ''}</Text>
+            <Ionicons name="location-outline" size={iconSize} color={COLORS.brand.sage} />
+            <Text 
+              className="text-sage-600 ml-1 font-medium"
+              style={{ fontSize: distanceFontSize }}
+            >
+              {item.distance || ''}
+            </Text>
           </View>
         </View>
       </View>
@@ -523,14 +566,21 @@ export default function MapScreen({ navigation, route }: any) {
 
   const renderTempleCard = useCallback(({ item }: { item: any }) => (
     <TouchableOpacity 
-      className="bg-white p-3 mx-2 border border-stone-200 shadow-md"
-      style={{ width: CARD_WIDTH }}
+      className="bg-white border border-stone-200 shadow-md"
+      style={{ 
+        width: cardWidth, 
+        padding: cardPadding, 
+        marginHorizontal: cardMargin 
+      }}
       onPress={() => navigation.navigate('TempleStack', { screen: 'ReservationDetail', params: { templeId: item.id } })}
     >
       <View className="flex-row">
         {/* 왼쪽 썸네일: 정사각 형태로, 카드 대비 좁은 폭 */}
         {item.imageUrl ? (
-          <View className="w-32 h-48 bg-stone-100 overflow-hidden mr-3">
+          <View 
+            className="bg-stone-100 overflow-hidden mr-3"
+            style={{ width: imageWidth, height: imageHeight }}
+          >
             <Image 
               source={typeof item.imageUrl === 'string' && item.imageUrl.startsWith('http') 
                 ? { uri: item.imageUrl } 
@@ -541,8 +591,11 @@ export default function MapScreen({ navigation, route }: any) {
             />
           </View>
         ) : (
-          <View className="w-24 h-48 bg-stone-100 overflow-hidden mr-3 items-center justify-center">
-            <Ionicons name="image-outline" size={22} color={COLORS.neutral[500]} />
+          <View 
+            className="bg-stone-100 overflow-hidden mr-3 items-center justify-center"
+            style={{ width: imageWidth * 0.75, height: imageHeight }}
+          >
+            <Ionicons name="image-outline" size={iconSize + 2} color={COLORS.neutral[500]} />
           </View>
         )}
 
@@ -550,24 +603,44 @@ export default function MapScreen({ navigation, route }: any) {
         <View className="flex-1">
           {/* 제목/평점 */}
           <View className="flex-row justify-between items-start mb-1">
-            <Text className="text-lg font-bold text-sage-600 flex-1" numberOfLines={1}>{item.title}</Text>
+            <Text 
+              className="font-bold text-sage-600 flex-1" 
+              style={{ fontSize: titleFontSize }}
+              numberOfLines={1}
+            >
+              {item.title}
+            </Text>
             <View className="flex-row items-center ml-2">
-              <Ionicons name="star" size={14} color={COLORS.brand.coral} />
-              <Text className="text-base font-semibold text-neutral-700 ml-1">{item.rating}</Text>
+              <Ionicons name="star" size={iconSize - 2} color={COLORS.brand.coral} />
+              <Text 
+                className="font-semibold text-neutral-700 ml-1"
+                style={{ fontSize: distanceFontSize }}
+              >
+                {item.rating}
+              </Text>
             </View>
           </View>
 
           {/* 설명 */}
           {item.desc && (
-            <Text className="text-sm text-neutral-600 mb-1.5 leading-5" numberOfLines={4}>
+            <Text 
+              className="text-neutral-600 mb-1.5 leading-5" 
+              style={{ fontSize: descFontSize }}
+              numberOfLines={4}
+            >
               {item.desc}
             </Text>
           )}
 
           {/* 거리 */}
           <View className="flex-row items-center mb-1.5">
-            <Ionicons name="location-outline" size={16} color={COLORS.brand.sage} />
-            <Text className="text-base text-sage-600 ml-1 font-medium">{item.distance || 'Unknown'}</Text>
+            <Ionicons name="location-outline" size={iconSize} color={COLORS.brand.sage} />
+            <Text 
+              className="text-sage-600 ml-1 font-medium"
+              style={{ fontSize: distanceFontSize }}
+            >
+              {item.distance || 'Unknown'}
+            </Text>
           </View>
 
           {/* 프로그램 태그 */}
@@ -575,7 +648,12 @@ export default function MapScreen({ navigation, route }: any) {
             <View className="flex-row flex-wrap gap-1">
               {item.programs.slice(0, 2).map((program: string, index: number) => (
                 <View key={index} className="bg-sage-50 px-1.5 py-0.5 rounded-lg border border-sage-200">
-                <Text className="text-sm font-medium text-sage-700">{program}</Text>
+                <Text 
+                  className="font-medium text-sage-700"
+                  style={{ fontSize: descFontSize - 1 }}
+                >
+                  {program}
+                </Text>
                 </View>
               ))}
             </View>
@@ -615,13 +693,17 @@ export default function MapScreen({ navigation, route }: any) {
       {/* 검색창: 위치 고정 */}
       <View className="absolute left-4 right-4 z-50" style={{ top: (insets.top || 0) + 8 }}>
         <View
-          className="flex-row items-center rounded-xl px-4 py-3 border border-stone-200"
-          style={{ backgroundColor: '#FFFDF8' }}
+          className="flex-row items-center rounded-xl border border-stone-200"
+          style={{ 
+            backgroundColor: '#FFFDF8',
+            paddingHorizontal: searchPadding,
+            paddingVertical: searchPadding - 2
+          }}
         >
-          <Ionicons name="search" size={20} color={COLORS.neutral[500]} />
+          <Ionicons name="search" size={iconSize} color={COLORS.neutral[500]} />
           <TextInput
             ref={searchInputRef}
-            className="flex-1 ml-3 text-base text-neutral-900"
+            className="flex-1 ml-3 text-neutral-900"
             placeholder={t('map.search')}
             placeholderTextColor={COLORS.neutral[500]}
             value={searchText}
@@ -629,7 +711,7 @@ export default function MapScreen({ navigation, route }: any) {
             onFocus={() => setSearchText('')}
             onSubmitEditing={handleSearchLocation}
             returnKeyType="search"
-            style={{ fontSize: 18 }}
+            style={{ fontSize: searchFontSize }}
           />
           {searchText.length > 0 && (
             <TouchableOpacity
@@ -640,7 +722,7 @@ export default function MapScreen({ navigation, route }: any) {
               }}
               accessibilityLabel="검색어 지우기"
             >
-              <Ionicons name="close-circle" size={18} color={COLORS.neutral[500]} />
+              <Ionicons name="close-circle" size={iconSize - 2} color={COLORS.neutral[500]} />
             </TouchableOpacity>
           )}
         </View>
@@ -692,12 +774,17 @@ export default function MapScreen({ navigation, route }: any) {
       {/* 중앙 하단 플로팅 토글바: Attractions / Temple */}
       <View
         className="absolute left-0 right-0 items-center"
-        style={{ bottom: Math.max(insets.bottom, 8) + 270, zIndex: 999, elevation: 6 }}
+        style={{ bottom: Math.max(insets.bottom, 8) + 250, zIndex: 999, elevation: 6 }}
         pointerEvents="box-none"
       >
         <TouchableOpacity
-          className="px-4 py-2 rounded-full border flex-row items-center bg-white border-neutral-200"
-          style={{ minWidth: 140, justifyContent: 'center' }}
+          className="rounded-full border flex-row items-center bg-white border-neutral-200"
+          style={{ 
+            paddingHorizontal: togglePadding,
+            paddingVertical: togglePadding - 2,
+            minWidth: isSmallScreen ? 120 : (isLargeScreen ? 160 : 140), 
+            justifyContent: 'center' 
+          }}
           onPress={async () => {
             const next = !showAttractions;
             setShowAttractions(next);
@@ -711,26 +798,32 @@ export default function MapScreen({ navigation, route }: any) {
           }}
           accessibilityLabel="Attractions Toggle"
         >
-          <Ionicons name={'swap-horizontal-outline'} size={18} color={COLORS.neutral[700]} />
-          <Text className="ml-1.5 text-base font-semibold text-neutral-800">{showAttractions ? 'Temple' : 'Attractions'}</Text>
+          <Ionicons name={'swap-horizontal-outline'} size={iconSize} color={COLORS.neutral[700]} />
+          <Text 
+            className="ml-1.5 font-semibold text-neutral-800"
+            style={{ fontSize: toggleFontSize }}
+          >
+            {showAttractions ? 'Temple' : 'Attractions'}
+          </Text>
         </TouchableOpacity>
       </View>
 
       {/* 내 위치로 이동 버튼 - 우측 상단 검색창 아래 (복구) */}
       <View className="absolute right-4 z-50" style={{ top: (insets.top || 0) + 90 }}>
         <TouchableOpacity
-          className="bg-white w-12 h-12 rounded-full items-center justify-center border border-neutral-200"
+          className="bg-white rounded-full items-center justify-center border border-neutral-200"
+          style={{ width: buttonSize, height: buttonSize }}
           onPress={moveToMyLocation}
           accessibilityLabel="내 위치로 이동"
         >
-          <Ionicons name="locate" size={22} color={COLORS.brand.sage} />
+          <Ionicons name="locate" size={iconSize + 2} color={COLORS.brand.sage} />
         </TouchableOpacity>
       </View>
 
       {/* 하단 추천 오버레이 (사찰/관광지 전환) */}
       <View
         className="absolute left-0 right-0"
-        style={{ bottom: Math.max(insets.bottom, 8) + 64 }}
+        style={{ bottom: Math.max(insets.bottom, 8) + 70 }}
         onStartShouldSetResponder={() => true}
         onResponderRelease={() => Keyboard.dismiss()}
       >
@@ -757,7 +850,7 @@ export default function MapScreen({ navigation, route }: any) {
             keyExtractor={(item: any) => item.id}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ paddingHorizontal: 12, paddingBottom: 4 }}
-            snapToInterval={CARD_WIDTH + CARD_GAP}
+            snapToInterval={cardWidth + cardGap}
             snapToAlignment="start"
             decelerationRate="fast"
             disableIntervalMomentum
@@ -779,7 +872,7 @@ export default function MapScreen({ navigation, route }: any) {
             keyExtractor={(item) => item.id}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ paddingHorizontal: 12, paddingBottom: 4 }}
-            snapToInterval={CARD_WIDTH + CARD_GAP}
+            snapToInterval={cardWidth + cardGap}
             snapToAlignment="start"
             decelerationRate="fast"
             disableIntervalMomentum

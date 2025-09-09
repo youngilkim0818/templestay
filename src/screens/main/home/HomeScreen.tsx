@@ -11,7 +11,25 @@ import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import useLocationStore from '../../../store/locationStore';
 import useTempleStore from '../../../store/templeStore';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+const isSmallScreen = height < 700;
+const isLargeScreen = height > 800;
+
+// Responsive sizes
+const headerFontSize = isSmallScreen ? 18 : (isLargeScreen ? 24 : 20);
+const subHeaderFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const quickActionSize = isSmallScreen ? 36 : (isLargeScreen ? 48 : 42);
+const quickActionFontSize = isSmallScreen ? 9 : (isLargeScreen ? 12 : 10);
+const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
+const templeImageSize = isSmallScreen ? 36 : (isLargeScreen ? 48 : 42);
+const templeTitleSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const templeDescSize = isSmallScreen ? 9 : (isLargeScreen ? 13 : 11);
+const templeDistanceSize = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const searchFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const searchPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const iconSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
 
 const QuickAction = memo<{
   label: string;
@@ -20,10 +38,18 @@ const QuickAction = memo<{
 }>(function QuickAction({ label, icon, onPress }) {
   return (
     <Pressable onPress={onPress} className="items-center mr-4">
-      <View className="w-12 h-12 rounded-full bg-[#FFFDF8] border border-stone-200 justify-center items-center active:bg-stone-50">
+      <View 
+        className="rounded-full bg-[#FFFDF8] border border-stone-200 justify-center items-center active:bg-stone-50"
+        style={{ width: quickActionSize, height: quickActionSize }}
+      >
         {icon}
       </View>
-      <Text className="text-xs font-medium text-neutral-700 mt-1">{label}</Text>
+      <Text 
+        className="font-medium text-neutral-700 mt-1"
+        style={{ fontSize: quickActionFontSize }}
+      >
+        {label}
+      </Text>
     </Pressable>
   );
 });
@@ -42,24 +68,50 @@ const TempleCard = memo<{
 
   return (
     <TouchableOpacity
-      className="flex-row items-center bg-[#FFFDF8] rounded-2xl border border-stone-200 p-4 mb-3 active:bg-stone-50"
+      className="flex-row items-center bg-[#FFFDF8] rounded-2xl border border-stone-200 active:bg-stone-50"
+      style={{ padding: cardPadding, marginBottom: cardMargin }}
       onPress={onPress}
       activeOpacity={0.7}
     >
-      <View className="w-12 h-12 rounded-xl bg-stone-100 justify-center items-center mr-3.5 border border-stone-200">
+      <View 
+        className="rounded-xl bg-stone-100 justify-center items-center mr-3.5 border border-stone-200"
+        style={{ width: templeImageSize, height: templeImageSize }}
+      >
         {temple.imageUrl ? (
-          <Image source={typeof temple.imageUrl === 'string' ? { uri: temple.imageUrl } : temple.imageUrl} className="w-12 h-12 rounded-xl" />
+          <Image 
+            source={typeof temple.imageUrl === 'string' ? { uri: temple.imageUrl } : temple.imageUrl} 
+            className="rounded-xl" 
+            style={{ width: templeImageSize, height: templeImageSize }}
+          />
         ) : (
-          <Ionicons name="business-outline" size={38} color="#9AA0A6" />
+          <Ionicons name="business-outline" size={templeImageSize * 0.8} color="#9AA0A6" />
         )}
       </View>
       <View className="flex-1">
-        <Text className="text-base font-semibold text-neutral-900 mb-0.5">{temple.name}</Text>
-        <Text className="text-sm text-neutral-600 mb-1 font-normal">{temple.region}</Text>
+        <Text 
+          className="font-semibold text-neutral-900 mb-0.5"
+          style={{ fontSize: templeTitleSize }}
+        >
+          {temple.name}
+        </Text>
+        <Text 
+          className="text-neutral-600 mb-1 font-normal"
+          style={{ fontSize: templeDescSize }}
+        >
+          {temple.region}
+        </Text>
         <View className="flex-row items-center">
-          <FontAwesome name="star" size={14} color="#FF6B6B" style={{ marginRight: 2 }} />
-          <Text className="text-xs text-neutral-900 ml-0.5 mr-2.5 font-medium">{temple.rating || '4.8'}</Text>
-          <Text className="text-xs text-neutral-600 font-normal">
+          <FontAwesome name="star" size={iconSize - 2} color="#FF6B6B" style={{ marginRight: 2 }} />
+          <Text 
+            className="text-neutral-900 ml-0.5 mr-2.5 font-medium"
+            style={{ fontSize: templeDistanceSize }}
+          >
+            {temple.rating || '4.8'}
+          </Text>
+          <Text 
+            className="text-neutral-600 font-normal"
+            style={{ fontSize: templeDistanceSize }}
+          >
             {coords && temple.latitude && temple.longitude
               ? `${(Math.round(((function(){
                   const R = 6371;
@@ -74,7 +126,7 @@ const TempleCard = memo<{
         </View>
       </View>
       <TouchableOpacity className="ml-2.5 p-1" onPress={handleHeartPress}>
-        <Ionicons name={isFavorite ? 'heart' : 'heart-outline'} size={22} color={isFavorite ? '#FF6B6B' : '#9AA0A6'} />
+        <Ionicons name={isFavorite ? 'heart' : 'heart-outline'} size={iconSize + 2} color={isFavorite ? '#FF6B6B' : '#9AA0A6'} />
       </TouchableOpacity>
     </TouchableOpacity>
   );
@@ -91,10 +143,14 @@ const RegionButton = memo<{
 
   return (
     <TouchableOpacity
-      className={`rounded-2xl px-4 py-1.5 mr-2 border ${isSelected ? 'bg-sage-600 border-sage-600' : 'bg-white border-stone-200 active:bg-stone-50'}`}
+      className={`rounded-2xl mr-2 border ${isSelected ? 'bg-sage-600 border-sage-600' : 'bg-white border-stone-200 active:bg-stone-50'}`}
+      style={{ paddingHorizontal: sectionPadding, paddingVertical: sectionPadding - 4 }}
       onPress={handlePress}
     >
-      <Text className={`text-sm font-medium ${isSelected ? 'text-white font-semibold' : 'text-neutral-600'}`}>
+      <Text 
+        className={`font-medium ${isSelected ? 'text-white font-semibold' : 'text-neutral-600'}`}
+        style={{ fontSize: templeDescSize }}
+      >
         {region}
       </Text>
     </TouchableOpacity>
@@ -480,7 +536,12 @@ const HomeScreen = ({ navigation }: any) => {
               {/* Recommend Temple */}
               <View className="flex-row justify-between items-center mb-3">
                 <View>
-                  <Text className="text-3xl font-bold text-neutral-800">Recommend Temple</Text>
+                  <Text 
+                    className="font-bold text-neutral-800"
+                    style={{ fontSize: headerFontSize }}
+                  >
+                    Recommend Temple
+                  </Text>
                 </View>
               </View>
 
@@ -540,7 +601,12 @@ const HomeScreen = ({ navigation }: any) => {
 
               {/* Top Places to Visit in Gyeongbuk */}
               <View className="mt-16 mb-4 ml-1">
-                <Text className="text-3xl font-bold text-neutral-800">Top Places to Visit in Gyeongbuk</Text>
+                <Text 
+                  className="font-bold text-neutral-800"
+                  style={{ fontSize: headerFontSize }}
+                >
+                  Top Places to Visit in Gyeongbuk
+                </Text>
               </View>
 
               {/* Top Places Box */}
@@ -739,7 +805,12 @@ const HomeScreen = ({ navigation }: any) => {
 
               {/* 후기 섹션 */}
               <View className="mt-16 mb-4 ml-4">
-                <Text className="text-3xl font-bold text-neutral-800">Review</Text>
+                <Text 
+                  className="font-bold text-neutral-800"
+                  style={{ fontSize: headerFontSize }}
+                >
+                  Review
+                </Text>
               </View>
 
               {/* 후기 리스트 */}

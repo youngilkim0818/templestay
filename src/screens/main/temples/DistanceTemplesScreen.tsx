@@ -1,11 +1,29 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, Alert, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import { Ionicons } from '@expo/vector-icons';
 import Card from '../../../components/common/Card';
 import { TEMPLES_DATA } from '../../../data/temple-data';
 import useTempleStore from '../../../store/templeStore';
+
+const { width, height } = Dimensions.get('window');
+const isSmallScreen = height < 700;
+const isLargeScreen = height > 800;
+
+// Responsive sizes
+const headerFontSize = isSmallScreen ? 18 : (isLargeScreen ? 24 : 20);
+const subHeaderFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
+const templeImageHeight = isSmallScreen ? 120 : (isLargeScreen ? 180 : 150);
+const templeTitleSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
+const templeDescSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
+const templeDistanceSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const iconSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 20);
+const buttonPadding = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+const buttonFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
 
 const DistanceTemplesScreen = ({ navigation }: any) => {
   const [selectedRegion, setSelectedRegion] = useState('전체');
@@ -108,45 +126,64 @@ const DistanceTemplesScreen = ({ navigation }: any) => {
       className="active:opacity-80"
       onPress={() => handleTemplePress(item.id)}
     >
-      <Card variant="elevated" className="mx-4 mb-4 border border-stone-200">
+      <Card variant="elevated" className="border border-stone-200" style={{ marginHorizontal: cardMargin, marginBottom: cardMargin }}>
         <View className="relative">
           <Image 
             source={item.imageUrl} 
-            className="w-full h-40 rounded-xl mb-4"
+            className="w-full rounded-xl"
+            style={{ height: templeImageHeight, marginBottom: cardPadding }}
             resizeMode="cover"
           />
           {/* 하트 버튼 - 오른쪽 상단 */}
           <TouchableOpacity
-            className="absolute top-2 right-2 w-8 h-8 bg-white/90 rounded-full items-center justify-center shadow-sm"
+            className="absolute top-2 right-2 bg-white/90 rounded-full items-center justify-center shadow-sm"
+            style={{ width: iconSize + 8, height: iconSize + 8 }}
             onPress={(e) => handleHeartToggle(item, e)}
           >
             <Ionicons 
               name={isFavorite(item.id) ? "heart" : "heart-outline"} 
-              size={20} 
+              size={iconSize} 
               color={isFavorite(item.id) ? "#EF4444" : "#9CA3AF"} 
             />
           </TouchableOpacity>
         </View>
-        <View className="flex-row justify-between items-start mb-2">
-          <Text className="text-xl font-semibold text-neutral-900 flex-1">
-            {item.name}
-          </Text>
-          {item.distance !== null && (
-            <View className="bg-sage-100 px-3 py-1 rounded-full">
-              <Text className="text-sm font-medium text-sage-700">
+        <View style={{ padding: cardPadding }}>
+          <View className="flex-row justify-between items-start mb-2">
+            <Text 
+              className="font-semibold text-neutral-900 flex-1"
+              style={{ fontSize: templeTitleSize }}
+            >
+              {item.name}
+            </Text>
+            {item.distance !== null && (
+              <View 
+                className="bg-sage-100 rounded-full"
+                style={{ paddingHorizontal: buttonPadding, paddingVertical: buttonPadding - 2 }}
+              >
+              <Text 
+                className="font-medium text-sage-700"
+                style={{ fontSize: templeDistanceSize }}
+              >
                 {item.distanceText}
               </Text>
             </View>
           )}
         </View>
-        <Text className="text-base text-neutral-600">
+        <Text 
+          className="text-neutral-600"
+          style={{ fontSize: templeDescSize }}
+        >
           {item.region}
         </Text>
         {item.distance === null && (
-          <Text className="text-sm text-neutral-400 mt-1">
+          <Text 
+            className="text-neutral-400 mt-1"
+            style={{ fontSize: templeDistanceSize - 1 }}
+          >
             위치 확인 중...
           </Text>
         )}
+        </View>
       </Card>
     </TouchableOpacity>
   ), [handleTemplePress, handleHeartToggle, isFavorite]);
@@ -154,16 +191,20 @@ const DistanceTemplesScreen = ({ navigation }: any) => {
   const renderRegionButton = useCallback((region: string) => (
     <TouchableOpacity 
       key={region}
-      className={`px-6 py-3 mx-2 rounded-2xl ${
+      className={`mx-2 rounded-2xl ${
         selectedRegion === region 
           ? 'bg-sage-600 active:bg-sage-700' 
           : 'bg-white border border-stone-200 active:bg-stone-50'
       }`}
+      style={{ paddingHorizontal: buttonPadding * 2, paddingVertical: buttonPadding }}
       onPress={() => handleRegionPress(region)}
     >
-      <Text className={`text-center font-semibold ${
-        selectedRegion === region ? 'text-white' : 'text-sage-600'
-      }`}>
+      <Text 
+        className={`text-center font-semibold ${
+          selectedRegion === region ? 'text-white' : 'text-sage-600'
+        }`}
+        style={{ fontSize: buttonFontSize }}
+      >
         {region}
       </Text>
     </TouchableOpacity>
@@ -212,11 +253,17 @@ const DistanceTemplesScreen = ({ navigation }: any) => {
         className="flex-1"
         ListHeaderComponent={
           <View className="items-center my-6 mt-8">
-            <Text className="text-3xl font-light text-neutral-900 text-center mb-2">
+            <Text 
+              className="font-light text-neutral-900 text-center mb-2"
+              style={{ fontSize: headerFontSize }}
+            >
               가까운 사찰
             </Text>
             {userLocation && (
-              <Text className="text-base text-neutral-600 text-center">
+              <Text 
+                className="text-neutral-600 text-center"
+                style={{ fontSize: templeDescSize }}
+              >
                 📍 현재 위치 기준으로 정렬되었습니다
               </Text>
             )}
@@ -225,10 +272,16 @@ const DistanceTemplesScreen = ({ navigation }: any) => {
         ListEmptyComponent={
           <View className="flex-1 justify-center items-center px-6 mt-20">
             <View className="bg-white rounded-2xl p-8 items-center">
-              <Text className="text-xl font-medium text-neutral-600 text-center mb-2">
+              <Text 
+                className="font-medium text-neutral-600 text-center mb-2"
+                style={{ fontSize: templeTitleSize }}
+              >
                 등록된 사찰이 없습니다
               </Text>
-              <Text className="text-base text-neutral-500 text-center">
+              <Text 
+                className="text-neutral-500 text-center"
+                style={{ fontSize: templeDescSize }}
+              >
                 해당 지역에 등록된 사찰이 없습니다.
               </Text>
             </View>

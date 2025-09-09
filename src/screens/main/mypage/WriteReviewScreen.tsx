@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -8,6 +8,22 @@ const WriteReviewScreen = ({ navigation, route }: any) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  // 화면 크기 기반 반응형 스타일
+  const screenHeight = Dimensions.get('window').height;
+  const screenWidth = Dimensions.get('window').width;
+  const isSmallScreen = screenHeight < 700;
+  const isLargeScreen = screenHeight > 800;
+  
+  // 동적 크기 계산
+  const headerFontSize = isSmallScreen ? 18 : (isLargeScreen ? 24 : 20);
+  const cardPadding = isSmallScreen ? 12 : (isLargeScreen ? 18 : 16);
+  const cardMargin = isSmallScreen ? 12 : (isLargeScreen ? 20 : 16);
+  const titleFontSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
+  const textFontSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+  const starSize = isSmallScreen ? 24 : (isLargeScreen ? 36 : 32);
+  const buttonPadding = isSmallScreen ? 12 : (isLargeScreen ? 18 : 16);
+  const inputMinHeight = isSmallScreen ? 100 : (isLargeScreen ? 140 : 120);
 
   const handleSubmit = () => {
     if (rating === 0) {
@@ -51,11 +67,11 @@ const WriteReviewScreen = ({ navigation, route }: any) => {
         <TouchableOpacity
           key={i}
           onPress={() => setRating(i)}
-          className="mr-2"
+          style={{ marginRight: isSmallScreen ? 6 : 8 }}
         >
           <Ionicons
             name={i <= rating ? "star" : "star-outline"}
-            size={32}
+            size={starSize}
             color={i <= rating ? "#F59E0B" : "#D1D5DB"}
           />
         </TouchableOpacity>
@@ -69,38 +85,38 @@ const WriteReviewScreen = ({ navigation, route }: any) => {
       {/* Header */}
       <View className="flex-row items-center justify-between px-5 py-4 bg-stone-100">
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#1A1B1F" />
+          <Ionicons name="arrow-back" size={isSmallScreen ? 20 : (isLargeScreen ? 28 : 24)} color="#1A1B1F" />
         </TouchableOpacity>
-        <Text className="text-3xl font-bold text-neutral-800 ml-1">
+        <Text style={{ fontSize: headerFontSize, fontWeight: 'bold', color: '#1F2937', marginLeft: 4 }}>
           Write Review
         </Text>
-        <View className="w-6" />
+        <View style={{ width: isSmallScreen ? 20 : (isLargeScreen ? 28 : 24) }} />
       </View>
 
       <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false}>
         <View className="h-8" />
         {/* Temple Info */}
-        <View className="bg-white rounded-xl p-5 mb-6 border border-gray-200">
-          <View className="mb-3">
-            <Text className="text-lg font-semibold text-neutral-900">
+        <View className="bg-white rounded-xl border border-gray-200" style={{ padding: cardPadding, marginBottom: cardMargin }}>
+          <View style={{ marginBottom: 12 }}>
+            <Text style={{ fontSize: titleFontSize, fontWeight: '600', color: '#111827' }}>
               {templeName}
             </Text>
           </View>
-                     <View className="mb-3">
-             <Text className="text-base font-semibold text-neutral-900">
-               {programName || 'Temple Stay Program'}
-             </Text>
-           </View>
+          <View style={{ marginBottom: 12 }}>
+            <Text style={{ fontSize: textFontSize, fontWeight: '600', color: '#111827' }}>
+              {programName || 'Temple Stay Program'}
+            </Text>
+          </View>
           <View>
-            <Text className="text-base text-neutral-600">
+            <Text style={{ fontSize: textFontSize, color: '#4B5563' }}>
               Experience Date: {reservationDate}
             </Text>
           </View>
         </View>
 
         {/* Rating Section */}
-        <View className="bg-white rounded-xl p-4 mb-6 border border-gray-200">
-          <Text className="text-lg font-semibold text-neutral-900 mb-3">
+        <View className="bg-white rounded-xl border border-gray-200" style={{ padding: cardPadding, marginBottom: cardMargin }}>
+          <Text style={{ fontSize: titleFontSize, fontWeight: '600', color: '#111827', marginBottom: 12 }}>
             Rate Your Experience
           </Text>
           <View className="flex-row justify-center">
@@ -109,30 +125,36 @@ const WriteReviewScreen = ({ navigation, route }: any) => {
         </View>
 
         {/* Comment Section */}
-        <View className="bg-white rounded-xl p-5 mb-6 border border-gray-200">
-          <Text className="text-lg font-semibold text-neutral-900 mb-4">
+        <View className="bg-white rounded-xl border border-gray-200" style={{ padding: cardPadding, marginBottom: cardMargin }}>
+          <Text style={{ fontSize: titleFontSize, fontWeight: '600', color: '#111827', marginBottom: 16 }}>
             Share Your Experience
           </Text>
           <TextInput
-            className="border border-gray-300 rounded-xl p-4 text-base text-neutral-900 min-h-32"
+            className="border border-gray-300 rounded-xl text-neutral-900"
+            style={{ 
+              padding: cardPadding, 
+              fontSize: textFontSize, 
+              minHeight: inputMinHeight,
+              textAlignVertical: 'top'
+            }}
             placeholder="Tell us about your temple stay experience..."
             placeholderTextColor="#9CA3AF"
             value={comment}
             onChangeText={setComment}
             multiline
-            textAlignVertical="top"
           />
-          <Text className="text-sm text-neutral-500 mt-2 text-right">
+          <Text style={{ fontSize: isSmallScreen ? 9 : 11, color: '#6B7280', marginTop: 8, textAlign: 'right' }}>
             {comment.length}/500 characters
           </Text>
         </View>
 
         {/* Submit Button */}
         <TouchableOpacity
-          className="bg-sage-600 py-4 rounded-3xl mb-8"
+          className="bg-sage-600 rounded-3xl"
+          style={{ paddingVertical: buttonPadding, marginBottom: isSmallScreen ? 24 : 32 }}
           onPress={handleSubmit}
         >
-          <Text className="text-white text-lg font-semibold text-center">
+          <Text style={{ color: 'white', fontSize: titleFontSize, fontWeight: '600', textAlign: 'center' }}>
             Submit Review
           </Text>
         </TouchableOpacity>
@@ -141,18 +163,22 @@ const WriteReviewScreen = ({ navigation, route }: any) => {
       {/* Success Modal */}
       {showSuccessModal && (
         <View className="absolute inset-0 flex-1 justify-center items-center">
-          <View className="bg-white rounded-3xl p-6 mx-12 max-w-xs shadow-2xl border border-stone-200">
-            <View className="items-center mb-4">
-              <View className="w-16 h-16 bg-green-100 rounded-full items-center justify-center mb-3">
-                <Ionicons name="checkmark" size={32} color="#059669" />
+          <View className="bg-white rounded-3xl shadow-2xl border border-stone-200" style={{ padding: cardPadding, marginHorizontal: 48, maxWidth: 320 }}>
+            <View className="items-center" style={{ marginBottom: 16 }}>
+              <View className="bg-green-100 rounded-full items-center justify-center" style={{ 
+                width: isSmallScreen ? 48 : 64, 
+                height: isSmallScreen ? 48 : 64, 
+                marginBottom: 12 
+              }}>
+                <Ionicons name="checkmark" size={isSmallScreen ? 24 : 32} color="#059669" />
               </View>
-              <Text className="text-xl font-semibold text-neutral-900 text-center">
+              <Text style={{ fontSize: titleFontSize, fontWeight: '600', color: '#111827', textAlign: 'center' }}>
                 Review Submitted!
               </Text>
             </View>
-                         <Text className="text-base text-neutral-600 text-center mb-6">
-               Thank you for sharing your experience
-             </Text>
+            <Text style={{ fontSize: textFontSize, color: '#4B5563', textAlign: 'center', marginBottom: 24 }}>
+              Thank you for sharing your experience
+            </Text>
           </View>
         </View>
       )}

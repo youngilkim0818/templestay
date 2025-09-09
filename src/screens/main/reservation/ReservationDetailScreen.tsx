@@ -15,7 +15,28 @@ import { enrichAttractionWithImage } from '../../../services/attractionImageServ
 import useUserStore from '../../../store/userStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+const isSmallScreen = height < 700;
+const isLargeScreen = height > 800;
+
+// Responsive sizes
+const headerFontSize = isSmallScreen ? 18 : (isLargeScreen ? 24 : 20);
+const subHeaderFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
+const templeImageHeight = isSmallScreen ? 200 : (isLargeScreen ? 280 : 240);
+const templeTitleSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 18);
+const templeDescSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
+const templeDistanceSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const iconSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 20);
+const buttonPadding = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+const buttonFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
+const programTitleSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
+const programDescSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const attractionImageHeight = isSmallScreen ? 100 : (isLargeScreen ? 140 : 120);
+const attractionTitleSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const attractionDescSize = isSmallScreen ? 9 : (isLargeScreen ? 13 : 11);
 
 // Google Translate 무료 API 사용
 const translateText = async (text: string): Promise<string> => {
@@ -106,21 +127,38 @@ const AttractionCard = memo<{
   const imageSource = (enrichedAttraction as any).imageUrl || (enrichedAttraction as any).firstimage;
 
   return (
-    <View className="bg-white rounded-2xl p-4 mr-3 w-72 border border-stone-200">
+    <View 
+      className="bg-white rounded-2xl border border-stone-200"
+      style={{ padding: cardPadding, marginRight: cardMargin, width: width * 0.7 }}
+    >
       {/* 사진이 있으면 실제 사진 표시 (API 이미지 또는 로컬 이미지) */}
       {isTourAttraction && imageSource && (
-        <View className="w-full h-28 rounded-xl mb-3 bg-stone-100 overflow-hidden">
+        <View 
+          className="w-full rounded-xl mb-3 bg-stone-100 overflow-hidden"
+          style={{ height: attractionImageHeight }}
+        >
           <Image source={{ uri: imageSource }} className="w-full h-full" resizeMode="cover" />
         </View>
       )}
       
-      <Text className="text-lg font-bold text-sage-600 mb-1" numberOfLines={1}>
+      <Text 
+        className="font-bold text-sage-600 mb-1" 
+        style={{ fontSize: attractionTitleSize }}
+        numberOfLines={1}
+      >
         {displayName}
       </Text>
-      <Text className="text-sm text-neutral-600 mb-2" numberOfLines={2}>
+      <Text 
+        className="text-neutral-600 mb-2" 
+        style={{ fontSize: attractionDescSize }}
+        numberOfLines={2}
+      >
         {displayDescription || 'No address information'}
       </Text>
-      <Text className="text-sm font-semibold text-neutral-700">
+      <Text 
+        className="font-semibold text-neutral-700"
+        style={{ fontSize: attractionDescSize }}
+      >
         {displayDistance || 'No distance information'}
       </Text>
     </View>
@@ -175,7 +213,10 @@ const SimpleCalendar = memo<{
         <TouchableOpacity onPress={() => onMonthChange('prev')} className="p-1">
           <Ionicons name="chevron-back" size={16} color="#616351" />
         </TouchableOpacity>
-        <Text className="text-sm font-semibold text-neutral-900">
+        <Text 
+          className="font-semibold text-neutral-900"
+          style={{ fontSize: templeDistanceSize }}
+        >
           {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
         </Text>
         <TouchableOpacity onPress={() => onMonthChange('next')} className="p-1">
@@ -190,7 +231,11 @@ const SimpleCalendar = memo<{
             <View className="flex-row mb-4">
               {dayNames.map((day, index) => (
                                   <View key={day} className="flex-1 items-center px-0.5">
-                    <Text className={`text-xs font-medium ${index === 0 ? 'text-red-500' : index === 6 ? 'text-blue-500' : 'text-neutral-600'}`} numberOfLines={1}>
+                    <Text 
+                      className={`font-medium ${index === 0 ? 'text-red-500' : index === 6 ? 'text-blue-500' : 'text-neutral-600'}`}
+                      style={{ fontSize: templeDistanceSize - 2 }}
+                      numberOfLines={1}
+                    >
                       {day}
                     </Text>
                   </View>
@@ -1005,7 +1050,10 @@ const ReservationDetailScreen = () => {
   return (
     <ScrollView className="flex-1 bg-stone-100">
       {/* 전체 사진칸 */}
-      <View className="relative h-80 bg-stone-200">
+      <View 
+        className="relative bg-stone-200"
+        style={{ height: templeImageHeight }}
+      >
         {(() => {
           if (__DEV__) {
             console.log('🔍 사찰 이미지 디버깅:', {
@@ -1036,10 +1084,25 @@ const ReservationDetailScreen = () => {
             />
           ) : (
             <View className="flex-1 items-center justify-center">
-              <Text className="text-4xl">🏯</Text>
-              <Text className="text-sm text-neutral-500 mt-2">Could not load image</Text>
-              <Text className="text-xs text-neutral-400 mt-1">imageUrl: {JSON.stringify(temple.imageUrl)}</Text>
-              <Text className="text-xs text-neutral-400 mt-1">temple.name: {temple.name}</Text>
+              <Text style={{ fontSize: iconSize * 2 }}>🏯</Text>
+              <Text 
+                className="text-neutral-500 mt-2"
+                style={{ fontSize: templeDescSize }}
+              >
+                Could not load image
+              </Text>
+              <Text 
+                className="text-neutral-400 mt-1"
+                style={{ fontSize: templeDistanceSize - 1 }}
+              >
+                imageUrl: {JSON.stringify(temple.imageUrl)}
+              </Text>
+              <Text 
+                className="text-neutral-400 mt-1"
+                style={{ fontSize: templeDistanceSize - 1 }}
+              >
+                temple.name: {temple.name}
+              </Text>
             </View>
           );
         })()}
@@ -1051,14 +1114,29 @@ const ReservationDetailScreen = () => {
         <View className="mb-6">
           {/* 제목과 주소 */}
           <View className="mb-4">
-        <Text className="text-2xl font-bold text-neutral-900 mb-2">{temple.name.replace(/Temple/g, '').trim()}</Text>
-            <Text className="text-neutral-700 mb-2">{temple.address}</Text>
+        <Text 
+          className="font-bold text-neutral-900 mb-2"
+          style={{ fontSize: templeTitleSize }}
+        >
+          {temple.name.replace(/Temple/g, '').trim()}
+        </Text>
+            <Text 
+              className="text-neutral-700 mb-2"
+              style={{ fontSize: templeDescSize }}
+            >
+              {temple.address}
+            </Text>
 
           </View>
 
         {/* 템플스테이 프로그램 */}
         <View className="mb-6">
-          <Text className="text-xl font-bold text-neutral-900 mb-3">Templestay Programs</Text>
+          <Text 
+            className="font-bold text-neutral-900 mb-3"
+            style={{ fontSize: programTitleSize }}
+          >
+            Templestay Programs
+          </Text>
           {(() => {
             const programs: any[] = (temple as any).programs && (temple as any).programs.length > 0
               ? (temple as any).programs
@@ -1078,9 +1156,24 @@ const ReservationDetailScreen = () => {
                       : 'bg-white border-stone-200'
                   }`}
                 >
-                         <Text className="text-lg font-semibold text-sage-600 mb-1">{program.title}</Text>
-      <Text className="text-sm text-neutral-600 mb-2" numberOfLines={2}>{program.description}</Text>
-                  <Text className="text-base font-bold text-neutral-900">₩{(() => {
+                         <Text 
+                           className="font-semibold text-sage-600 mb-1"
+                           style={{ fontSize: programTitleSize }}
+                         >
+                           {program.title}
+                         </Text>
+      <Text 
+        className="text-neutral-600 mb-2" 
+        style={{ fontSize: programDescSize }}
+        numberOfLines={2}
+      >
+        {program.description}
+      </Text>
+                  <Text 
+                    className="font-bold text-neutral-900"
+                    style={{ fontSize: templeDescSize }}
+                  >
+                    ₩{(() => {
                     // TEMPLES_DATA에서 직접 해당 프로그램의 성인 가격을 가져오기
                     const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
                     const programDetail = basicTemple?.programDetails?.[program.title];
@@ -1093,7 +1186,12 @@ const ReservationDetailScreen = () => {
                   {selectedProgram && selectedProgram.title === program.title && (
                     <View className="mt-2 flex-row items-center">
                       <Ionicons name="checkmark-circle" size={16} color="#059669" />
-                      <Text className="text-sm text-sage-600 ml-1">Selected</Text>
+                      <Text 
+                        className="text-sage-600 ml-1"
+                        style={{ fontSize: templeDistanceSize }}
+                      >
+                        Selected
+                      </Text>
               </View>
                   )}
                 </TouchableOpacity>
@@ -1108,9 +1206,19 @@ const ReservationDetailScreen = () => {
               <View className="bg-stone-50 border border-stone-200 p-4 rounded-lg mb-4">
                 <View className="flex-row items-center mb-3">
                   <View className="w-8 h-8 bg-stone-300 rounded-full items-center justify-center mr-3">
-                    <Text className="text-stone-700 font-bold text-sm">₩</Text>
+                    <Text 
+                      className="text-stone-700 font-bold"
+                      style={{ fontSize: templeDistanceSize }}
+                    >
+                      ₩
+                    </Text>
                   </View>
-                  <Text className="text-lg font-bold text-neutral-900">Participation Fee</Text>
+                  <Text 
+                    className="font-bold text-neutral-900"
+                    style={{ fontSize: programTitleSize }}
+                  >
+                    Participation Fee
+                  </Text>
                 </View>
                 
                 {/* 가격표 */}
@@ -1122,7 +1230,10 @@ const ReservationDetailScreen = () => {
                     <Text className="text-sm font-semibold text-neutral-700">Preschool</Text>
                   </View>
                   <View className="flex-row justify-between items-center mt-2">
-                    <Text className="text-base font-bold text-neutral-900">
+                    <Text 
+                      className="font-bold text-neutral-900"
+                      style={{ fontSize: templeDescSize }}
+                    >
                       {(() => {
                         // TEMPLES_DATA에서 직접 가져오기
                         const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
@@ -1146,7 +1257,10 @@ const ReservationDetailScreen = () => {
                         return selectedProgram.price?.toLocaleString() || '가격 정보 없음';
                       })()}
                     </Text>
-                    <Text className="text-base font-bold text-neutral-900">
+                    <Text 
+                      className="font-bold text-neutral-900"
+                      style={{ fontSize: templeDescSize }}
+                    >
                       {(() => {
                         // TEMPLES_DATA에서 직접 가져오기
                         const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
@@ -1169,7 +1283,10 @@ const ReservationDetailScreen = () => {
                         return basePrice ? Math.floor(basePrice * 0.9).toLocaleString() : '가격 정보 없음';
                       })()}
                     </Text>
-                    <Text className="text-base font-bold text-neutral-900">
+                    <Text 
+                      className="font-bold text-neutral-900"
+                      style={{ fontSize: templeDescSize }}
+                    >
                       {(() => {
                         // TEMPLES_DATA에서 직접 가져오기
                         const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
@@ -1192,7 +1309,10 @@ const ReservationDetailScreen = () => {
                         return basePrice ? Math.floor(basePrice * 0.8).toLocaleString() : '가격 정보 없음';
                       })()}
                     </Text>
-                    <Text className="text-base font-bold text-neutral-900">
+                    <Text 
+                      className="font-bold text-neutral-900"
+                      style={{ fontSize: templeDescSize }}
+                    >
                       {(() => {
                         // TEMPLES_DATA에서 직접 가져오기
                         const basicTemple = TEMPLES_DATA.find((item) => item.id === templeId);
@@ -1233,7 +1353,12 @@ const ReservationDetailScreen = () => {
                   <View className="w-8 h-8 bg-stone-300 rounded-full items-center justify-center mr-3">
                     <Ionicons name="calendar" size={16} color="#78716c" />
                   </View>
-                  <Text className="text-lg font-bold text-neutral-900">Program Introduction</Text>
+                  <Text 
+                    className="font-bold text-neutral-900"
+                    style={{ fontSize: programTitleSize }}
+                  >
+                    Program Introduction
+                  </Text>
                 </View>
                 
                 <View className="space-y-3">
@@ -1351,7 +1476,12 @@ const ReservationDetailScreen = () => {
 
         {/* 하단: User Reviews */}
         <View className="mb-6">
-          <Text className="text-xl font-bold text-neutral-900 mb-3">User Reviews</Text>
+          <Text 
+            className="font-bold text-neutral-900 mb-3"
+            style={{ fontSize: programTitleSize }}
+          >
+            User Reviews
+          </Text>
           {reviews.length === 0 ? (
                          <View className="bg-stone-50 border border-stone-200 rounded-lg p-4">
                {/* 리뷰가 없을 때 */}
@@ -1407,7 +1537,12 @@ const ReservationDetailScreen = () => {
 
         {/* 하단: Nearby Attractions */}
         <View className="mb-4">
-          <Text className="text-xl font-bold text-neutral-900 mb-3">Nearby Attractions</Text>
+          <Text 
+            className="font-bold text-neutral-900 mb-3"
+            style={{ fontSize: programTitleSize }}
+          >
+            Nearby Attractions
+          </Text>
           {attractionsLoading ? (
             <View className="py-6 items-center"><ActivityIndicator color={COLORS.brand.sage} /></View>
           ) : attractions.length > 0 ? (
@@ -1467,8 +1602,16 @@ const ReservationDetailScreen = () => {
               <View className="w-16 h-16 bg-green-200 rounded-full items-center justify-center mb-3">
                 <Ionicons name="checkmark-circle" size={32} color="#059669" />
               </View>
-              <Text className="text-xl font-bold text-amber-800">Reservation Complete!</Text>
-              <Text className="text-sm text-amber-700 text-center mt-2">
+              <Text 
+                className="font-bold text-amber-800"
+                style={{ fontSize: programTitleSize }}
+              >
+                Reservation Complete!
+              </Text>
+              <Text 
+                className="text-amber-700 text-center mt-2"
+                style={{ fontSize: templeDescSize }}
+              >
                 Your reservation has been successfully completed
               </Text>
             </View>
@@ -1500,8 +1643,16 @@ const ReservationDetailScreen = () => {
               <View className="w-16 h-16 bg-stone-200 rounded-full items-center justify-center mb-3">
                 <Ionicons name="log-in-outline" size={32} color="#5A4636" />
               </View>
-              <Text className="text-xl font-bold text-neutral-900">Login Required</Text>
-              <Text className="text-sm text-stone-600 text-center mt-2">
+              <Text 
+                className="font-bold text-neutral-900"
+                style={{ fontSize: programTitleSize }}
+              >
+                Login Required
+              </Text>
+              <Text 
+                className="text-stone-600 text-center mt-2"
+                style={{ fontSize: templeDescSize }}
+              >
                 Please sign in to make a reservation
               </Text>
             </View>

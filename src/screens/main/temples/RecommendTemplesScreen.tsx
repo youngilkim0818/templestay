@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import Card from '../../../components/common/Card';
@@ -7,6 +7,26 @@ import { Temple } from '../../../types';
 import { TEMPLES_DATA } from '../../../data/temple-data';
 import * as Location from 'expo-location';
 import useTempleStore from '../../../store/templeStore';
+
+const { width, height } = Dimensions.get('window');
+const isSmallScreen = height < 700;
+const isLargeScreen = height > 800;
+
+// Responsive sizes
+const headerFontSize = isSmallScreen ? 18 : (isLargeScreen ? 24 : 20);
+const subHeaderFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
+const templeImageHeight = isSmallScreen ? 120 : (isLargeScreen ? 180 : 150);
+const templeTitleSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
+const templeDescSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
+const templeDistanceSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+const searchFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const searchPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const iconSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 20);
+const buttonPadding = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+const buttonFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
 
 interface RecommendTemplesScreenProps {
   navigation: any;
@@ -244,13 +264,19 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
             <View className="px-4 py-20">
               <View className="flex-row items-center">
                                  <View className="mt-4">
-                   <Text className="text-2xl font-bold text-white">
+                   <Text 
+                     className="font-bold text-white"
+                     style={{ fontSize: headerFontSize }}
+                   >
                      {boxType === 'popular' ? 'Popular Temple Picks' : 
                       boxType === 'distance' ? 'Nearest Temples' : 
                       boxType === 'region' ? 'Regional Temple Picks' : 
                       boxType === 'oneday' ? 'One-Day Programs' : ''}
                    </Text>
-                   <Text className="text-xl font-medium text-white mt-1">
+                   <Text 
+                     className="font-medium text-white mt-1"
+                     style={{ fontSize: subHeaderFontSize }}
+                   >
                      {boxType === 'popular' ? 'Most Popular Temple' :
                       boxType === 'distance' ? 'Temples Near You!' :
                       boxType === 'region' ? 'Representative temples in Gyeongbuk region by area' :
