@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image, Alert, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, Alert, Modal, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -24,6 +24,20 @@ const MyPageScreen = ({ navigation }: any) => {
 
   const { reservations, fetchUserReservations, loading } = useReservationStore();
   const { user: currentUser, logout: logoutUser, updateUser, isGuestMode } = useUserStore();
+
+  // 화면 크기 기반 반응형 스타일
+  const screenHeight = Dimensions.get('window').height;
+  const screenWidth = Dimensions.get('window').width;
+  const isSmallScreen = screenHeight < 700;
+  const isLargeScreen = screenHeight > 800;
+  
+  // 동적 크기 계산 (전체적으로 크기 축소)
+  const profileImageSize = isSmallScreen ? 20 : (isLargeScreen ? 26 : 22);
+  const headerFontSize = isSmallScreen ? 20 : (isLargeScreen ? 26 : 22);
+  const nameFontSize = isSmallScreen ? 16 : (isLargeScreen ? 20 : 18);
+  const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+  const menuItemPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+  const bottomSpacing = isSmallScreen ? 8 : (isLargeScreen ? 16 : 12);
 
   // 사용자 정보 불러오기 - Supabase 연동
   const loadUserInfo = useCallback(async () => {
@@ -211,28 +225,39 @@ const MyPageScreen = ({ navigation }: any) => {
 
       {/* 헤더 */}
       <View className="flex-row justify-between items-center px-5 -py-5 bg-stone-100">
-        <Text className="text-3xl font-bold text-neutral-800">My TempleBuk</Text>
+        <Text style={{ fontSize: headerFontSize, fontWeight: 'bold', color: '#262626' }}>My TempleBuk</Text>
       </View>
 
       <View className="flex-1 bg-stone-100">
         {/* 사용자 프로필 섹션 */}
-        <View className="px-4 py-6">
+        <View style={{ paddingHorizontal: 16, paddingVertical: sectionPadding }}>
           <View className="flex-row items-center">
-            <View className="w-28 h-28 bg-gray-200 rounded-full justify-center items-center mr-4 overflow-hidden border-2 border-stone-300">
+            <View style={{ 
+              width: profileImageSize * 4, 
+              height: profileImageSize * 4, 
+              backgroundColor: '#f3f4f6', 
+              borderRadius: profileImageSize * 2, 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              marginRight: 16, 
+              overflow: 'hidden', 
+              borderWidth: 2, 
+              borderColor: '#d6d3d1' 
+            }}>
               {user.profileImage ? (
-                <Image source={{ uri: user.profileImage }} className="w-full h-full" />
+                <Image source={{ uri: user.profileImage }} style={{ width: '100%', height: '100%' }} />
               ) : (
-                <Ionicons name="sunny" size={56} color="#F59E0B" />
+                <Ionicons name="sunny" size={profileImageSize * 2} color="#F59E0B" />
               )}
             </View>
             <View className="flex-1 justify-center">
               <View className="flex-row items-center justify-between">
                 <TouchableOpacity className="flex-row items-center">
-                  <Text className="text-2xl font-bold text-neutral-900">{user.name}</Text>
+                  <Text style={{ fontSize: nameFontSize, fontWeight: 'bold', color: '#171717' }}>{user.name}</Text>
                 </TouchableOpacity>
                 {!isGuestMode && (
-                  <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} className="ml-4">
-                    <Text className="text-base text-gray-600">Edit Profile</Text>
+                  <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={{ marginLeft: 16 }}>
+                    <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#6b7280' }}>Edit Profile</Text>
                   </TouchableOpacity>
                 )}
               </View>
@@ -242,28 +267,28 @@ const MyPageScreen = ({ navigation }: any) => {
 
         {/* 현재 예약 확인 섹션 - 게스트 모드가 아닐 때만 표시 */}
         {!isGuestMode && (
-          <View className="mx-4 mb-4">
-            <View className="bg-white rounded-xl p-4 border-2 border-sage-200">
-              <View className="flex-row justify-start items-start mb-3">
+          <View style={{ marginHorizontal: 16, marginBottom: isSmallScreen ? 12 : 16 }}>
+            <View className="bg-white rounded-xl border-2 border-sage-200" style={{ padding: sectionPadding }}>
+              <View className="flex-row justify-start items-start" style={{ marginBottom: 12 }}>
                 <View className="bg-sage-600 px-3 py-1 rounded-full">
                   <View className="flex-row items-center">
-                    <Ionicons name="calendar" size={14} color="white" />
-                    <Text className="text-white text-sm font-semibold ml-1">Current Reservation</Text>
+                    <Ionicons name="calendar" size={isSmallScreen ? 10 : 12} color="white" />
+                    <Text style={{ color: 'white', fontSize: isSmallScreen ? 10 : 12, fontWeight: '600', marginLeft: 4 }}>Current Reservation</Text>
                   </View>
                 </View>
               </View>
-              <Text className="text-base font-semibold text-neutral-900 mb-3">
-                                {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? `${upcomingReservation.temple_name || 'Unknown Temple'} - ${upcomingReservation.program_title || 'Temple Stay Program'}` : 'No temple stay reservations yet'}
+              <Text style={{ fontSize: isSmallScreen ? 12 : 14, fontWeight: '600', color: '#171717', marginBottom: 10 }}>
+                {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? `${upcomingReservation.temple_name || 'Unknown Temple'} - ${upcomingReservation.program_title || 'Temple Stay Program'}` : 'No temple stay reservations yet'}
               </Text>
-              <View className="border-t-2 border-sage-200 pt-3">
+              <View className="border-t-2 border-sage-200" style={{ paddingTop: 10 }}>
                 <View className="flex-row items-center">
-                  <Text className="text-sm text-neutral-700">
+                  <Text style={{ fontSize: isSmallScreen ? 10 : 12, color: '#404040' }}>
                     {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? 'Upcoming Reservation' : 'Try booking a templestay'}
                   </Text>
                   {upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? (
                     <>
-                      <Ionicons name="time" size={16} color="#5A4636" className="ml-2" />
-                      <Text className="text-sm font-semibold text-sage-700 ml-1">
+                      <Ionicons name="time" size={isSmallScreen ? 12 : 14} color="#5A4636" style={{ marginLeft: 6 }} />
+                      <Text style={{ fontSize: isSmallScreen ? 10 : 12, fontWeight: '600', color: '#4A5D23', marginLeft: 3 }}>
                         D-{Math.ceil((new Date(upcomingReservation.reservation_date || '').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))}
                       </Text>
                     </>
@@ -275,104 +300,111 @@ const MyPageScreen = ({ navigation }: any) => {
         )}
 
         {/* 추가 메뉴들 */}
-        <View className="mx-4 mb-6">
+        <View style={{ marginHorizontal: 16, marginBottom: isSmallScreen ? 16 : 24 }}>
           <View className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <TouchableOpacity 
-              className="flex-row items-center p-4 border-b border-gray-100"
+              className="flex-row items-center border-b border-gray-100"
+              style={{ padding: menuItemPadding }}
               onPress={() => navigation.navigate('CommonList', { initialTab: 0 })}
             >
-              <Ionicons name="calendar-outline" size={20} color="#6b7280" />
-              <Text className="text-base text-neutral-900 ml-3 flex-1">Reservation History</Text>
-              <Ionicons name="chevron-forward" size={16} color="#6b7280" />
+              <Ionicons name="calendar-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
+              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>Reservation History</Text>
+              <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
             
             <TouchableOpacity 
-              className="flex-row items-center p-4 border-b border-gray-100"
+              className="flex-row items-center border-b border-gray-100"
+              style={{ padding: menuItemPadding }}
               onPress={() => navigation.navigate('CommonList', { initialTab: 1 })}
             >
-              <Ionicons name="heart-outline" size={20} color="#6b7280" />
-              <Text className="text-base text-neutral-900 ml-3 flex-1">Favorite Temples</Text>
-              <Ionicons name="chevron-forward" size={16} color="#6b7280" />
+              <Ionicons name="heart-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
+              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>Favorite Temples</Text>
+              <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
             
             <TouchableOpacity 
-              className="flex-row items-center p-4 border-b border-gray-100"
+              className="flex-row items-center"
+              style={{ padding: menuItemPadding }}
               onPress={() => navigation.navigate('CommonList', { initialTab: 2 })}
             >
-              <Ionicons name="star-outline" size={20} color="#6b7280" />
-              <Text className="text-base text-neutral-900 ml-3 flex-1">My Reviews</Text>
-              <Ionicons name="chevron-forward" size={16} color="#6b7280" />
+              <Ionicons name="star-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
+              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>My Reviews</Text>
+              <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
-            
-
           </View>
         </View>
 
         {/* 설정 메뉴들 */}
-        <View className="mx-4 mb-6">
+        <View style={{ marginHorizontal: 16, marginBottom: isSmallScreen ? 16 : 24 }}>
           <View className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <TouchableOpacity 
-              className="flex-row items-center p-4 border-b border-gray-100"
+              className="flex-row items-center border-b border-gray-100"
+              style={{ padding: menuItemPadding }}
               onPress={() => setShowNotificationSettings(true)}
             >
-              <Ionicons name="notifications-outline" size={20} color="#6b7280" />
-              <Text className="text-base text-neutral-900 ml-3 flex-1">Notification Settings</Text>
-              <Ionicons name="chevron-forward" size={16} color="#6b7280" />
+              <Ionicons name="notifications-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
+              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>Notification Settings</Text>
+              <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
             
             <TouchableOpacity 
-              className="flex-row items-center p-4 border-b border-gray-100"
+              className="flex-row items-center border-b border-gray-100"
+              style={{ padding: menuItemPadding }}
               onPress={() => setShowPrivacyPolicy(true)}
             >
-              <Ionicons name="shield-outline" size={20} color="#6b7280" />
-              <Text className="text-base text-neutral-900 ml-3 flex-1">Privacy Policy</Text>
-              <Ionicons name="chevron-forward" size={16} color="#6b7280" />
+              <Ionicons name="shield-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
+              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>Privacy Policy</Text>
+              <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
             
             <TouchableOpacity 
-              className="flex-row items-center p-4 border-b border-gray-100"
+              className="flex-row items-center border-b border-gray-100"
+              style={{ padding: menuItemPadding }}
               onPress={() => setShowCustomerSupport(true)}
             >
-              <Ionicons name="help-circle-outline" size={20} color="#6b7280" />
-              <Text className="text-base text-neutral-900 ml-3 flex-1">Customer Support</Text>
-              <Ionicons name="chevron-forward" size={16} color="#6b7280" />
+              <Ionicons name="help-circle-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
+              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>Customer Support</Text>
+              <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
 
             {isGuestMode ? (
               <TouchableOpacity 
-                className="flex-row items-center p-4 border-b border-gray-100"
+                className="flex-row items-center border-b border-gray-100"
+                style={{ padding: menuItemPadding }}
                 onPress={() => navigation.navigate('Login')}
               >
-                <Ionicons name="log-in-outline" size={20} color="#5A4636" />
-                <Text className="text-base text-sage-600 ml-3 flex-1">Sign In</Text>
-                <Ionicons name="chevron-forward" size={16} color="#5A4636" />
+                <Ionicons name="log-in-outline" size={isSmallScreen ? 16 : 18} color="#5A4636" />
+                <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#4A5D23', marginLeft: 10, flex: 1 }}>Sign In</Text>
+                <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#5A4636" />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity 
-                className="flex-row items-center p-4 border-b border-gray-100"
+                className="flex-row items-center border-b border-gray-100"
+                style={{ padding: menuItemPadding }}
                 onPress={handleLogout}
               >
-                <Ionicons name="log-out-outline" size={20} color="#ef4444" />
-                <Text className="text-base text-red-500 ml-3 flex-1">Logout</Text>
-                <Ionicons name="chevron-forward" size={16} color="#ef4444" />
+                <Ionicons name="log-out-outline" size={isSmallScreen ? 16 : 18} color="#ef4444" />
+                <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#ef4444', marginLeft: 10, flex: 1 }}>Logout</Text>
+                <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#ef4444" />
               </TouchableOpacity>
             )}
 
             {!isGuestMode && (
               <TouchableOpacity 
-                className="flex-row items-center p-4"
+                className="flex-row items-center"
+                style={{ padding: menuItemPadding }}
                 onPress={() => setShowDeleteAccountModal(true)}
               >
-                <Ionicons name="trash-outline" size={20} color="#ef4444" />
-                <Text className="text-base text-red-500 ml-3 flex-1">Delete Account</Text>
-                <Ionicons name="chevron-forward" size={16} color="#ef4444" />
+                <Ionicons name="trash-outline" size={isSmallScreen ? 16 : 18} color="#ef4444" />
+                <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#ef4444', marginLeft: 10, flex: 1 }}>Delete Account</Text>
+                <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#ef4444" />
               </TouchableOpacity>
             )}
           </View>
         </View>
 
         {/* 하단 여백 */}
-        <View className="h-20" />
+        <View style={{ height: bottomSpacing * 3 }} />
       </View>
 
       {/* 로그아웃 모달 */}
