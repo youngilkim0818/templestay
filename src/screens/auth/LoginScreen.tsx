@@ -49,7 +49,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
         setErrorMessage('');
         // 로그인 성공 - 온보딩 완료 여부 확인
         const hasCompletedOnboarding = await AsyncStorage.getItem('hasCompletedOnboarding');
-        if (hasCompletedOnboarding === 'true') {
+        const isOnboardingInProgress = await AsyncStorage.getItem('isOnboardingInProgress');
+        
+        // 온보딩이 진행 중이었다면 웰컴 페이지로 이동
+        if (isOnboardingInProgress === 'true') {
+          await AsyncStorage.removeItem('isOnboardingInProgress');
+          navigation.replace('Splash');
+        } else if (hasCompletedOnboarding === 'true') {
           navigation.replace('Main');
         } else {
           navigation.replace('Onboarding1');

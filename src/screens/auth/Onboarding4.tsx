@@ -50,12 +50,14 @@ const ImportantFactorScreen = ({ navigation }: any) => {
         setDotIndex(0);
         
         // 4초 대기
-        setTimeout(() => {
+        setTimeout(async () => {
           setIsLoading(false);
           
           if (isGuestMode) {
             // 게스트 모드일 때는 온보딩 완료 처리하고 메인으로 이동
-            AsyncStorage.setItem('hasCompletedOnboarding', 'true');
+            await AsyncStorage.setItem('hasCompletedOnboarding', 'true');
+            // 온보딩 진행 상태 제거
+            await AsyncStorage.removeItem('isOnboardingInProgress');
             navigation.replace('Main');
           } else {
             // 일반 사용자는 온보딩5로 이동

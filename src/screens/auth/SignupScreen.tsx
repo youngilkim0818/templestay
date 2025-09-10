@@ -114,8 +114,9 @@ const RegistrationScreen = ({ navigation }: any) => {
 
     setLoading(true);
     try {
-      // 재가입일 수 있으므로, 이전 온보딩 완료 플래그를 제거
+      // 재가입일 수 있으므로, 이전 온보딩 완료 플래그와 진행 상태를 제거
       await AsyncStorage.removeItem('hasCompletedOnboarding');
+      await AsyncStorage.removeItem('isOnboardingInProgress');
 
       // Supabase Auth로 회원가입
       const result = await AuthService.signUp(email, password, {

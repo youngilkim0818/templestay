@@ -65,6 +65,8 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
   const handleStart = async () => {
     try {
       await AsyncStorage.setItem('hasCompletedOnboarding', 'true');
+      // 온보딩 진행 상태 제거
+      await AsyncStorage.removeItem('isOnboardingInProgress');
 
       if (userName.trim() !== '') {
         await AsyncStorage.setItem('userName', userName.trim());

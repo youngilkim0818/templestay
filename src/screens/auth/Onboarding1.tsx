@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const EXPERIENCE_OPTIONS = [
   { id: 0, text: 'Never' },
@@ -13,6 +14,14 @@ const EXPERIENCE_OPTIONS = [
 
 const TemplestayExperienceScreen = ({ navigation }: any) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
+
+  // 온보딩 진행 상태 설정
+  useEffect(() => {
+    const setOnboardingInProgress = async () => {
+      await AsyncStorage.setItem('isOnboardingInProgress', 'true');
+    };
+    setOnboardingInProgress();
+  }, []);
 
   const handleOptionSelect = (id: number) => {
     if (selectedOption === id) {

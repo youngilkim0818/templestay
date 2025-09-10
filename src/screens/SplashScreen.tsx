@@ -41,18 +41,62 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
     
     const checkUserStatus = async () => {
       try {
+        // 온보딩 진행 상태 확인 (온보딩 중간에 나갔는지 체크)
+        const isOnboardingInProgress = await AsyncStorage.getItem('isOnboardingInProgress');
+        
         // 게스트 모드 확인
         const isGuestMode = await AsyncStorage.getItem('isGuestMode');
         if (isGuestMode === 'true') {
-          if (__DEV__) console.log('👤 게스트 모드 사용자 → 메인으로 이동');
-          navigation.replace('Main');
-          return;
+          // 온보딩이 진행 중이었다면 웰컴 페이지로 이동
+          if (isOnboardingInProgress === 'true') {
+            if (__DEV__) console.log('👤 게스트 모드 - 온보딩 진행 중이었음 → 웰컴 페이지로 이동');
+            // 온보딩 진행 상태 초기화
+            await AsyncStorage.removeItem('isOnboardingInProgress');
+            setShowStartButton(true);
+            Animated.timing(fadeAnim, {
+              toValue: 1,
+              duration: 550,
+              useNativeDriver: true,
+            }).start();
+            return;
+          }
+          
+          // 온보딩 완료 여부 확인
+          const hasCompletedOnboarding = await AsyncStorage.getItem('hasCompletedOnboarding');
+          if (hasCompletedOnboarding === 'true') {
+            if (__DEV__) console.log('👤 게스트 모드 - 온보딩 완료 → 메인으로 이동');
+            navigation.replace('Main');
+            return;
+          } else {
+            if (__DEV__) console.log('👤 게스트 모드 - 온보딩 미완료 → 웰컴 페이지로 이동');
+            setShowStartButton(true);
+            Animated.timing(fadeAnim, {
+              toValue: 1,
+              duration: 550,
+              useNativeDriver: true,
+            }).start();
+            return;
+          }
         }
 
         const { data: { session } } = await supabase.auth.getSession();
         const isLoggedIn = !!session;
         
         if (isLoggedIn && session?.user?.id) {
+          // 온보딩이 진행 중이었다면 웰컴 페이지로 이동
+          if (isOnboardingInProgress === 'true') {
+            if (__DEV__) console.log('👤 회원 모드 - 온보딩 진행 중이었음 → 웰컴 페이지로 이동');
+            // 온보딩 진행 상태 초기화
+            await AsyncStorage.removeItem('isOnboardingInProgress');
+            setShowStartButton(true);
+            Animated.timing(fadeAnim, {
+              toValue: 1,
+              duration: 550,
+              useNativeDriver: true,
+            }).start();
+            return;
+          }
+          
           let hasCompletedOnboarding = false;
           
           try {
@@ -83,8 +127,13 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
             if (__DEV__) console.log('✅ 온보딩 완료 사용자 → 홈으로 이동');
             navigation.replace('Main');
           } else {
-            if (__DEV__) console.log('⚠️ 온보딩 미완료 사용자 → 온보딩으로 이동');
-            navigation.replace('Onboarding1');
+            if (__DEV__) console.log('⚠️ 온보딩 미완료 사용자 → 웰컴 페이지로 이동');
+            setShowStartButton(true);
+            Animated.timing(fadeAnim, {
+              toValue: 1,
+              duration: 550,
+              useNativeDriver: true,
+            }).start();
           }
         } else {
           if (__DEV__) console.log('🆕 비로그인 사용자 → 시작 버튼 표시');
