@@ -14,9 +14,9 @@ const CommonListScreen = ({ navigation, route }: any) => {
   const isSmallScreen = screenHeight < 700;
   const isLargeScreen = screenHeight > 800;
   
-  // 동적 크기 계산 (전체적으로 크기 축소, 탭 버튼만 조금 키움)
+  // 동적 크기 계산 (반응형 크기 개선)
   const headerFontSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 18);
-  const tabFontSize = isSmallScreen ? 9 : (isLargeScreen ? 13 : 11);
+  const tabFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
   const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
   const cardMargin = isSmallScreen ? 6 : (isLargeScreen ? 12 : 8);
   const titleFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
@@ -73,11 +73,11 @@ const CommonListScreen = ({ navigation, route }: any) => {
   // 실제 예약 데이터만 사용
   const allReservations = reservationHistory;
 
-  // 탭 데이터
+  // 탭 데이터 (짧은 제목으로 변경)
   const tabs = [
-    { id: 0, title: 'Reservation History', icon: 'calendar-outline' },
-    { id: 1, title: 'Favorite Temples', icon: 'heart-outline' },
-    { id: 2, title: 'My Reviews', icon: 'star-outline' }
+    { id: 0, title: 'Reservations', icon: 'calendar-outline' },
+    { id: 1, title: 'Favorites', icon: 'heart-outline' },
+    { id: 2, title: 'Reviews', icon: 'star-outline' }
   ];
 
   // 내가 쓴 리뷰 데이터
@@ -309,14 +309,24 @@ const CommonListScreen = ({ navigation, route }: any) => {
               className={`flex-1 flex-row items-center justify-center rounded-3xl ${
                 activeTab === tab.id ? 'bg-sage-600' : 'bg-transparent'
               }`}
-              style={{ paddingVertical: isSmallScreen ? 7 : 9, paddingHorizontal: isSmallScreen ? 5 : 7 }}
+              style={{ 
+                paddingVertical: isSmallScreen ? 10 : 12, 
+                paddingHorizontal: isSmallScreen ? 8 : 10,
+                minHeight: isSmallScreen ? 40 : 48
+              }}
               onPress={() => setActiveTab(tab.id)}
             >
-              <Text style={{ 
-                fontSize: tabFontSize, 
-                fontWeight: '500',
-                color: activeTab === tab.id ? 'white' : '#4B5563'
-              }}>
+              <Text 
+                style={{ 
+                  fontSize: tabFontSize, 
+                  fontWeight: '600',
+                  color: activeTab === tab.id ? 'white' : '#4B5563',
+                  textAlign: 'center'
+                }}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.8}
+              >
                 {tab.title}
               </Text>
             </TouchableOpacity>
