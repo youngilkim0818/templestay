@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Dimensions, Image, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, Image, Text, TouchableOpacity, Animated, useWindowDimensions } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useUserStore from '../store/userStore';
@@ -24,21 +24,28 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
 
 const SplashScreen: React.FC<Props> = ({ navigation }) => {
   const { user: currentUser } = useUserStore();
-  const screen = Dimensions.get('window');
-  const LOGO_ASPECT = 1142 / 262;
-  const logoWidth = Math.min(screen.width * 0.85, 600); // 화면의 85%, 최대 600
-  const logoHeight = logoWidth / LOGO_ASPECT;
-  const logoSource = require('../../assets/templebuk-logo.png');
-  const verticalOffset = -Math.round(screen.height * 0.09); // 가운데에서 위로 6%
   
-  const [showStartButton, setShowStartButton] = useState(false);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  // React 19 호환 반응형 레이아웃
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const logoSource = require('../../assets/templebuk-logo.png');
+  
+  // 반응형 로고 크기 계산
+  const LOGO_ASPECT = 1142 / 262;
+  const logoWidth = Math.min(screenWidth * 0.8, 400); // 화면 너비의 80%, 최대 400px
+  const logoHeight = logoWidth / LOGO_ASPECT;
+  
+  // 반응형 버튼 위치 계산
+  const buttonBottomPosition = Math.max(screenHeight * 0.05, 40); // 화면 높이의 5%, 최소 40px
+  
+  const [showStartButton, setShowStartButton] = useState(true); // 항상 보이도록 변경
+  const fadeAnim = useRef(new Animated.Value(1)).current; // 항상 보이도록 변경
 
   useEffect(() => {
     if (__DEV__) {
-      console.log('🎬 SplashScreen 마운트됨');
+      console.log('🎬 SplashScreen 마운트됨 (고정 레이아웃 모드)');
     }
     
+    // React 19에서 더 안정적인 비동기 처리
     const checkUserStatus = async () => {
       try {
         // 온보딩 진행 상태 확인 (온보딩 중간에 나갔는지 체크)
@@ -49,32 +56,21 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
         if (isGuestMode === 'true') {
           // 온보딩이 진행 중이었다면 웰컴 페이지로 이동
           if (isOnboardingInProgress === 'true') {
-            if (__DEV__) console.log('👤 게스트 모드 - 온보딩 진행 중이었음 → 웰컴 페이지로 이동');
+            if (__DEV__) console.log('👤 게스트 모드 - 온보딩 진행 중이었음 → 버튼 표시');
             // 온보딩 진행 상태 초기화
             await AsyncStorage.removeItem('isOnboardingInProgress');
-            setShowStartButton(true);
-            Animated.timing(fadeAnim, {
-              toValue: 1,
-              duration: 550,
-              useNativeDriver: true,
-            }).start();
+            // 버튼은 이미 항상 보이도록 설정됨
             return;
           }
           
           // 온보딩 완료 여부 확인
           const hasCompletedOnboarding = await AsyncStorage.getItem('hasCompletedOnboarding');
           if (hasCompletedOnboarding === 'true') {
-            if (__DEV__) console.log('👤 게스트 모드 - 온보딩 완료 → 메인으로 이동');
+            console.log('👤 게스트 모드 - 온보딩 완료 → 메인으로 이동');
             navigation.replace('Main');
             return;
           } else {
-            if (__DEV__) console.log('👤 게스트 모드 - 온보딩 미완료 → 웰컴 페이지로 이동');
-            setShowStartButton(true);
-            Animated.timing(fadeAnim, {
-              toValue: 1,
-              duration: 550,
-              useNativeDriver: true,
-            }).start();
+            console.log('👤 게스트 모드 - 온보딩 미완료 → 버튼 표시');
             return;
           }
         }
@@ -85,15 +81,10 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
         if (isLoggedIn && session?.user?.id) {
           // 온보딩이 진행 중이었다면 웰컴 페이지로 이동
           if (isOnboardingInProgress === 'true') {
-            if (__DEV__) console.log('👤 회원 모드 - 온보딩 진행 중이었음 → 웰컴 페이지로 이동');
+            if (__DEV__) console.log('👤 회원 모드 - 온보딩 진행 중이었음 → 버튼 표시');
             // 온보딩 진행 상태 초기화
             await AsyncStorage.removeItem('isOnboardingInProgress');
-            setShowStartButton(true);
-            Animated.timing(fadeAnim, {
-              toValue: 1,
-              duration: 550,
-              useNativeDriver: true,
-            }).start();
+            // 버튼은 이미 항상 보이도록 설정됨
             return;
           }
           
@@ -124,36 +115,16 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
           }
           
           if (hasCompletedOnboarding) {
-            if (__DEV__) console.log('✅ 온보딩 완료 사용자 → 홈으로 이동');
+            console.log('✅ 온보딩 완료 사용자 → 홈으로 이동');
             navigation.replace('Main');
           } else {
-            if (__DEV__) console.log('⚠️ 온보딩 미완료 사용자 → 웰컴 페이지로 이동');
-            setShowStartButton(true);
-            Animated.timing(fadeAnim, {
-              toValue: 1,
-              duration: 550,
-              useNativeDriver: true,
-            }).start();
+            console.log('⚠️ 온보딩 미완료 사용자 → 버튼 표시');
           }
         } else {
-          if (__DEV__) console.log('🆕 비로그인 사용자 → 시작 버튼 표시');
-          setTimeout(() => {
-            setShowStartButton(true);
-            Animated.timing(fadeAnim, {
-              toValue: 1,
-              duration: 550,
-              useNativeDriver: true,
-            }).start();
-          }, 1000);
+          console.log('🆕 비로그인 사용자 → 버튼 표시');
         }
       } catch (error) {
         console.error('사용자 상태 확인 실패:', error);
-        setShowStartButton(true);
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 550,
-          useNativeDriver: true,
-        }).start();
       }
     };
 
@@ -164,7 +135,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
         console.log('🧹 SplashScreen 언마운트');
       }
     };
-  }, []);
+  }, []); // 고정 레이아웃이므로 의존성 없음
 
   const handleStartPress = async () => {
     if (__DEV__) {
@@ -210,7 +181,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
 
 
   if (__DEV__) {
-    console.log('🔄 SplashScreen 렌더링, showStartButton:', showStartButton);
+    console.log('🔄 SplashScreen 렌더링, 반응형 모드, 화면 크기:', { width: screenWidth, height: screenHeight });
   }
 
   return (
@@ -223,42 +194,47 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
         position: 'relative',
       }}
     >
-      {/* 로고를 절대 위치로 고정 */}
+      {/* 로고를 반응형 위치로 배치 */}
       <View 
         style={{ 
           position: 'absolute',
-          top: '50%',
+          top: '40%',
           left: '50%',
-          transform: [
-            { translateX: -logoWidth / 2 },
-            { translateY: -logoHeight / 2 + verticalOffset }
-          ]
+          transform: [{ translateX: -logoWidth / 2 }, { translateY: -logoHeight / 2 }]
         }}
       >
-        <Image source={logoSource} resizeMode="contain" style={{ width: logoWidth, height: logoHeight }} />
+        <Image 
+          source={logoSource} 
+          resizeMode="contain" 
+          style={{ 
+            width: logoWidth, 
+            height: logoHeight 
+          }} 
+        />
       </View>
       
-      {showStartButton && (
-        <Animated.View
-          style={{
-            opacity: fadeAnim,
-            position: 'absolute',
-            bottom: '15%',
-            left: 0,
-            right: 0,
-            alignItems: 'center',
-            transform: [
-              { translateY: 20 }
-            ],
-          }}
-        >
-          {/* Sign in to TempleBuk 버튼 */}
+      {/* 버튼 영역 - 반응형 표시 */}
+      <View
+        style={{
+          position: 'absolute',
+          bottom: buttonBottomPosition,
+          left: 0,
+          right: 0,
+          alignItems: 'center',
+          paddingHorizontal: Math.max(screenWidth * 0.05, 20), // 화면 너비의 5%, 최소 20px
+          // 반응형 높이 계산
+          height: Math.max(screenHeight * 0.25, 180), // 화면 높이의 25%, 최소 180px
+          justifyContent: 'center',
+        }}
+      >
+
+          {/* Sign in to TempleBuk 버튼 - 반응형 */}
           <TouchableOpacity
             onPress={handleStartPress}
             style={{
               backgroundColor: '#5A4636',
-              paddingHorizontal: 80,
-              paddingVertical: 20,
+              paddingHorizontal: Math.max(screenWidth * 0.15, 60), // 화면 너비의 15%, 최소 60px
+              paddingVertical: Math.max(screenHeight * 0.025, 15), // 화면 높이의 2.5%, 최소 15px
               borderRadius: 30,
               shadowColor: '#000',
               shadowOffset: {
@@ -268,9 +244,9 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
               elevation: 5,
-              marginBottom: 15,
-              minWidth: 280, // 게스트 버튼과 동일한 최소 너비
-              minHeight: 60, // 게스트 버튼과 동일한 최소 높이
+              marginBottom: Math.max(screenHeight * 0.02, 12), // 화면 높이의 2%, 최소 12px
+              width: Math.min(screenWidth * 0.8, 320), // 화면 너비의 80%, 최대 320px
+              height: Math.max(screenHeight * 0.07, 50), // 화면 높이의 7%, 최소 50px
               justifyContent: 'center',
               alignItems: 'center',
             }}
@@ -278,7 +254,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
             <Text
               style={{
                 color: 'white',
-                fontSize: 16,
+                fontSize: Math.max(screenWidth * 0.04, 14), // 화면 너비의 4%, 최소 14px
                 fontWeight: '700',
                 textAlign: 'center',
               }}
@@ -287,13 +263,14 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
 
-          {/* 게스트로 입장하기 버튼 */}
+
+          {/* 게스트로 입장하기 버튼 - 반응형 */}
           <TouchableOpacity
             onPress={handleGuestPress}
             style={{
               backgroundColor: 'transparent',
-              paddingHorizontal: 80,
-              paddingVertical: 20,
+              paddingHorizontal: Math.max(screenWidth * 0.15, 60), // 화면 너비의 15%, 최소 60px
+              paddingVertical: Math.max(screenHeight * 0.025, 15), // 화면 높이의 2.5%, 최소 15px
               borderRadius: 30,
               borderWidth: 2,
               borderColor: '#5A4636',
@@ -305,8 +282,8 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
               elevation: 5,
-              minWidth: 280, // Sign in 버튼과 동일한 최소 너비
-              minHeight: 60, // Sign in 버튼과 동일한 최소 높이
+              width: Math.min(screenWidth * 0.8, 320), // 화면 너비의 80%, 최대 320px
+              height: Math.max(screenHeight * 0.07, 50), // 화면 높이의 7%, 최소 50px
               justifyContent: 'center',
               alignItems: 'center',
             }}
@@ -314,7 +291,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
             <Text
               style={{
                 color: '#5A4636',
-                fontSize: 16,
+                fontSize: Math.max(screenWidth * 0.04, 14), // 화면 너비의 4%, 최소 14px
                 fontWeight: '700',
                 textAlign: 'center',
               }}
@@ -324,8 +301,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
           </TouchableOpacity>
 
 
-        </Animated.View>
-      )}
+      </View>
     </View>
   );
 };

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Image, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Image, TouchableWithoutFeedback, Keyboard, Alert, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthService } from '../../services/authService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { COLORS } from '../../constants/colors';
 
  const LoginSignupScreen = ({ navigation }: any) => {
+   const screen = Dimensions.get('window');
    const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -96,40 +98,49 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
   return (
-    <SafeAreaView className="flex-1 bg-stone-100">
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background.secondary }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1 px-5 bg-stone-100">
+        <View style={{ flex: 1, paddingHorizontal: screen.width * 0.05, backgroundColor: COLORS.background.secondary }}>
           {/* 뒤로 가기 버튼 */}
-          <View className="pt-4 pl-0">
+          <View style={{ paddingTop: screen.height * 0.02, paddingLeft: 0 }}>
             <TouchableOpacity
               onPress={() => navigation.navigate('Splash')}
-              className="w-10 h-10 rounded-full bg-stone-200 items-center justify-center"
+              style={{ 
+                width: screen.width * 0.1, 
+                height: screen.width * 0.1, 
+                borderRadius: screen.width * 0.08, 
+                backgroundColor: COLORS.brand.stone, 
+                alignItems: 'center', 
+                justifyContent: 'center' 
+              }}
             >
-              <Ionicons name="arrow-back" size={20} color="#6B7280" />
+              <Ionicons name="arrow-back" size={screen.width * 0.05} color={COLORS.text.secondary} />
             </TouchableOpacity>
           </View>
 
           {/* 로고 및 타이틀 */}
-          <View className="py-16 items-center">
-            <Text className="text-4xl font-bold text-neutral-900 mt-8 mr-64">
+          <View style={{ paddingVertical: screen.height * 0.08, alignItems: 'center' }}>
+            <Text style={{ fontSize: screen.width * 0.08, fontWeight: 'bold', color: COLORS.text.primary, marginTop: screen.height * 0.01, marginLeft: -screen.width * 0.55 }}>
               Welcome!
             </Text>
-            <Text className="text-3xl font-bold text-neutral-900 mt-2 mr-56">
+            <Text style={{ fontSize: screen.width * 0.065, fontWeight: 'bold', color: COLORS.text.primary, marginTop: screen.height * 0.005, marginLeft: -screen.width * 0.5 }}>
               Please Sign In
             </Text>
           </View>
 
           {/* 폼 */}
-          <View className="flex-1">
-            <View className="mb-4">
-              <Text className="text-lg font-semibold text-neutral-700 mb-2 ml-2">
+          <View style={{ flex: 1, marginTop: -screen.height * 0.02 }}>
+            <View style={{ marginBottom: screen.height * 0.015 }}>
+              <Text style={{ fontSize: screen.width * 0.045, fontWeight: '600', color: COLORS.text.secondary, marginBottom: screen.height * 0.01, marginLeft: screen.width * 0.02 }}>
                 Email
               </Text>
-              <View className={`bg-white rounded-4xl p-4 border-2 ${emailError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: 60 }}>
+              <View className={`bg-white p-4 border-2 ${emailError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: screen.height * 0.065, borderRadius: 30 }}>
                 <TextInput
-                         className="text-lg text-neutral-700"
+                  style={{ fontSize: screen.width * 0.04, color: COLORS.text.primary }}
                   placeholder="Please enter your email"
                   value={email}
+                  multiline={false}
+                  textAlignVertical="center"
                                                   onChangeText={(text) => {
                             setEmail(text);
                             // 에러 상태 초기화
@@ -151,21 +162,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
                          }}
                   keyboardType="email-address"
                   autoCapitalize="none"
-                  multiline={false}
-                  textAlignVertical="center"
-                  style={{ backgroundColor: 'transparent', height: 25 }}
                 />
               </View>
             </View>
 
-                         <View className="mb-4">
-               <Text className="text-lg font-semibold text-neutral-700 mb-2 ml-2">
+                         <View style={{ marginBottom: screen.height * 0.015 }}>
+               <Text style={{ fontSize: screen.width * 0.045, fontWeight: '600', color: COLORS.text.secondary, marginBottom: screen.height * 0.01, marginLeft: screen.width * 0.02 }}>
                 Password
               </Text>
-              <View className={`bg-white rounded-4xl p-4 border-2 ${passwordError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: 60 }}>
-                   <View className="flex-row items-center justify-between">
+              <View className={`bg-white p-4 border-2 ${passwordError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: screen.height * 0.065, borderRadius: 30 }}>
+                   <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <TextInput
-                         className="text-lg text-neutral-700 flex-1"
+                  style={{ fontSize: screen.width * 0.04, color: COLORS.text.primary, flex: 1 }}
                   placeholder="Please enter your password"
                   value={password}
                                                   onChangeText={(text) => {
@@ -190,13 +198,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
                          secureTextEntry={!showPassword}
                   multiline={false}
                   textAlignVertical="center"
-                  style={{ backgroundColor: 'transparent', height: 25 }}
                 />
-                   <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
+                   <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ marginLeft: screen.width * 0.02 }}>
                   <Ionicons
                     name={showPassword ? "eye" : "eye-off"}
-                       size={22}
-                    color="#6B7280"
+                       size={screen.width * 0.055}
+                    color={COLORS.text.tertiary}
                   />
                 </TouchableOpacity>
                  </View>
@@ -205,23 +212,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
                                                                                                                                                                                                                                                                                                                                                                                                                               {/* 에러 메시지 */}
                  {errorMessage ? (
-                   <View className="mb-1">
-                     <Text className="text-red-500 text-sm ml-2">
+                   <View style={{ marginBottom: screen.height * 0.02 }}>
+                     <Text style={{ fontSize: screen.width * 0.035, color: COLORS.status.error, marginLeft: screen.width * 0.02 }}>
                        {errorMessage}
               </Text>
                    </View>
                  ) : null}
 
                         {/* Sign up | Reset Password 텍스트 */}
-            <View className="flex-row justify-end items-center mb-4" style={{ position: 'absolute', top: 200, left: 0, right: 0, paddingRight: 10 }}>
+            <View className="flex-row justify-center items-center" style={{ position: 'absolute', bottom: 120, left: 0, right: 0 }}>
               <TouchableOpacity onPress={goToSignup} className="mr-2">
-                <Text className="text-stone-500 font-semibold">
+                <Text style={{ color: COLORS.text.secondary, fontWeight: '600' }}>
                   Sign up
                 </Text>
               </TouchableOpacity>
-              <Text className="text-stone-500 mr-2">|</Text>
+              <Text style={{ color: COLORS.text.secondary, marginRight: 8 }}>|</Text>
               <TouchableOpacity onPress={() => {}}>
-                <Text className="text-stone-500 font-semibold">
+                <Text style={{ color: COLORS.text.secondary, fontWeight: '600' }}>
                   Reset Password
                 </Text>
               </TouchableOpacity>
@@ -261,13 +268,38 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
                 {/* 하단 버튼 */}
-                <View className="px-7 pt-7 pb-8 bg-stone-100" style={{ height: 165, position: 'absolute', bottom: -30, left: 0, right: 0 }}>
+                <View style={{ 
+                  paddingHorizontal: screen.width * 0.07, 
+                  paddingTop: screen.height * 0.03, 
+                  paddingBottom: screen.height * 0.04, 
+                  backgroundColor: COLORS.background.secondary, 
+                  height: screen.height * 0.2, 
+                  position: 'absolute', 
+                  bottom: -screen.height * 0.04, 
+                  left: 0, 
+                  right: 0 
+                }}>
                   <TouchableOpacity
-                    className="flex-row items-center justify-center rounded-4xl py-6 px-6"
-                    style={{ backgroundColor: '#5A4636' }}
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      borderRadius: 30, 
+                      paddingVertical: screen.height * 0.025, 
+                      paddingHorizontal: screen.width * 0.06, 
+                      backgroundColor: '#5A4636',
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 3.84,
+                      elevation: 5,
+                    }}
                     onPress={handleSubmit}
                   >
-                    <Text className="text-xl font-semibold text-white">
+                    <Text style={{ fontSize: screen.width * 0.05, fontWeight: '600', color: 'white' }}>
                       {loading ? 'Signing in...' : (isLogin ? 'Sign In' : 'Sign Up')}
                     </Text>
                   </TouchableOpacity>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { COLORS } from '../../constants/colors';
 
 const ACTIVITY_OPTIONS = [
   { id: 1, text: 'Meditation' },
@@ -12,6 +13,7 @@ const ACTIVITY_OPTIONS = [
 ];
 
 const PreferredActivityScreen = ({ navigation }: any) => {
+  const screen = Dimensions.get('window');
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
   const handleOptionSelect = (id: number) => {
@@ -31,41 +33,53 @@ const PreferredActivityScreen = ({ navigation }: any) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-stone-100">
-      <View className="flex-1 px-5 bg-stone-100">
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background.secondary }}>
+      <View style={{ flex: 1, paddingHorizontal: screen.width * 0.05, backgroundColor: COLORS.background.secondary }}>
         {/* 게이지바 */}
-        <View className="py-6">
-          <View className="w-full h-2 bg-stone-200 rounded-full">
-            <View className="w-3/4 h-full bg-sage-600 rounded-full" />
+        <View style={{ paddingVertical: screen.height * 0.03 }}>
+          <View style={{ width: '100%', height: screen.height * 0.008, backgroundColor: '#E7E5E4', borderRadius: screen.height * 0.004 }}>
+            <View style={{ width: '75%', height: '100%', backgroundColor: COLORS.brand.sage, borderRadius: screen.height * 0.004 }} />
           </View>
         </View>
 
         {/* 타이틀 섹션 */}
-        <View className="py-8">
-          <Text className="text-3xl font-bold text-neutral-900 text-center leading-10 mb-4">
+        <View style={{ paddingVertical: screen.height * 0.04 }}>
+          <Text style={{ 
+            fontSize: screen.width * 0.07, 
+            fontWeight: 'bold', 
+            color: COLORS.text.primary, 
+            textAlign: 'center', 
+            lineHeight: screen.width * 0.085, 
+            marginBottom: screen.height * 0.02 
+          }}>
             What type of activities {'\n'}do you prefer? (3/4)
           </Text>
         </View>
 
         {/* 선택지 */}
-        <View className="flex-1">
+        <View style={{ flex: 1 }}>
           {ACTIVITY_OPTIONS.map((option) => {
             const isSelected = selectedOption === option.id;
             return (
               <TouchableOpacity
                 key={option.id}
-                className={`bg-white rounded-4xl p-6 border-2 mb-5 ${
-                  isSelected 
-                    ? 'border-sage-600 bg-sage-100' 
-                    : 'border-stone-200'
-                }`}
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: screen.width * 0.1,
+                  padding: screen.width * 0.06,
+                  borderWidth: 2,
+                  marginBottom: screen.height * 0.025,
+                  borderColor: isSelected ? COLORS.brand.sage : '#E7E5E4',
+                }}
                 onPress={() => handleOptionSelect(option.id)}
                 activeOpacity={0.7}
               >
-                <View className="flex-row items-center justify-start">
-                  <Text className={`text-lg ${
-                    isSelected ? 'font-bold text-sage-600' : 'font-semibold text-neutral-700'
-                  }`}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
+                  <Text style={{
+                    fontSize: screen.width * 0.04,
+                    fontWeight: isSelected ? 'bold' : '600',
+                    color: isSelected ? COLORS.brand.sage : COLORS.text.secondary,
+                  }}>
                     {option.text}
                   </Text>
                 </View>
@@ -76,25 +90,52 @@ const PreferredActivityScreen = ({ navigation }: any) => {
       </View>
 
       {/* 하단 버튼 */}
-      <View className="px-7 pt-7 pb-8 bg-stone-100" style={{ height: 135, position: 'absolute', bottom: 0, left: 0, right: 0 }}>
-                <TouchableOpacity
-          className={`flex-row items-center justify-center rounded-4xl py-6 px-6 border-2 ${
-            selectedOption !== null
-              ? 'bg-sage-600 active:bg-sage-700 border-sage-600'
-              : 'bg-neutral-300 border-neutral-300'
-          }`}
+      <View style={{ 
+        paddingHorizontal: screen.width * 0.07, 
+        paddingTop: screen.height * 0.04, 
+        paddingBottom: screen.height * 0.04, 
+        backgroundColor: COLORS.background.secondary, 
+        height: screen.height * 0.17, 
+        position: 'absolute', 
+        bottom: 0, 
+        left: 0, 
+        right: 0 
+      }}>
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: screen.width * 0.1,
+            paddingVertical: screen.width * 0.05,
+            paddingHorizontal: screen.width * 0.06,
+            borderWidth: 2,
+            backgroundColor: selectedOption !== null ? COLORS.brand.sage : '#D1D5DB',
+            borderColor: selectedOption !== null ? COLORS.brand.sage : '#D1D5DB',
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+          }}
           onPress={handleNext}
           disabled={selectedOption === null}
         >
-          <Text className={`text-lg font-semibold mr-2 ${
-            selectedOption !== null ? 'text-white' : 'text-neutral-500'
-          }`}>
+          <Text style={{
+            fontSize: screen.width * 0.04,
+            fontWeight: '600',
+            marginRight: screen.width * 0.02,
+            color: selectedOption !== null ? '#FFFFFF' : '#9CA3AF',
+          }}>
             Next
           </Text>
           <Ionicons 
             name="arrow-forward" 
-            size={20} 
-            color={selectedOption !== null ? '#FFFFFF' : '#9AA0A6'} 
+            size={screen.width * 0.05} 
+            color={selectedOption !== null ? '#FFFFFF' : '#9CA3AF'} 
           />
         </TouchableOpacity>
       </View>

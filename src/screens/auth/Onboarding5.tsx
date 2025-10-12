@@ -19,25 +19,10 @@ import * as ImagePicker from 'expo-image-picker';
 import { InteractionManager } from 'react-native'; // ★ iPad 크래시 방지용
 import useUserStore from '../../store/userStore';
 import { supabase } from '../../lib/supabase';
-
-const { width, height } = Dimensions.get('window');
-const isSmallScreen = height < 700;
-const isLargeScreen = height > 800;
-
-// Responsive sizes
-const headerFontSize = isSmallScreen ? 18 : (isLargeScreen ? 24 : 20);
-const subHeaderFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
-const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
-const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
-const buttonPadding = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
-const buttonFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
-const inputFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
-const inputPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
-const iconSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 20);
-const profileImageSize = isSmallScreen ? 60 : (isLargeScreen ? 90 : 75);
-const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
+import { COLORS } from '../../constants/colors';
 
 const ImportantFactor2Screen = ({ navigation }: any) => {
+  const screen = Dimensions.get('window');
   const { user: currentUser, updateUser } = useUserStore();
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>('');
@@ -167,32 +152,29 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView className="flex-1 bg-stone-100">
-                <ScrollView
-          className="flex-1 px-4 bg-stone-100"
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 100 }}
-          keyboardShouldPersistTaps="handled"
+      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background.secondary }}>
+                <View
+          style={{ flex: 1, paddingHorizontal: screen.width * 0.04, backgroundColor: COLORS.background.secondary, paddingBottom: screen.height * 0.05 }}
         >
           {/* Title */}
-          <View style={{ paddingVertical: sectionPadding * 2 }}>
+          <View style={{ paddingVertical: screen.height * 0.04 }}>
             <Text style={{ 
-              fontSize: headerFontSize + 8, 
+              fontSize: screen.width * 0.08, 
               fontWeight: 'bold', 
-              color: '#111827', 
-              marginLeft: sectionPadding, 
-              lineHeight: (headerFontSize + 8) * 1.2, 
-              marginBottom: 4 
+              color: COLORS.text.primary, 
+              marginLeft: screen.width * 0.04, 
+              lineHeight: screen.width * 0.1, 
+              marginBottom: screen.height * 0.01 
             }}>
               Welcome to TempleBuk!
             </Text>
             {!isGuestMode && (
               <Text style={{ 
-                fontSize: headerFontSize, 
+                fontSize: screen.width * 0.07, 
                 fontWeight: 'bold', 
-                color: '#111827', 
-                marginLeft: sectionPadding, 
-                lineHeight: headerFontSize * 1.2 
+                color: COLORS.text.primary, 
+                marginLeft: screen.width * 0.04, 
+                lineHeight: screen.width * 0.085 
               }}>
                 Set up your profile
               </Text>
@@ -201,26 +183,26 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
 
           {/* Profile section */}
           <View style={{ 
-            paddingHorizontal: cardPadding, 
+            paddingHorizontal: screen.width * 0.04, 
             alignItems: 'center', 
-            paddingVertical: isGuestMode ? sectionPadding * 2 : sectionPadding * 1.5 
+            paddingVertical: isGuestMode ? screen.height * 0.04 : screen.height * 0.03 
           }}>
-            <View style={{ position: 'relative', marginBottom: sectionPadding * 1.5 }}>
-              <View style={{
-                width: profileImageSize,
-                height: profileImageSize,
-                backgroundColor: '#F5F5F4',
-                borderRadius: profileImageSize / 2,
-                borderWidth: 2,
-                borderColor: '#D6D3D1',
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'hidden'
-              }}>
+            <View style={{ position: 'relative', marginBottom: screen.height * 0.03, marginTop: -screen.height * 0.02 }}>
+         <View style={{
+           width: screen.width * 0.25,
+           height: screen.width * 0.25,
+           backgroundColor: COLORS.background.secondary,
+           borderRadius: screen.width * 0.125,
+           borderWidth: 2,
+           borderColor: '#D4C4A8',
+           alignItems: 'center',
+           justifyContent: 'center',
+           overflow: 'hidden'
+         }}>
                 {profileImage ? (
                   <Image source={{ uri: profileImage }} style={{ width: '100%', height: '100%' }} />
                 ) : (
-                  <Ionicons name="person" size={profileImageSize * 0.6} color="#999" />
+                  <Ionicons name="sunny" size={screen.width * 0.12} color="#FF8C00" />
                 )}
               </View>
 
@@ -228,12 +210,12 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                 <TouchableOpacity
                   style={{
                     position: 'absolute',
-                    bottom: 0,
-                    right: 0,
-                    width: iconSize + 8,
-                    height: iconSize + 8,
-                    backgroundColor: '#5A4636',
-                    borderRadius: (iconSize + 8) / 2,
+                    bottom: -screen.width * 0.02,
+                    right: screen.width * 0.02,
+                    width: screen.width * 0.07,
+                    height: screen.width * 0.07,
+                    backgroundColor: COLORS.brand.sage,
+                    borderRadius: screen.width * 0.035,
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderWidth: 2,
@@ -241,28 +223,28 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                   }}
                   onPress={() => setShowImageModal(true)}
                 >
-                  <Ionicons name="camera" size={iconSize} color="white" />
+                  <Ionicons name="camera" size={screen.width * 0.035} color="white" />
                 </TouchableOpacity>
               )}
             </View>
 
             {/* Name input */}
-            <View style={{ width: profileImageSize * 2 }}>
+            <View style={{ width: screen.width * 0.4 }}>
               <TextInput
                 style={{
-                  backgroundColor: isGuestMode ? '#E7E5E4' : '#F5F5F4',
-                  borderRadius: 25,
+                  backgroundColor: isGuestMode ? COLORS.neutral[200] : COLORS.background.secondary,
+                  borderRadius: screen.width * 0.06,
                   borderWidth: 2,
-                  borderColor: isGuestMode ? '#D6D3D1' : '#E7E5E4',
-                  paddingHorizontal: inputPadding * 1.5,
-                  paddingVertical: inputPadding,
-                  fontSize: inputFontSize,
-                  color: isGuestMode ? '#78716C' : '#292524',
-                  minHeight: inputPadding * 3,
+                  borderColor: '#D4C4A8',
+                  paddingHorizontal: screen.width * 0.04,
+                  paddingVertical: screen.width * 0.03,
+                  fontSize: screen.width * 0.04,
+                  color: isGuestMode ? COLORS.text.tertiary : COLORS.text.primary,
+                  minHeight: screen.width * 0.08,
                   textAlign: 'center',
                 }}
                 placeholder={isGuestMode ? "Guest" : "Enter your name"}
-                placeholderTextColor="#78716C"
+                placeholderTextColor={COLORS.text.tertiary}
                 value={userName}
                 onChangeText={(text) => !isGuestMode && setUserName(text)}
                 autoCapitalize="words"
@@ -274,23 +256,20 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
           </View>
 
           {/* Onboarding image with button overlay */}
-          <View style={{ marginTop: -sectionPadding * 2, alignItems: 'center', position: 'relative' }}>
+          <View style={{ marginTop: -screen.height * 0.04, alignItems: 'center', position: 'relative' }}>
             <Image
               source={require('../../../assets/onboarding.png')}
               style={{ 
-                width: isSmallScreen ? 280 : (isLargeScreen ? 420 : 360), 
-                height: isSmallScreen ? 280 : (isLargeScreen ? 420 : 360) 
+                width: screen.width, 
+                height: screen.width 
               }}
               resizeMode="contain"
             />
             
             {/* Start button overlay */}
             <View style={{ 
-              position: 'absolute', 
-              bottom: -sectionPadding * 3, 
-              left: 0, 
-              right: 0, 
-              paddingHorizontal: sectionPadding * 2,
+              marginTop: -screen.height * 0.01,
+              paddingHorizontal: screen.width * 0.08,
               alignItems: 'center'
             }}>
               <TouchableOpacity
@@ -298,14 +277,14 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: 30,
-                  paddingVertical: 18,
-                  paddingHorizontal: 90,
-                  minWidth: 360,
-                  minHeight: 60,
+                  borderRadius: screen.width * 0.08,
+                  paddingVertical: screen.height * 0.025,
+                  paddingHorizontal: screen.width * 0.2,
+                  minWidth: screen.width * 0.8,
+                  minHeight: screen.height * 0.08,
                   backgroundColor: isGuestMode || userName.trim() !== ''
-                    ? '#4A5D23'
-                    : '#D1D5DB',
+                    ? COLORS.brand.sage
+                    : COLORS.neutral[300],
                   shadowColor: '#000',
                   shadowOffset: {
                     width: 0,
@@ -321,7 +300,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                 <Text
                   style={{
                     color: 'white',
-                    fontSize: 18,
+                    fontSize: screen.width * 0.045,
                     fontWeight: '700',
                     textAlign: 'center',
                   }}
@@ -331,70 +310,69 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
               </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
+        </View>
 
         {/* Image picker modal */}
         {showImageModal && !isGuestMode && (
           <TouchableOpacity 
-            className="absolute inset-0 items-center justify-center z-[9999] pt-0"
+            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}
             activeOpacity={1}
             onPress={() => setShowImageModal(false)}
           >
             <View 
               style={{
-                backgroundColor: '#F5F5F4',
-                borderRadius: 16,
-                padding: sectionPadding,
-                marginHorizontal: sectionPadding * 3,
-                width: isSmallScreen ? 240 : (isLargeScreen ? 300 : 270),
+                backgroundColor: COLORS.background.secondary,
+                borderRadius: screen.width * 0.04,
+                padding: screen.width * 0.04,
+                marginHorizontal: screen.width * 0.12,
+                width: screen.width * 0.75,
                 borderWidth: 2,
-                borderColor: '#D6D3D1'
+                borderColor: '#D4C4A8'
               }}
               onStartShouldSetResponder={() => true}
             >
               <TouchableOpacity
                 style={{
                   position: 'absolute',
-                  top: sectionPadding,
-                  right: sectionPadding,
-                  width: iconSize + 8,
-                  height: iconSize + 8,
-                  backgroundColor: '#E7E5E4',
-                  borderRadius: (iconSize + 8) / 2,
+                  top: screen.width * 0.04,
+                  right: screen.width * 0.04,
+                  width: screen.width * 0.06,
+                  height: screen.width * 0.06,
+                  backgroundColor: COLORS.neutral[200],
+                  borderRadius: screen.width * 0.03,
                   alignItems: 'center',
                   justifyContent: 'center',
                   zIndex: 10000
                 }}
                 onPress={() => setShowImageModal(false)}
-                onStartShouldSetResponder={() => true}
               >
-                <Ionicons name="close" size={iconSize} color="#78716C" />
+                <Ionicons name="close" size={screen.width * 0.04} color={COLORS.text.tertiary} />
               </TouchableOpacity>
 
               <Text style={{
-                fontSize: headerFontSize,
+                fontSize: screen.width * 0.05,
                 fontWeight: 'bold',
-                color: '#292524',
+                color: COLORS.text.primary,
                 textAlign: 'center',
-                marginBottom: sectionPadding * 1.5
+                marginBottom: screen.height * 0.03
               }}>
                 Profile Image
               </Text>
 
               <TouchableOpacity
                 style={{
-                  backgroundColor: '#5A4636',
-                  borderRadius: 16,
-                  paddingVertical: buttonPadding,
-                  paddingHorizontal: buttonPadding * 1.5,
-                  marginBottom: cardPadding
+                  backgroundColor: COLORS.brand.sage,
+                  borderRadius: screen.width * 0.04,
+                  paddingVertical: screen.height * 0.02,
+                  paddingHorizontal: screen.width * 0.06,
+                  marginBottom: screen.height * 0.02
                 }}
                 onPress={handleOpenGalleryFromModal}
                 disabled={isPicking}
               >
                 <Text style={{
                   color: 'white',
-                  fontSize: buttonFontSize + 1,
+                  fontSize: screen.width * 0.04,
                   fontWeight: '600',
                   textAlign: 'center'
                 }}>
@@ -404,11 +382,11 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
 
               <TouchableOpacity
                 style={{
-                  backgroundColor: '#5A4636',
-                  borderRadius: 16,
-                  paddingVertical: buttonPadding,
-                  paddingHorizontal: buttonPadding * 1.5,
-                  marginBottom: cardPadding
+                  backgroundColor: COLORS.brand.sage,
+                  borderRadius: screen.width * 0.04,
+                  paddingVertical: screen.height * 0.02,
+                  paddingHorizontal: screen.width * 0.06,
+                  marginBottom: screen.height * 0.02
                 }}
                 onPress={() => {
                   resetToDefaultImage();
@@ -417,7 +395,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
               >
                 <Text style={{
                   color: 'white',
-                  fontSize: buttonFontSize + 1,
+                  fontSize: screen.width * 0.04,
                   fontWeight: '600',
                   textAlign: 'center'
                 }}>

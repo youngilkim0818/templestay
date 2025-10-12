@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Alert, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthService } from '../../services/authService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { COLORS } from '../../constants/colors';
 
 const RegistrationScreen = ({ navigation }: any) => {
+  const screen = Dimensions.get('window');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -144,7 +146,7 @@ const RegistrationScreen = ({ navigation }: any) => {
   // 성공 모달
   if (showSuccessModal) {
     return (
-      <SafeAreaView className="flex-1 bg-stone-100">
+      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background.secondary }}>
         <View className="flex-1 items-center justify-center px-7">
           <View className="bg-white rounded-3xl p-8 w-full max-w-sm">
             {/* 성공 아이콘 */}
@@ -180,7 +182,7 @@ const RegistrationScreen = ({ navigation }: any) => {
   // 에러 모달
   if (showErrorModal) {
     return (
-      <SafeAreaView className="flex-1 bg-stone-100">
+      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background.secondary }}>
         <View className="flex-1 items-center justify-center px-7">
           <View className="bg-white rounded-3xl p-8 w-full max-w-sm">
             {/* 에러 아이콘 */}
@@ -216,7 +218,7 @@ const RegistrationScreen = ({ navigation }: any) => {
   // 이메일 인증 화면
   if (emailSent) {
     return (
-      <SafeAreaView className="flex-1 bg-stone-100">
+      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background.secondary }}>
         <View className="flex-1 px-7 pt-20 pb-8">
           {/* 상단 헤더 */}
           <View className="items-center mb-12">
@@ -278,26 +280,26 @@ const RegistrationScreen = ({ navigation }: any) => {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-stone-100">
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background.secondary }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1 bg-stone-100">
+        <View style={{ flex: 1, backgroundColor: COLORS.background.secondary }}>
           {/* 상단 헤더 */}
-          <View className="px-7 pt-18 pb-6">
-            <Text className="text-3xl font-bold text-neutral-900 mb-2">
+          <View style={{ paddingHorizontal: screen.width * 0.07, paddingTop: screen.height * 0.08, paddingBottom: screen.height * 0.03 }}>
+            <Text style={{ fontSize: screen.width * 0.08, fontWeight: 'bold', color: '#111827', marginBottom: screen.height * 0.01 }}>
               Create Account
             </Text>
           </View>
 
           {/* 메인 콘텐츠 */}
-          <View className="flex-1 px-7 pt-10">
+          <View style={{ flex: 1, paddingHorizontal: screen.width * 0.07, paddingTop: screen.height * 0.04 }}>
             {/* 이메일 입력 */}
-            <View className="mb-6">
-              <Text className="text-lg font-semibold text-neutral-700 mb-2">
+            <View style={{ marginBottom: screen.height * 0.02 }}>
+              <Text style={{ fontSize: screen.width * 0.045, fontWeight: '600', color: '#374151', marginBottom: screen.height * 0.01 }}>
                 Email
               </Text>
-              <View className={`bg-white rounded-4xl p-4 border-2 ${emailError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: 60 }}>
+              <View className={`bg-white rounded-4xl p-4 border-2 ${emailError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: screen.height * 0.065 }}>
                 <TextInput
-                  className="text-lg pt-0"
+                  style={{ fontSize: screen.width * 0.045, paddingTop: 0 }}
                   placeholder="Please enter your email"
                   placeholderTextColor="#9CA3AF"
                   value={email}
@@ -332,13 +334,13 @@ const RegistrationScreen = ({ navigation }: any) => {
             </View>
 
             {/* 비밀번호 입력 */}
-            <View className="mb-6">
-              <Text className="text-lg font-semibold text-neutral-700 mb-2">
+            <View style={{ marginBottom: screen.height * 0.02 }}>
+              <Text style={{ fontSize: screen.width * 0.045, fontWeight: '600', color: '#374151', marginBottom: screen.height * 0.01 }}>
                 Password
               </Text>
-              <View className={`bg-white rounded-4xl p-4 border-2 ${passwordError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: 60 }}>
+              <View className={`bg-white rounded-4xl p-4 border-2 ${passwordError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: screen.height * 0.065 }}>
                 <TextInput
-                  className="flex-1 text-lg pr-12 pt-0"
+                  style={{ flex: 1, fontSize: screen.width * 0.045, paddingRight: screen.width * 0.12, paddingTop: 0 }}
                   placeholder="Please enter your password"
                   placeholderTextColor="#9CA3AF"
                   value={password}
@@ -418,13 +420,13 @@ const RegistrationScreen = ({ navigation }: any) => {
             </View>
 
             {/* 비밀번호 확인 입력 */}
-            <View className="mb-6">
-              <Text className="text-lg font-semibold text-neutral-700 mb-2">
+            <View style={{ marginBottom: screen.height * 0.02 }}>
+              <Text style={{ fontSize: screen.width * 0.045, fontWeight: '600', color: '#374151', marginBottom: screen.height * 0.01 }}>
                 Confirm Password
               </Text>
-              <View className={`bg-white rounded-4xl p-4 border-2 ${confirmPasswordError ? 'border-red-500' : 'border-stone-200'} ${!passwordStrength.isComplete ? 'opacity-50' : ''}`} style={{ height: 60 }}>
+              <View className={`bg-white rounded-4xl p-4 border-2 ${confirmPasswordError ? 'border-red-500' : 'border-stone-200'} ${!passwordStrength.isComplete ? 'opacity-50' : ''}`} style={{ height: screen.height * 0.065 }}>
                 <TextInput
-                  className="flex-1 text-lg pr-12 pt-0"
+                  style={{ flex: 1, fontSize: screen.width * 0.045, paddingRight: screen.width * 0.12, paddingTop: 0 }}
                   placeholder={passwordStrength.isComplete ? "Please confirm your password" : "Complete password requirements first"}
                   placeholderTextColor="#9CA3AF"
                   value={confirmPassword}
@@ -482,22 +484,47 @@ const RegistrationScreen = ({ navigation }: any) => {
           </View>
 
           {/* 하단 버튼 */}
-          <View className="px-7 pt-8 pb-0 bg-stone-100" style={{ height: 105, position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+          <View style={{ 
+            paddingHorizontal: screen.width * 0.07, 
+            paddingTop: screen.height * 0.03, 
+            paddingBottom: 0, 
+            backgroundColor: COLORS.background.secondary, 
+            height: screen.height * 0.13, 
+            position: 'absolute', 
+            bottom: 0, 
+            left: 0, 
+            right: 0 
+          }}>
             <TouchableOpacity
-              className="flex-row items-center justify-center rounded-4xl py-6 px-6"
-              style={{ backgroundColor: '#5A4636' }}
+              style={{ 
+                flexDirection: 'row', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                borderRadius: 24, 
+                paddingVertical: screen.height * 0.025, 
+                paddingHorizontal: screen.width * 0.06, 
+                backgroundColor: '#5A4636',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
+              }}
               onPress={handleSignup}
               disabled={loading}
             >
               {loading ? (
-                <View className="flex-row items-center">
-                  <View className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                  <Text className="text-xl font-semibold text-white">
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{ width: screen.width * 0.05, height: screen.width * 0.05, borderWidth: 2, borderColor: 'white', borderTopColor: 'transparent', borderRadius: screen.width * 0.025, marginRight: screen.width * 0.02 }} />
+                  <Text style={{ fontSize: screen.width * 0.05, fontWeight: '600', color: 'white' }}>
                     Creating Account...
                   </Text>
                 </View>
               ) : (
-                <Text className="text-xl font-semibold text-white">
+                <Text style={{ fontSize: screen.width * 0.05, fontWeight: '600', color: 'white' }}>
                   Create Account
                 </Text>
               )}

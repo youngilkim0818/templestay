@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useUserStore from '../../store/userStore';
+import { COLORS } from '../../constants/colors';
 
 const FACTOR_OPTIONS = [
   { id: 1, text: 'Quiet environment' },
@@ -14,6 +15,7 @@ const FACTOR_OPTIONS = [
 ];
 
 const ImportantFactorScreen = ({ navigation }: any) => {
+  const screen = Dimensions.get('window');
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [dotIndex, setDotIndex] = useState<number>(0);
@@ -79,41 +81,53 @@ const ImportantFactorScreen = ({ navigation }: any) => {
   }, [isLoading]);
 
   return (
-    <SafeAreaView className="flex-1 bg-stone-100">
-      <View className="flex-1 px-5 bg-stone-100">
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background.secondary }}>
+      <View style={{ flex: 1, paddingHorizontal: screen.width * 0.05, backgroundColor: COLORS.background.secondary }}>
         {/* 게이지바 */}
-        <View className="py-6">
-          <View className="w-full h-2 bg-stone-200 rounded-full">
-            <View className="w-full h-full bg-sage-600 rounded-full" />
+        <View style={{ paddingVertical: screen.height * 0.03 }}>
+          <View style={{ width: '100%', height: screen.height * 0.008, backgroundColor: '#E7E5E4', borderRadius: screen.height * 0.004 }}>
+            <View style={{ width: '100%', height: '100%', backgroundColor: COLORS.brand.sage, borderRadius: screen.height * 0.004 }} />
           </View>
         </View>
 
         {/* 타이틀 섹션 */}
-        <View className="py-8">
-          <Text className="text-3xl font-bold text-neutral-900 text-center leading-10 mb-4">
-          Most important factor {'\n'}when joining a program (4/4)
+        <View style={{ paddingVertical: screen.height * 0.04 }}>
+          <Text style={{ 
+            fontSize: screen.width * 0.07, 
+            fontWeight: 'bold', 
+            color: COLORS.text.primary, 
+            textAlign: 'center', 
+            lineHeight: screen.width * 0.085, 
+            marginBottom: screen.height * 0.02 
+          }}>
+            Most important factor {'\n'}when joining a program (4/4)
           </Text>
         </View>
 
         {/* 선택지 */}
-        <View className="flex-1">
+        <View style={{ flex: 1 }}>
           {FACTOR_OPTIONS.map((option) => {
             const isSelected = selectedOption === option.id;
             return (
               <TouchableOpacity
                 key={option.id}
-                className={`bg-white rounded-4xl p-6 border-2 mb-5 ${
-                  isSelected 
-                    ? 'border-sage-600 bg-sage-100' 
-                    : 'border-stone-200'
-                }`}
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: screen.width * 0.1,
+                  padding: screen.width * 0.06,
+                  borderWidth: 2,
+                  marginBottom: screen.height * 0.025,
+                  borderColor: isSelected ? COLORS.brand.sage : '#E7E5E4',
+                }}
                 onPress={() => handleOptionSelect(option.id)}
                 activeOpacity={0.7}
               >
-                <View className="flex-row items-center justify-start">
-                  <Text className={`text-lg ${
-                    isSelected ? 'font-bold text-sage-600' : 'font-semibold text-neutral-700'
-                  }`}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
+                  <Text style={{
+                    fontSize: screen.width * 0.04,
+                    fontWeight: isSelected ? 'bold' : '600',
+                    color: isSelected ? COLORS.brand.sage : COLORS.text.secondary,
+                  }}>
                     {option.text}
                   </Text>
                 </View>
@@ -125,23 +139,23 @@ const ImportantFactorScreen = ({ navigation }: any) => {
 
       {/* 로딩 화면 */}
       {isLoading && (
-        <View className="absolute inset-0 bg-stone-100 items-center justify-center z-50">
-          <View className="items-center">
-            <View className="w-24 h-24 bg-sage-600 rounded-full items-center justify-center mb-6">
-              <Ionicons name="checkmark" size={48} color="white" />
+        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: COLORS.background.secondary, alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
+          <View style={{ alignItems: 'center' }}>
+            <View style={{ width: screen.width * 0.24, height: screen.width * 0.24, backgroundColor: COLORS.brand.sage, borderRadius: screen.width * 0.12, alignItems: 'center', justifyContent: 'center', marginBottom: screen.height * 0.03 }}>
+              <Ionicons name="checkmark" size={screen.width * 0.12} color="white" />
             </View>
-            <Text className="text-4xl font-bold text-sage-600 mb-3">
+            <Text style={{ fontSize: screen.width * 0.1, fontWeight: 'bold', color: COLORS.brand.sage, marginBottom: screen.height * 0.015 }}>
               Survey Complete!
             </Text>
-            <Text className="text-xl text-stone-600 text-center">
+            <Text style={{ fontSize: screen.width * 0.05, color: COLORS.text.secondary, textAlign: 'center' }}>
               Thank you for your responses
             </Text>
-            <View className="mt-8 flex-row items-center">
-              <Text className="text-lg text-stone-500 mr-3">Moving to next step</Text>
-              <View className="flex-row space-x-2">
-                <View className={`w-3 h-3 rounded-full ${dotIndex === 0 ? 'bg-sage-600' : 'bg-sage-300'}`}></View>
-                <View className={`w-3 h-3 rounded-full ${dotIndex === 1 ? 'bg-sage-600' : 'bg-sage-300'}`}></View>
-                <View className={`w-3 h-3 rounded-full ${dotIndex === 2 ? 'bg-sage-600' : 'bg-sage-300'}`}></View>
+            <View style={{ marginTop: screen.height * 0.04, flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ fontSize: screen.width * 0.045, color: COLORS.text.tertiary, marginRight: screen.width * 0.03 }}>Moving to next step</Text>
+              <View style={{ flexDirection: 'row', gap: screen.width * 0.02 }}>
+                <View style={{ width: screen.width * 0.03, height: screen.width * 0.03, borderRadius: screen.width * 0.015, backgroundColor: dotIndex === 0 ? COLORS.brand.sage : COLORS.brand.sageLighter }}></View>
+                <View style={{ width: screen.width * 0.03, height: screen.width * 0.03, borderRadius: screen.width * 0.015, backgroundColor: dotIndex === 1 ? COLORS.brand.sage : COLORS.brand.sageLighter }}></View>
+                <View style={{ width: screen.width * 0.03, height: screen.width * 0.03, borderRadius: screen.width * 0.015, backgroundColor: dotIndex === 2 ? COLORS.brand.sage : COLORS.brand.sageLighter }}></View>
               </View>
             </View>
           </View>
@@ -149,26 +163,53 @@ const ImportantFactorScreen = ({ navigation }: any) => {
       )}
 
       {/* 하단 버튼 */}
-      <View className="px-7 pt-7 pb-8 bg-stone-100" style={{ height: 135, position: 'absolute', bottom: 0, left: 0, right: 0 }}>
-                <TouchableOpacity
-          className={`flex-row items-center justify-center rounded-4xl py-6 px-6 border-2 ${
-            selectedOption !== null
-              ? 'bg-sage-600 active:bg-sage-700 border-sage-600'
-              : 'bg-neutral-300 border-neutral-300'
-          }`}
+      <View style={{ 
+        paddingHorizontal: screen.width * 0.07, 
+        paddingTop: screen.height * 0.04, 
+        paddingBottom: screen.height * 0.04, 
+        backgroundColor: COLORS.background.secondary, 
+        height: screen.height * 0.17, 
+        position: 'absolute', 
+        bottom: 0, 
+        left: 0, 
+        right: 0 
+      }}>
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: screen.width * 0.1,
+            paddingVertical: screen.width * 0.05,
+            paddingHorizontal: screen.width * 0.06,
+            borderWidth: 2,
+            backgroundColor: selectedOption !== null ? COLORS.brand.sage : '#D1D5DB',
+            borderColor: selectedOption !== null ? COLORS.brand.sage : '#D1D5DB',
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+          }}
           onPress={handleNext}
           disabled={selectedOption === null}
         >
-                      <Text className={`text-lg font-semibold mr-2 ${
-              selectedOption !== null ? 'text-white' : 'text-neutral-500'
-            }`}>
-              Next
-            </Text>
-            <Ionicons 
-              name="arrow-forward" 
-              size={20} 
-              color={selectedOption !== null ? '#FFFFFF' : '#9AA0A6'} 
-            />
+          <Text style={{
+            fontSize: screen.width * 0.04,
+            fontWeight: '600',
+            marginRight: screen.width * 0.02,
+            color: selectedOption !== null ? '#FFFFFF' : '#9CA3AF',
+          }}>
+            Next
+          </Text>
+          <Ionicons 
+            name="arrow-forward" 
+            size={screen.width * 0.05} 
+            color={selectedOption !== null ? '#FFFFFF' : '#9CA3AF'} 
+          />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
