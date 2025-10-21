@@ -180,6 +180,7 @@ const AttractionCard = memo<{ item: any; onPress: () => void }>(({ item, onPress
         marginHorizontal: cardMargin 
       }}
       onPress={onPress}
+      activeOpacity={1}
     >
       <View className="flex-row">
         {item.imageUrl ? (
@@ -573,6 +574,7 @@ export default function MapScreen({ navigation, route }: any) {
         marginHorizontal: cardMargin 
       }}
       onPress={() => navigation.navigate('TempleStack', { screen: 'ReservationDetail', params: { templeId: item.id } })}
+      activeOpacity={1}
     >
       <View className="flex-row">
         {/* 왼쪽 썸네일: 정사각 형태로, 카드 대비 좁은 폭 */}
@@ -721,6 +723,7 @@ export default function MapScreen({ navigation, route }: any) {
                 requestAnimationFrame(() => searchInputRef.current?.focus());
               }}
               accessibilityLabel="검색어 지우기"
+              activeOpacity={1}
             >
               <Ionicons name="close-circle" size={iconSize - 2} color={COLORS.neutral[500]} />
             </TouchableOpacity>
@@ -797,6 +800,7 @@ export default function MapScreen({ navigation, route }: any) {
             });
           }}
           accessibilityLabel="Attractions Toggle"
+          activeOpacity={1}
         >
           <Ionicons name={'swap-horizontal-outline'} size={iconSize} color={COLORS.neutral[700]} />
           <Text 
@@ -815,6 +819,7 @@ export default function MapScreen({ navigation, route }: any) {
           style={{ width: buttonSize, height: buttonSize }}
           onPress={moveToMyLocation}
           accessibilityLabel="내 위치로 이동"
+          activeOpacity={1}
         >
           <Ionicons name="locate" size={iconSize + 2} color={COLORS.brand.sage} />
         </TouchableOpacity>

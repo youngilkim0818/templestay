@@ -205,6 +205,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
     <TouchableOpacity 
       className="active:opacity-80"
       onPress={() => handleTemplePress(item)}
+      activeOpacity={1}
     >
       <Card variant="elevated" className="mx-4 mb-4 border border-stone-200">
         <View className="relative">
@@ -217,6 +218,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
           <TouchableOpacity
             className="absolute top-2 right-2 w-8 h-8 bg-white/90 rounded-full items-center justify-center shadow-sm"
             onPress={(e) => handleHeartToggle(item, e)}
+            activeOpacity={1}
           >
             <Ionicons 
               name={isFavorite(item.id) ? "heart" : "heart-outline"} 
@@ -306,6 +308,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                     <TouchableOpacity
                       onPress={() => setSearchQuery('')}
                       className="ml-2 p-1"
+                      activeOpacity={1}
                     >
                       <Ionicons name="close-circle" size={20} color="#9AA0A6" />
                     </TouchableOpacity>
@@ -315,6 +318,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                   <TouchableOpacity
                     onPress={() => setShowOptionsBox(!showOptionsBox)}
                     className="ml-2 p-1"
+                    activeOpacity={1}
                   >
                     <Ionicons 
                       name={showOptionsBox ? "chevron-up" : "chevron-down"} 
@@ -340,6 +344,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                 <TouchableOpacity
                                   onPress={() => setShowRegionSelector(!showRegionSelector)}
                                   className="flex-row items-center w-20"
+                                  activeOpacity={1}
                                 >
                                   <Text className="ml-3 text-sm font-medium text-neutral-900 flex-1" numberOfLines={1}>
                                     {selectedRegion === '' ? 'Region' : 
@@ -361,6 +366,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                 <TouchableOpacity 
                                   onPress={() => setShowTempleSelector(!showTempleSelector)}
                                   className="flex-row items-center w-20"
+                                  activeOpacity={1}
                                 >
                                   <Text className="ml-2 text-sm font-medium text-neutral-900 flex-1" numberOfLines={1}>
                                     {selectedTemple ? getTempleDisplayName(selectedTemple) : 'Temple'}
@@ -380,6 +386,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                 <TouchableOpacity 
                                   onPress={() => setShowProgramSelector(!showProgramSelector)}
                                   className="flex-row items-center w-20"
+                                  activeOpacity={1}
                                 >
                                   <Text className="ml-2 text-sm font-medium text-neutral-900 flex-1" numberOfLines={1}>
                                     {selectedProgram === 'One-Day Type' ? 'Daily' : 
@@ -410,6 +417,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                     setShowProgramSelector(false);
                                   }}
                                   className="p-1"
+                                  activeOpacity={1}
                                 >
                                   <View className="w-6 h-6 bg-gray-100 rounded-full items-center justify-center">
                                     <Ionicons name="refresh" size={16} color="#6B7280" />
@@ -437,6 +445,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                       ? 'bg-sage-600' 
                                       : 'bg-stone-50'
                                   }`}
+                                  activeOpacity={1}
                                 >
                                   <Text className={`text-sm font-medium text-center ${
                                     selectedRegion === 'all' ? 'text-white' : 'text-neutral-700'
@@ -456,6 +465,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                         ? 'bg-sage-600' 
                                         : 'bg-stone-50'
                                     }`}
+                                    activeOpacity={1}
                                   >
                                     <Text className={`text-sm font-medium text-center ${
                                       selectedRegion === region ? 'text-white' : 'text-neutral-700'
@@ -484,6 +494,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                         ? 'bg-sage-600' 
                                         : 'bg-stone-50'
                                     }`}
+                                    activeOpacity={1}
                                   >
                                     <Text className={`text-sm font-medium text-center ${
                                       selectedTemple === temple.name ? 'text-white' : 'text-neutral-700'
@@ -509,6 +520,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                         ? 'bg-sage-600' 
                                         : 'bg-stone-50'
                                     }`}
+                                  activeOpacity={1}
                                 >
                                                                       <Text className={`text-sm font-medium text-center ${
                                       selectedProgram === 'One-Day Type' ? 'text-white' : 'text-neutral-700'
@@ -524,6 +536,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                       ? 'bg-sage-600' 
                                       : 'bg-stone-50'
                                   }`}
+                                  activeOpacity={1}
                                 >
                                   <Text className={`text-sm font-medium text-center ${
                                     selectedProgram === 'Experience Type' ? 'text-white' : 'text-neutral-700'
@@ -539,6 +552,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                       ? 'bg-sage-600' 
                                       : 'bg-stone-50'
                                   }`}
+                                  activeOpacity={1}
                                 >
                                   <Text className={`text-sm font-medium text-center ${
                                     selectedProgram === 'Relaxation Type' ? 'text-white' : 'text-neutral-700'

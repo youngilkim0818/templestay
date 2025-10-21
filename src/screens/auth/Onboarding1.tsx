@@ -51,22 +51,22 @@ const TemplestayExperienceScreen = ({ navigation }: any) => {
           </View>
         </View>
 
-        {/* 타이틀 섹션 */}
-        <View style={{ paddingVertical: screen.height * 0.04 }}>
+        {/* 타이틀 섹션 - 반응형 크기 */}
+        <View style={{ paddingVertical: screen.height * 0.01 }}>
           <Text style={{ 
-            fontSize: screen.width * 0.07, 
+            fontSize: Math.max(screen.width * 0.06, 18), 
             fontWeight: 'bold', 
             color: COLORS.text.primary, 
             textAlign: 'center', 
-            lineHeight: screen.width * 0.085, 
-            marginBottom: screen.height * 0.02 
+            lineHeight: Math.max(screen.width * 0.07, 22), 
+            marginBottom: 0 
           }}>
             Have you experienced {'\n'} templestay before? (1/4)
           </Text>
         </View>
 
-        {/* 선택지 */}
-        <View style={{ flex: 1 }}>
+        {/* 선택지 - 반응형 크기로 조정 */}
+        <View style={{ flex: 1, justifyContent: 'center', paddingVertical: screen.height * 0.02, marginTop: -screen.height * 0.08 }}>
           {EXPERIENCE_OPTIONS.map((option, index) => {
             const isSelected = selectedOption === option.id;
             return (
@@ -74,20 +74,24 @@ const TemplestayExperienceScreen = ({ navigation }: any) => {
                 key={option.id}
                 style={{
                   backgroundColor: 'white',
-                  borderRadius: screen.width * 0.1,
-                  padding: screen.width * 0.06,
+                  borderRadius: screen.width * 0.08,
+                  paddingVertical: screen.height * 0.02,
+                  paddingHorizontal: screen.width * 0.05,
                   borderWidth: 2,
-                  marginBottom: screen.height * 0.025,
+                  marginVertical: screen.height * 0.012,
                   borderColor: isSelected ? COLORS.brand.sage : '#E7E5E4',
+                  minHeight: screen.height * 0.08,
+                  justifyContent: 'center',
                 }}
                 onPress={() => handleOptionSelect(option.id)}
                 activeOpacity={0.7}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
                   <Text style={{
-                    fontSize: screen.width * 0.04,
+                    fontSize: Math.max(screen.width * 0.035, 14),
                     fontWeight: isSelected ? 'bold' : '600',
                     color: isSelected ? COLORS.brand.sage : COLORS.text.secondary,
+                    textAlign: 'left',
                   }}>
                     {option.text}
                   </Text>
@@ -98,15 +102,15 @@ const TemplestayExperienceScreen = ({ navigation }: any) => {
         </View>
       </View>
 
-      {/* 하단 버튼 */}
+      {/* 하단 버튼 - 동적 높이 조정 */}
       <View style={{ 
         paddingHorizontal: screen.width * 0.07, 
-        paddingTop: screen.height * 0.04, 
-        paddingBottom: screen.height * 0.04, 
+        paddingTop: screen.height * 0.03, 
+        paddingBottom: Math.max(screen.height * 0.04, 20), 
         backgroundColor: COLORS.background.secondary, 
-        height: screen.height * 0.17, 
+        minHeight: Math.max(screen.height * 0.12, 80), 
         position: 'absolute', 
-        bottom: 0, 
+        bottom: screen.height * 0.02, 
         left: 0, 
         right: 0 
       }}>

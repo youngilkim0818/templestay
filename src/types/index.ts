@@ -232,7 +232,6 @@ export type MainTabParamList = {
 
 export type TempleStackParamList = {
   TempleList: undefined;
-  TempleDetail: { templeId: string };
   Reservation: { templeId: string; programId?: string };
   ReservationDate: { templeId: string; programId?: string };
   ReservationPeople: { 

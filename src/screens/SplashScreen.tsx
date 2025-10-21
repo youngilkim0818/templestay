@@ -179,7 +179,6 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
   };
 
 
-
   if (__DEV__) {
     console.log('🔄 SplashScreen 렌더링, 반응형 모드, 화면 크기:', { width: screenWidth, height: screenHeight });
   }
@@ -222,7 +221,6 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
           right: 0,
           alignItems: 'center',
           paddingHorizontal: Math.max(screenWidth * 0.05, 20), // 화면 너비의 5%, 최소 20px
-          // 반응형 높이 계산
           height: Math.max(screenHeight * 0.25, 180), // 화면 높이의 25%, 최소 180px
           justifyContent: 'center',
         }}
@@ -299,7 +297,6 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
               Continue as Guest
             </Text>
           </TouchableOpacity>
-
 
       </View>
     </View>

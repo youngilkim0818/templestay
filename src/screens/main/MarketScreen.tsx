@@ -198,11 +198,12 @@ const MarketScreen = ({ navigation }: any) => {
             : 'bg-white border-stone-200 active:bg-stone-50'
         }`}
         style={{ 
-          paddingHorizontal: categoryPadding, 
+          paddingHorizontal: categoryPadding + 4, 
           paddingVertical: categoryPadding - 2, 
           marginRight: 8 
         }}
         onPress={() => setSelectedCategory(item.id)}
+        activeOpacity={1}
       >
         <Ionicons 
           name={item.icon as any} 
@@ -230,6 +231,7 @@ const MarketScreen = ({ navigation }: any) => {
       <TouchableOpacity 
         className="bg-white rounded-xl overflow-hidden border border-stone-100"
         onPress={() => handleProductPress(item)}
+        activeOpacity={1}
       >
         {/* Product Image */}
         <View className="relative" style={{ padding: productPadding }}>
@@ -296,6 +298,7 @@ const MarketScreen = ({ navigation }: any) => {
             className="flex-row items-center"
             style={{ paddingHorizontal: 8, paddingVertical: 4 }}
             onPress={() => setSelectedSort(selectedSort === 'popular' ? 'price' : 'popular')}
+            activeOpacity={1}
           >
             <Ionicons 
               name={selectedSort === 'popular' ? "trending-up-outline" : "pricetag-outline"} 

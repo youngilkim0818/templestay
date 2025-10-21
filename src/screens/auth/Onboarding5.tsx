@@ -153,164 +153,164 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background.secondary }}>
-                <View
-          style={{ flex: 1, paddingHorizontal: screen.width * 0.04, backgroundColor: COLORS.background.secondary, paddingBottom: screen.height * 0.05 }}
+        <View
+          style={{ flex: 1, paddingHorizontal: screen.width * 0.04, backgroundColor: COLORS.background.secondary }}
         >
-          {/* Title */}
-          <View style={{ paddingVertical: screen.height * 0.04 }}>
-            <Text style={{ 
-              fontSize: screen.width * 0.08, 
-              fontWeight: 'bold', 
-              color: COLORS.text.primary, 
-              marginLeft: screen.width * 0.04, 
-              lineHeight: screen.width * 0.1, 
-              marginBottom: screen.height * 0.01 
-            }}>
-              Welcome to TempleBuk!
-            </Text>
-            {!isGuestMode && (
+            {/* Title - 반응형 크기 */}
+            <View style={{ paddingVertical: screen.height * 0.03 }}>
               <Text style={{ 
-                fontSize: screen.width * 0.07, 
+                fontSize: Math.max(screen.width * 0.07, 20), 
                 fontWeight: 'bold', 
                 color: COLORS.text.primary, 
                 marginLeft: screen.width * 0.04, 
-                lineHeight: screen.width * 0.085 
+                lineHeight: Math.max(screen.width * 0.08, 24), 
+                marginBottom: screen.height * 0.01 
               }}>
-                Set up your profile
+                Welcome to TempleBuk!
               </Text>
-            )}
-          </View>
-
-          {/* Profile section */}
-          <View style={{ 
-            paddingHorizontal: screen.width * 0.04, 
-            alignItems: 'center', 
-            paddingVertical: isGuestMode ? screen.height * 0.04 : screen.height * 0.03 
-          }}>
-            <View style={{ position: 'relative', marginBottom: screen.height * 0.03, marginTop: -screen.height * 0.02 }}>
-         <View style={{
-           width: screen.width * 0.25,
-           height: screen.width * 0.25,
-           backgroundColor: COLORS.background.secondary,
-           borderRadius: screen.width * 0.125,
-           borderWidth: 2,
-           borderColor: '#D4C4A8',
-           alignItems: 'center',
-           justifyContent: 'center',
-           overflow: 'hidden'
-         }}>
-                {profileImage ? (
-                  <Image source={{ uri: profileImage }} style={{ width: '100%', height: '100%' }} />
-                ) : (
-                  <Ionicons name="sunny" size={screen.width * 0.12} color="#FF8C00" />
-                )}
-              </View>
-
               {!isGuestMode && (
-                <TouchableOpacity
-                  style={{
-                    position: 'absolute',
-                    bottom: -screen.width * 0.02,
-                    right: screen.width * 0.02,
-                    width: screen.width * 0.07,
-                    height: screen.width * 0.07,
-                    backgroundColor: COLORS.brand.sage,
-                    borderRadius: screen.width * 0.035,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderWidth: 2,
-                    borderColor: 'white'
-                  }}
-                  onPress={() => setShowImageModal(true)}
-                >
-                  <Ionicons name="camera" size={screen.width * 0.035} color="white" />
-                </TouchableOpacity>
+                <Text style={{ 
+                  fontSize: Math.max(screen.width * 0.06, 18), 
+                  fontWeight: 'bold', 
+                  color: COLORS.text.primary, 
+                  marginLeft: screen.width * 0.04, 
+                  lineHeight: Math.max(screen.width * 0.07, 22) 
+                }}>
+                  Set up your profile
+                </Text>
               )}
             </View>
 
-            {/* Name input */}
-            <View style={{ width: screen.width * 0.4 }}>
-              <TextInput
-                style={{
-                  backgroundColor: isGuestMode ? COLORS.neutral[200] : COLORS.background.secondary,
-                  borderRadius: screen.width * 0.06,
+            {/* Profile section - 반응형 크기 */}
+            <View style={{ 
+              paddingHorizontal: screen.width * 0.04, 
+              alignItems: 'center', 
+              paddingVertical: screen.height * 0.02 
+            }}>
+              <View style={{ position: 'relative', marginBottom: screen.height * 0.02 }}>
+                <View style={{
+                  width: Math.max(screen.width * 0.2, 80),
+                  height: Math.max(screen.width * 0.2, 80),
+                  backgroundColor: COLORS.background.secondary,
+                  borderRadius: Math.max(screen.width * 0.1, 40),
                   borderWidth: 2,
                   borderColor: '#D4C4A8',
-                  paddingHorizontal: screen.width * 0.04,
-                  paddingVertical: screen.width * 0.03,
-                  fontSize: screen.width * 0.04,
-                  color: isGuestMode ? COLORS.text.tertiary : COLORS.text.primary,
-                  minHeight: screen.width * 0.08,
-                  textAlign: 'center',
-                }}
-                placeholder={isGuestMode ? "Guest" : "Enter your name"}
-                placeholderTextColor={COLORS.text.tertiary}
-                value={userName}
-                onChangeText={(text) => !isGuestMode && setUserName(text)}
-                autoCapitalize="words"
-                autoCorrect={false}
-                returnKeyType="done"
-                editable={!isGuestMode}
-              />
-            </View>
-          </View>
-
-          {/* Onboarding image with button overlay */}
-          <View style={{ marginTop: -screen.height * 0.04, alignItems: 'center', position: 'relative' }}>
-            <Image
-              source={require('../../../assets/onboarding.png')}
-              style={{ 
-                width: screen.width, 
-                height: screen.width 
-              }}
-              resizeMode="contain"
-            />
-            
-            {/* Start button overlay */}
-            <View style={{ 
-              marginTop: -screen.height * 0.01,
-              paddingHorizontal: screen.width * 0.08,
-              alignItems: 'center'
-            }}>
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: screen.width * 0.08,
-                  paddingVertical: screen.height * 0.025,
-                  paddingHorizontal: screen.width * 0.2,
-                  minWidth: screen.width * 0.8,
-                  minHeight: screen.height * 0.08,
-                  backgroundColor: isGuestMode || userName.trim() !== ''
-                    ? COLORS.brand.sage
-                    : COLORS.neutral[300],
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 5,
-                }}
-                onPress={handleStart}
-                disabled={!isGuestMode && userName.trim() === ''}
-              >
-                <Text
+                  overflow: 'hidden'
+                }}>
+                  {profileImage ? (
+                    <Image source={{ uri: profileImage }} style={{ width: '100%', height: '100%' }} />
+                  ) : (
+                    <Ionicons name="sunny" size={Math.max(screen.width * 0.1, 40)} color="#FF8C00" />
+                  )}
+                </View>
+
+                {!isGuestMode && (
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      bottom: -screen.width * 0.02,
+                      right: screen.width * 0.02,
+                      width: screen.width * 0.07,
+                      height: screen.width * 0.07,
+                      backgroundColor: COLORS.brand.sage,
+                      borderRadius: screen.width * 0.035,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderWidth: 2,
+                      borderColor: 'white'
+                    }}
+                    onPress={() => setShowImageModal(true)}
+                  >
+                    <Ionicons name="camera" size={screen.width * 0.035} color="white" />
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              {/* Name input - 반응형 크기 */}
+              <View style={{ width: Math.max(screen.width * 0.35, 200) }}>
+                <TextInput
                   style={{
-                    color: 'white',
-                    fontSize: screen.width * 0.045,
-                    fontWeight: '700',
+                    backgroundColor: isGuestMode ? COLORS.neutral[200] : COLORS.background.secondary,
+                    borderRadius: Math.max(screen.width * 0.05, 20),
+                    borderWidth: 2,
+                    borderColor: '#D4C4A8',
+                    paddingHorizontal: screen.width * 0.03,
+                    paddingVertical: screen.height * 0.015,
+                    fontSize: Math.max(screen.width * 0.035, 14),
+                    color: isGuestMode ? COLORS.text.tertiary : COLORS.text.primary,
+                    minHeight: Math.max(screen.height * 0.06, 40),
                     textAlign: 'center',
                   }}
+                  placeholder={isGuestMode ? "Guest" : "Enter your name"}
+                  placeholderTextColor={COLORS.text.tertiary}
+                  value={userName}
+                  onChangeText={(text) => !isGuestMode && setUserName(text)}
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  returnKeyType="done"
+                  editable={!isGuestMode}
+                />
+              </View>
+            </View>
+
+            {/* Onboarding image with button overlay - 반응형 크기 */}
+            <View style={{ marginTop: -screen.height * 0.01, alignItems: 'center', position: 'relative' }}>
+              <Image
+                source={require('../../../assets/onboarding.png')}
+                style={{ 
+                  width: Math.min(screen.width * 0.99, 500), 
+                  height: Math.min(screen.width * 0.99, 500) 
+                }}
+                resizeMode="contain"
+              />
+              
+              {/* Start button overlay */}
+              <View style={{ 
+                marginTop: -screen.height * 0.01,
+                paddingHorizontal: screen.width * 0.08,
+                alignItems: 'center'
+              }}>
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: Math.max(screen.width * 0.08, 25),
+                    paddingVertical: Math.max(screen.height * 0.025, 18),
+                    paddingHorizontal: screen.width * 0.18,
+                    minWidth: Math.max(screen.width * 0.8, 250),
+                    minHeight: Math.max(screen.height * 0.08, 60),
+                    backgroundColor: isGuestMode || userName.trim() !== ''
+                      ? COLORS.brand.sage
+                      : COLORS.neutral[300],
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                  }}
+                  onPress={handleStart}
+                  disabled={!isGuestMode && userName.trim() === ''}
                 >
-                  Start
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: Math.max(screen.width * 0.045, 18),
+                      fontWeight: '700',
+                      textAlign: 'center',
+                    }}
+                  >
+                    Start
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
 
         {/* Image picker modal */}
         {showImageModal && !isGuestMode && (
@@ -405,7 +405,6 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
             </View>
           </TouchableOpacity>
         )}
-
 
       </SafeAreaView>
     </TouchableWithoutFeedback>

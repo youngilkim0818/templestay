@@ -70,7 +70,7 @@ const ReservationConfirmScreen = () => {
     navigation.setOptions({
       headerShown: true,
       headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()} activeOpacity={1}>
           <Ionicons name="arrow-back" size={24} color="#1A1B1F" />
         </TouchableOpacity>
       ),
@@ -311,6 +311,7 @@ const ReservationConfirmScreen = () => {
             <TouchableOpacity 
               className="flex-1 border-r border-stone-300 pr-4"
               onPress={() => setShowDateModal(true)}
+              activeOpacity={1}
             >
               <Text 
                 className="font-semibold text-neutral-900 text-center"
@@ -323,6 +324,7 @@ const ReservationConfirmScreen = () => {
             <TouchableOpacity 
               className="flex-1 pl-4"
               onPress={() => setShowParticipantsModal(true)}
+              activeOpacity={1}
             >
               <View className="flex-col items-center">
                 <Text 
@@ -492,6 +494,7 @@ const ReservationConfirmScreen = () => {
           
           <TouchableOpacity 
             onPress={() => handlePaymentMethodSelect('bank')}
+            activeOpacity={1}
             className={`p-4 border rounded-lg mb-3 ${
               selectedPaymentMethod === 'bank' 
                 ? 'border-sage-600 bg-sage-50' 
@@ -524,6 +527,7 @@ const ReservationConfirmScreen = () => {
           
           <TouchableOpacity 
             onPress={() => handlePaymentMethodSelect('onsite')}
+            activeOpacity={1}
             className={`p-4 border rounded-lg ${
               selectedPaymentMethod === 'onsite' 
                 ? 'border-sage-600 bg-sage-50' 
@@ -560,6 +564,7 @@ const ReservationConfirmScreen = () => {
           <TouchableOpacity 
             onPress={handleConfirmReservation}
             disabled={!selectedPaymentMethod || isLoading || selectedDate.length !== 2 || (participants.adults + participants.teenagers + participants.children + participants.preschool) === 0}
+            activeOpacity={1}
             className={`w-full py-4 rounded-lg ${
               selectedPaymentMethod && !isLoading && selectedDate.length === 2 && (participants.adults + participants.teenagers + participants.children + participants.preschool) > 0
                 ? 'bg-sage-600' 
@@ -585,7 +590,7 @@ const ReservationConfirmScreen = () => {
            <View className="bg-white rounded-3xl w-full h-[700px] mx-4 border border-stone-300">
             {/* 헤더 */}
             <View className="flex-row items-center justify-between p-4 border-b border-stone-200">
-             <TouchableOpacity onPress={() => setShowDateModal(false)}>
+             <TouchableOpacity onPress={() => setShowDateModal(false)} activeOpacity={1}>
                <Ionicons name="close" size={24} color="#6b7280" />
              </TouchableOpacity>
                            <Text 
@@ -605,6 +610,7 @@ const ReservationConfirmScreen = () => {
                 <TouchableOpacity 
                   onPress={() => changeMonth('prev')}
                   className="w-8 h-8 items-center justify-center"
+                  activeOpacity={1}
                 >
                   <Ionicons name="chevron-back" size={20} color="#6b7280" />
                 </TouchableOpacity>
@@ -617,6 +623,7 @@ const ReservationConfirmScreen = () => {
                 <TouchableOpacity 
                   onPress={() => changeMonth('next')}
                   className="w-8 h-8 items-center justify-center"
+                  activeOpacity={1}
                 >
                   <Ionicons name="chevron-forward" size={20} color="#6b7280" />
                 </TouchableOpacity>
@@ -666,6 +673,7 @@ const ReservationConfirmScreen = () => {
                         className={`flex-1 h-16 items-center pt-4`}
                         onPress={() => !isPastOrToday && isReservationAvailable(date) && handleDateSelect(date)}
                         disabled={isPastOrToday || isReservationUnavailable}
+                        activeOpacity={1}
                       >
                         <Text 
                           className={`text-center ${
@@ -717,6 +725,7 @@ const ReservationConfirmScreen = () => {
                              className={`flex-1 h-12 items-center`}
                              onPress={() => !isPastOrToday && isReservationAvailable(date) && handleDateSelect(date)}
                              disabled={isPastOrToday || isReservationUnavailable}
+                             activeOpacity={1}
                            >
                              <Text 
                                className={`text-center ${
@@ -756,14 +765,15 @@ const ReservationConfirmScreen = () => {
                 })()}
               </View>
 
-                                                                                                                                               {/* 하단 버튼 */}
-               <View className="p-4 border-t border-stone-200 mt-36">
-               <TouchableOpacity
-                 onPress={handleDateModalConfirm}
-                 className={`w-full py-5 rounded-2xl ${
-                   tempSelectedDate.length === 2 ? 'bg-sage-600' : 'bg-gray-400'
-                 }`}
-               >
+                                                                                                                                              {/* 하단 버튼 */}
+              <View className="p-4 border-t border-stone-200 mt-36">
+              <TouchableOpacity
+                onPress={handleDateModalConfirm}
+                className={`w-full py-5 rounded-2xl ${
+                  tempSelectedDate.length === 2 ? 'bg-sage-600' : 'bg-gray-400'
+                }`}
+                activeOpacity={1}
+              >
                                   <Text 
                                     className="text-white text-center font-semibold"
                                     style={{ fontSize: buttonFontSize }}
@@ -812,11 +822,12 @@ const ReservationConfirmScreen = () => {
                    >
                      Adult
                    </Text>
-                   <View className="flex-row items-center">
-                     <TouchableOpacity
-                       onPress={() => handleParticipantsChange('adults', tempParticipants.adults - 1)}
-                       className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
-                     >
+                  <View className="flex-row items-center">
+                    <TouchableOpacity
+                      onPress={() => handleParticipantsChange('adults', tempParticipants.adults - 1)}
+                      className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
+                      activeOpacity={1}
+                    >
                        <Text 
                          className="text-neutral-600"
                          style={{ fontSize: templeTitleSize }}
@@ -829,11 +840,12 @@ const ReservationConfirmScreen = () => {
                        style={{ fontSize: templeTitleSize }}
                      >
                        {tempParticipants.adults}
-                     </Text>
-                     <TouchableOpacity
-                       onPress={() => handleParticipantsChange('adults', tempParticipants.adults + 1)}
-                       className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
-                     >
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => handleParticipantsChange('adults', tempParticipants.adults + 1)}
+                      className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
+                      activeOpacity={1}
+                    >
                        <Text 
                          className="text-neutral-600"
                          style={{ fontSize: templeTitleSize }}
@@ -860,11 +872,12 @@ const ReservationConfirmScreen = () => {
                    >
                      Teenager
                    </Text>
-                   <View className="flex-row items-center">
-                     <TouchableOpacity
-                       onPress={() => handleParticipantsChange('teenagers', tempParticipants.teenagers - 1)}
-                       className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
-                     >
+                  <View className="flex-row items-center">
+                    <TouchableOpacity
+                      onPress={() => handleParticipantsChange('teenagers', tempParticipants.teenagers - 1)}
+                      className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
+                      activeOpacity={1}
+                    >
                        <Text 
                          className="text-neutral-600"
                          style={{ fontSize: templeTitleSize }}
@@ -876,12 +889,13 @@ const ReservationConfirmScreen = () => {
                        className="font-semibold text-neutral-900 mx-4"
                        style={{ fontSize: templeTitleSize }}
                      >
-                       {tempParticipants.teenagers}
-                     </Text>
-                     <TouchableOpacity
-                       onPress={() => handleParticipantsChange('teenagers', tempParticipants.teenagers + 1)}
-                       className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
-                     >
+                      {tempParticipants.teenagers}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => handleParticipantsChange('teenagers', tempParticipants.teenagers + 1)}
+                      className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
+                      activeOpacity={1}
+                    >
                        <Text 
                          className="text-neutral-600"
                          style={{ fontSize: templeTitleSize }}
@@ -913,13 +927,14 @@ const ReservationConfirmScreen = () => {
                      className="text-neutral-900"
                      style={{ fontSize: templeTitleSize }}
                    >
-                     Child
-                   </Text>
-                   <View className="flex-row items-center">
-                     <TouchableOpacity
-                       onPress={() => handleParticipantsChange('children', tempParticipants.children - 1)}
-                       className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
-                     >
+                    Child
+                  </Text>
+                  <View className="flex-row items-center">
+                    <TouchableOpacity
+                      onPress={() => handleParticipantsChange('children', tempParticipants.children - 1)}
+                      className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
+                      activeOpacity={1}
+                    >
                        <Text 
                          className="text-neutral-600"
                          style={{ fontSize: templeTitleSize }}
@@ -931,12 +946,13 @@ const ReservationConfirmScreen = () => {
                        className="font-semibold text-neutral-900 mx-4"
                        style={{ fontSize: templeTitleSize }}
                      >
-                       {tempParticipants.children}
-                     </Text>
-                     <TouchableOpacity
-                       onPress={() => handleParticipantsChange('children', tempParticipants.children + 1)}
-                       className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
-                     >
+                      {tempParticipants.children}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => handleParticipantsChange('children', tempParticipants.children + 1)}
+                      className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
+                      activeOpacity={1}
+                    >
                        <Text 
                          className="text-neutral-600"
                          style={{ fontSize: templeTitleSize }}
@@ -968,13 +984,14 @@ const ReservationConfirmScreen = () => {
                      className="text-neutral-900"
                      style={{ fontSize: templeTitleSize }}
                    >
-                     Preschool
-                   </Text>
-                   <View className="flex-row items-center">
-                     <TouchableOpacity
-                       onPress={() => handleParticipantsChange('preschool', tempParticipants.preschool - 1)}
-                       className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
-                     >
+                    Preschool
+                  </Text>
+                  <View className="flex-row items-center">
+                    <TouchableOpacity
+                      onPress={() => handleParticipantsChange('preschool', tempParticipants.preschool - 1)}
+                      className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
+                      activeOpacity={1}
+                    >
                        <Text 
                          className="text-neutral-600"
                          style={{ fontSize: templeTitleSize }}
@@ -986,12 +1003,13 @@ const ReservationConfirmScreen = () => {
                        className="font-semibold text-neutral-900 mx-4"
                        style={{ fontSize: templeTitleSize }}
                      >
-                       {tempParticipants.preschool}
-                     </Text>
-                     <TouchableOpacity
-                       onPress={() => handleParticipantsChange('preschool', tempParticipants.preschool + 1)}
-                       className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
-                     >
+                      {tempParticipants.preschool}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => handleParticipantsChange('preschool', tempParticipants.preschool + 1)}
+                      className="w-8 h-8 border border-stone-300 rounded-full items-center justify-center"
+                      activeOpacity={1}
+                    >
                        <Text 
                          className="text-neutral-600"
                          style={{ fontSize: templeTitleSize }}
@@ -1124,6 +1142,7 @@ const ReservationConfirmScreen = () => {
                    (tempParticipants.adults + tempParticipants.teenagers + tempParticipants.children + tempParticipants.preschool) > 0 ? 'bg-sage-600' : 'bg-gray-400'
                  }`}
                  style={{ paddingVertical: buttonPadding * 2 }}
+                 activeOpacity={1}
                >
                  <Text 
                    className="text-white text-center font-semibold"

@@ -106,7 +106,7 @@ const CommonListScreen = ({ navigation, route }: any) => {
                       setSelectedReservation(selectedReservation === reservation.id ? null : reservation.id);
                     }
                   }}
-                  activeOpacity={0.7}
+                  activeOpacity={1}
                 >
                   <View className="flex-row justify-between items-start" style={{ marginBottom: 8 }}>
                     {reservation.templeName && (
@@ -210,11 +210,13 @@ const CommonListScreen = ({ navigation, route }: any) => {
             {favoriteTemples.map((temple) => (
               <View key={temple.id} className="bg-white rounded-xl border border-gray-200" style={{ padding: cardPadding, marginBottom: cardMargin }}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('TempleStack', { 
-                    screen: 'TempleDetail', 
-                    params: { templeId: temple.id } 
-                  })}
-                  activeOpacity={0.7}
+                  onPress={() => {
+                    navigation.getParent()?.navigate('TempleStack', {
+                      screen: 'ReservationDetail',
+                      params: { templeId: temple.id }
+                    });
+                  }}
+                  activeOpacity={1}
                 >
                   <View className="flex-row justify-between items-start" style={{ marginBottom: 8 }}>
                     <Text style={{ fontSize: titleFontSize, fontWeight: '600', color: '#111827', flex: 1, marginRight: 8 }}>
@@ -301,8 +303,8 @@ const CommonListScreen = ({ navigation, route }: any) => {
       </View>
 
       {/* Tab Buttons */}
-      <View style={{ paddingHorizontal: 16, paddingVertical: isSmallScreen ? 9 : 12 }}>
-        <View className="flex-row bg-white rounded-3xl border border-gray-200" style={{ padding: isSmallScreen ? 5 : 7 }}>
+      <View style={{ paddingHorizontal: 16, paddingVertical: isSmallScreen ? 6 : 8 }}>
+        <View className="flex-row bg-white rounded-3xl border border-gray-200" style={{ padding: isSmallScreen ? 4 : 5 }}>
           {tabs.map((tab) => (
             <TouchableOpacity
               key={tab.id}
@@ -310,11 +312,12 @@ const CommonListScreen = ({ navigation, route }: any) => {
                 activeTab === tab.id ? 'bg-sage-600' : 'bg-transparent'
               }`}
               style={{ 
-                paddingVertical: isSmallScreen ? 10 : 12, 
-                paddingHorizontal: isSmallScreen ? 8 : 10,
-                minHeight: isSmallScreen ? 40 : 48
+                paddingVertical: isSmallScreen ? 6 : 8, 
+                paddingHorizontal: isSmallScreen ? 6 : 8,
+                minHeight: isSmallScreen ? 32 : 36
               }}
               onPress={() => setActiveTab(tab.id)}
+              activeOpacity={1}
             >
               <Text 
                 style={{ 

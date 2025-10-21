@@ -210,7 +210,7 @@ const SimpleCalendar = memo<{
     <View className="bg-white p-2 border border-stone-200">
       {/* 월 네비게이션 */}
       <View className="flex-row justify-between items-center mb-4">
-        <TouchableOpacity onPress={() => onMonthChange('prev')} className="p-1">
+        <TouchableOpacity onPress={() => onMonthChange('prev')} className="p-1" activeOpacity={1}>
           <Ionicons name="chevron-back" size={16} color="#616351" />
         </TouchableOpacity>
         <Text 
@@ -219,7 +219,7 @@ const SimpleCalendar = memo<{
         >
           {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
         </Text>
-        <TouchableOpacity onPress={() => onMonthChange('next')} className="p-1">
+        <TouchableOpacity onPress={() => onMonthChange('next')} className="p-1" activeOpacity={1}>
           <Ionicons name="chevron-forward" size={16} color="#616351" />
         </TouchableOpacity>
       </View>
@@ -293,6 +293,7 @@ const SimpleCalendar = memo<{
                             ? 'bg-sage-600'
                             : 'bg-stone-50'
                         }`}
+                        activeOpacity={1}
                       >
                         <Text className={`text-xs font-medium ${
                           selectedDate.some(selected => day.toDateString() === selected.toDateString())
@@ -593,7 +594,7 @@ const ReservationDetailScreen = () => {
     navigation.setOptions({
       headerShown: true,
       headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()} activeOpacity={1}>
           <Ionicons name="arrow-back" size={24} color="#1A1B1F" />
         </TouchableOpacity>
       ),
@@ -1155,6 +1156,7 @@ const ReservationDetailScreen = () => {
                       ? 'bg-sage-50 border-sage-400'
                       : 'bg-white border-stone-200'
                   }`}
+                  activeOpacity={1}
                 >
                          <Text 
                            className="font-semibold text-sage-600 mb-1"
@@ -1462,6 +1464,7 @@ const ReservationDetailScreen = () => {
                   <TouchableOpacity 
                   onPress={handleReservation}
                   className="w-full bg-sage-600 py-4 rounded-lg mb-6"
+                  activeOpacity={1}
                 >
                   <Text className="text-white font-semibold text-lg text-center">Make Reservation</Text>
                   </TouchableOpacity>
@@ -1621,6 +1624,7 @@ const ReservationDetailScreen = () => {
               <TouchableOpacity 
                 className="w-full bg-green-600 py-4 rounded-xl"
                 onPress={() => setShowReservationModal(false)}
+                activeOpacity={1}
               >
                 <Text className="text-white font-semibold text-center">OK</Text>
               </TouchableOpacity>
@@ -1665,6 +1669,7 @@ const ReservationDetailScreen = () => {
                   setShowLoginModal(false);
                   navigation.getParent()?.navigate('Login');
                 }}
+                activeOpacity={1}
               >
                 <Text className="text-white font-semibold text-center">Sign In</Text>
               </TouchableOpacity>
@@ -1672,6 +1677,7 @@ const ReservationDetailScreen = () => {
               <TouchableOpacity 
                 className="w-full bg-stone-200 py-4 rounded-xl"
                 onPress={() => setShowLoginModal(false)}
+                activeOpacity={1}
               >
                 <Text className="text-stone-700 font-semibold text-center">Cancel</Text>
               </TouchableOpacity>

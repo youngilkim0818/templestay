@@ -315,16 +315,13 @@ const HomeScreen = ({ navigation }: any) => {
 
   // 배너
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
-  const [currentScrollPosition, setCurrentScrollPosition] = useState(0);
-  const bannerRef = React.useRef<FlatList>(null);
+  const bannerScrollX = useRef(new Animated.Value(0)).current;
+  const bannerWidth = width - 40; // 화면 너비 - 좌우 패딩
   const bannerImages = [
     require('../../../../assets/banner-1.jpg'),
     require('../../../../assets/banner-2.jpg'),
     require('../../../../assets/banner-3.jpg'),
   ];
-  
-  // 무한 스크롤을 위한 확장된 배열
-  const extendedBannerImages = [...bannerImages, ...bannerImages, ...bannerImages];
 
   // 두 번째 배너 자동 스크롤 (후기용)
   const reviewRef = useRef<FlatList>(null);
@@ -365,18 +362,24 @@ const HomeScreen = ({ navigation }: any) => {
   // 무한 스크롤을 위한 확장된 후기 배열
   const extendedReviewData = [...reviewData, ...reviewData, ...reviewData];
 
+  // 배너 자동 스크롤 (Animated 사용)
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentBannerIndex((prev) => {
-        const next = (prev + 1) % bannerImages.length;
-        // 현재 스크롤 위치에서 오른쪽으로 한 칸씩 이동
-        const nextScrollIndex = currentScrollPosition + 1;
-        bannerRef.current?.scrollToIndex({ index: nextScrollIndex, animated: true });
-        return next;
+      const nextIndex = (currentBannerIndex + 1) % bannerImages.length;
+      
+      // Animated로 부드럽게 이동
+      Animated.timing(bannerScrollX, {
+        toValue: -nextIndex * bannerWidth,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => {
+        // 애니메이션 완료 후 숫자 변경
+        setCurrentBannerIndex(nextIndex);
       });
     }, 6000);
+
     return () => clearInterval(interval);
-  }, [bannerImages.length, currentScrollPosition]);
+  }, [bannerImages.length, bannerWidth, bannerScrollX, currentBannerIndex]);
 
   // 두 번째 배너 자동 스크롤 (후기용)
   useEffect(() => {
@@ -395,15 +398,6 @@ const HomeScreen = ({ navigation }: any) => {
     return () => clearInterval(interval);
   }, [reviewData.length]);
   
-  // 배너 초기 위치 설정 (중앙에서 시작)
-  useEffect(() => {
-    if (bannerRef.current) {
-      bannerRef.current.scrollToIndex({ 
-        index: bannerImages.length, 
-        animated: false 
-      });
-    }
-  }, []);
 
   // 두 번째 배너 초기 위치 설정 (중앙에서 시작)
   useEffect(() => {
@@ -465,61 +459,31 @@ const HomeScreen = ({ navigation }: any) => {
           {/* 🟫 베이지 섹션 */}
           <View className="bg-[#F5F1EB] rounded-t-[30px] px-5 pt-6">
             {/* 배너 */}
-            <View className="mt-1  ml-1">
-              <View className="w-[360px] h-32 rounded-4xl bg-[#FFFDF8] border border-stone-200 overflow-hidden relative">
-                <FlatList
-                  ref={bannerRef}
-                  data={extendedBannerImages}
-                  horizontal
-                  pagingEnabled
-                  showsHorizontalScrollIndicator={false}
-                  snapToInterval={360}
-                  decelerationRate={0.8}
-                  contentContainerStyle={{ width: 360 * extendedBannerImages.length }}
-                  keyExtractor={(_, index) => index.toString()}
-                  getItemLayout={(data, index) => ({ length: 360, offset: 360 * index, index })}
-                  onScroll={(e) => {
-                    const offsetX = e.nativeEvent.contentOffset.x;
-                    const index = Math.round(offsetX / 360);
-                    const actualIndex = index % bannerImages.length;
-                    setCurrentBannerIndex(actualIndex);
-                    setCurrentScrollPosition(index);
+             <View className="mt-1  ml-1">
+              <View style={{ width: bannerWidth, height: 110 }} className="rounded-4xl bg-[#FFFDF8] border border-stone-200 overflow-hidden relative">
+                <Animated.View
+                  style={{
+                    flexDirection: 'row',
+                    transform: [{ translateX: bannerScrollX }],
                   }}
-                  scrollEventThrottle={16}
-                  onMomentumScrollEnd={(e) => {
-                    const offsetX = e.nativeEvent.contentOffset.x;
-                    const index = Math.round(offsetX / 360);
-                    
-                    // 경계에 도달했을 때 중앙으로 이동
-                    if (index < bannerImages.length) {
-                      bannerRef.current?.scrollToIndex({ 
-                        index: index + bannerImages.length, 
-                        animated: false 
-                      });
-                    } else if (index >= bannerImages.length * 2) {
-                      bannerRef.current?.scrollToIndex({ 
-                        index: index - bannerImages.length, 
-                        animated: false 
-                      });
-                    }
-                  }}
-                  renderItem={({ item, index }) => (
-                    <View style={{ width: 360, height: 128 }}>
-                      <TouchableOpacity activeOpacity={0.9} onPress={() => handleBannerPress(index % bannerImages.length)}>
-                        <Image source={item} style={{ width: 360, height: 128, left: 0}} resizeMode="cover" />
-                        <View className="absolute bottom-5 left-0 right-0">
+                >
+                  {bannerImages.map((item, index) => (
+                    <View key={index} style={{ width: bannerWidth, height: 110 }}>
+                      <TouchableOpacity activeOpacity={0.9} onPress={() => handleBannerPress(index)}>
+                        <Image source={item} style={{ width: bannerWidth, height: 110}} resizeMode="cover" />
+                        <View className="absolute bottom-1 left-0 right-0">
                           <View className="bg-black/30 px-3 py-0.5">
                             <Text className="text-white text-base font-bold ml-3">
-                              {(index % bannerImages.length) === 0 ? "Join a Templestay in Gyeongbuk!" :
-                               (index % bannerImages.length) === 1 ? "Browse Buddhist Souvenirs" :
+                              {index === 0 ? "Join a Templestay in Gyeongbuk!" :
+                               index === 1 ? "Browse Buddhist Souvenirs" :
                                "Explore comfortably with a tour taxi"}
                             </Text>
                           </View>
                         </View>
                       </TouchableOpacity>
                     </View>
-                  )}
-                />
+                  ))}
+                </Animated.View>
                 {/* 인디케이터 */}
                 <View className="absolute top-2 right-3">
                   <View className="bg-black/50 px-2 py-1 rounded-full">
