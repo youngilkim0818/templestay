@@ -120,10 +120,10 @@ import { COLORS } from '../../constants/colors';
 
           {/* 로고 및 타이틀 */}
           <View style={{ paddingVertical: screen.height * 0.08, alignItems: 'center' }}>
-            <Text style={{ fontSize: screen.width * 0.08, fontWeight: 'bold', color: COLORS.text.primary, marginTop: screen.height * 0.01, marginLeft: -screen.width * 0.55 }}>
+            <Text style={{ fontSize: screen.width * 0.07, fontWeight: 'bold', color: COLORS.text.primary, marginTop: screen.height * 0.01, marginLeft: -screen.width * 0.55 }}>
               Welcome!
             </Text>
-            <Text style={{ fontSize: screen.width * 0.065, fontWeight: 'bold', color: COLORS.text.primary, marginTop: screen.height * 0.005, marginLeft: -screen.width * 0.5 }}>
+            <Text style={{ fontSize: screen.width * 0.056875, fontWeight: 'bold', color: COLORS.text.primary, marginTop: screen.height * 0.005, marginLeft: -screen.width * 0.5 }}>
               Please Sign In
             </Text>
           </View>
@@ -131,12 +131,12 @@ import { COLORS } from '../../constants/colors';
           {/* 폼 */}
           <View style={{ flex: 1, marginTop: -screen.height * 0.02 }}>
             <View style={{ marginBottom: screen.height * 0.015 }}>
-              <Text style={{ fontSize: screen.width * 0.045, fontWeight: '600', color: COLORS.text.secondary, marginBottom: screen.height * 0.01, marginLeft: screen.width * 0.02 }}>
+              <Text style={{ fontSize: screen.width * 0.039375, fontWeight: '600', color: COLORS.text.secondary, marginBottom: screen.height * 0.01, marginLeft: screen.width * 0.02 }}>
                 Email
               </Text>
               <View className={`bg-white p-4 border-2 ${emailError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: screen.height * 0.065, borderRadius: 30 }}>
                 <TextInput
-                  style={{ fontSize: screen.width * 0.04, color: COLORS.text.primary }}
+                  style={{ fontSize: screen.width * 0.035, color: COLORS.text.primary }}
                   placeholder="Please enter your email"
                   value={email}
                   multiline={false}
@@ -167,13 +167,13 @@ import { COLORS } from '../../constants/colors';
             </View>
 
                          <View style={{ marginBottom: screen.height * 0.015 }}>
-               <Text style={{ fontSize: screen.width * 0.045, fontWeight: '600', color: COLORS.text.secondary, marginBottom: screen.height * 0.01, marginLeft: screen.width * 0.02 }}>
+               <Text style={{ fontSize: screen.width * 0.039375, fontWeight: '600', color: COLORS.text.secondary, marginBottom: screen.height * 0.01, marginLeft: screen.width * 0.02 }}>
                 Password
               </Text>
               <View className={`bg-white p-4 border-2 ${passwordError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: screen.height * 0.065, borderRadius: 30 }}>
                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <TextInput
-                  style={{ fontSize: screen.width * 0.04, color: COLORS.text.primary, flex: 1 }}
+                  style={{ fontSize: screen.width * 0.035, color: COLORS.text.primary, flex: 1 }}
                   placeholder="Please enter your password"
                   value={password}
                                                   onChangeText={(text) => {
@@ -299,7 +299,7 @@ import { COLORS } from '../../constants/colors';
                     }}
                     onPress={handleSubmit}
                   >
-                    <Text style={{ fontSize: screen.width * 0.05, fontWeight: '600', color: 'white' }}>
+                    <Text style={{ fontSize: screen.width * 0.04375, fontWeight: '600', color: 'white' }}>
                       {loading ? 'Signing in...' : (isLogin ? 'Sign In' : 'Sign Up')}
                     </Text>
                   </TouchableOpacity>

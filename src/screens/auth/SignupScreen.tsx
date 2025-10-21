@@ -285,7 +285,7 @@ const RegistrationScreen = ({ navigation }: any) => {
         <View style={{ flex: 1, backgroundColor: COLORS.background.secondary }}>
           {/* 상단 헤더 */}
           <View style={{ paddingHorizontal: screen.width * 0.07, paddingTop: screen.height * 0.08, paddingBottom: screen.height * 0.03 }}>
-            <Text style={{ fontSize: screen.width * 0.08, fontWeight: 'bold', color: '#111827', marginBottom: screen.height * 0.01 }}>
+            <Text style={{ fontSize: screen.width * 0.07, fontWeight: 'bold', color: '#111827', marginBottom: screen.height * 0.01 }}>
               Create Account
             </Text>
           </View>
@@ -294,12 +294,12 @@ const RegistrationScreen = ({ navigation }: any) => {
           <View style={{ flex: 1, paddingHorizontal: screen.width * 0.07, paddingTop: screen.height * 0.04 }}>
             {/* 이메일 입력 */}
             <View style={{ marginBottom: screen.height * 0.02 }}>
-              <Text style={{ fontSize: screen.width * 0.045, fontWeight: '600', color: '#374151', marginBottom: screen.height * 0.01 }}>
+              <Text style={{ fontSize: screen.width * 0.039375, fontWeight: '600', color: '#374151', marginBottom: screen.height * 0.01 }}>
                 Email
               </Text>
               <View className={`bg-white rounded-4xl p-4 border-2 ${emailError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: screen.height * 0.065 }}>
                 <TextInput
-                  style={{ fontSize: screen.width * 0.045, paddingTop: 0 }}
+                  style={{ fontSize: screen.width * 0.039375, paddingTop: 0 }}
                   placeholder="Please enter your email"
                   placeholderTextColor="#9CA3AF"
                   value={email}
@@ -335,12 +335,12 @@ const RegistrationScreen = ({ navigation }: any) => {
 
             {/* 비밀번호 입력 */}
             <View style={{ marginBottom: screen.height * 0.02 }}>
-              <Text style={{ fontSize: screen.width * 0.045, fontWeight: '600', color: '#374151', marginBottom: screen.height * 0.01 }}>
+              <Text style={{ fontSize: screen.width * 0.039375, fontWeight: '600', color: '#374151', marginBottom: screen.height * 0.01 }}>
                 Password
               </Text>
               <View className={`bg-white rounded-4xl p-4 border-2 ${passwordError ? 'border-red-500' : 'border-stone-200'}`} style={{ height: screen.height * 0.065 }}>
                 <TextInput
-                  style={{ flex: 1, fontSize: screen.width * 0.045, paddingRight: screen.width * 0.12, paddingTop: 0 }}
+                  style={{ flex: 1, fontSize: screen.width * 0.039375, paddingRight: screen.width * 0.12, paddingTop: 0 }}
                   placeholder="Please enter your password"
                   placeholderTextColor="#9CA3AF"
                   value={password}
@@ -421,12 +421,12 @@ const RegistrationScreen = ({ navigation }: any) => {
 
             {/* 비밀번호 확인 입력 */}
             <View style={{ marginBottom: screen.height * 0.02 }}>
-              <Text style={{ fontSize: screen.width * 0.045, fontWeight: '600', color: '#374151', marginBottom: screen.height * 0.01 }}>
+              <Text style={{ fontSize: screen.width * 0.039375, fontWeight: '600', color: '#374151', marginBottom: screen.height * 0.01 }}>
                 Confirm Password
               </Text>
               <View className={`bg-white rounded-4xl p-4 border-2 ${confirmPasswordError ? 'border-red-500' : 'border-stone-200'} ${!passwordStrength.isComplete ? 'opacity-50' : ''}`} style={{ height: screen.height * 0.065 }}>
                 <TextInput
-                  style={{ flex: 1, fontSize: screen.width * 0.045, paddingRight: screen.width * 0.12, paddingTop: 0 }}
+                  style={{ flex: 1, fontSize: screen.width * 0.039375, paddingRight: screen.width * 0.12, paddingTop: 0 }}
                   placeholder={passwordStrength.isComplete ? "Please confirm your password" : "Complete password requirements first"}
                   placeholderTextColor="#9CA3AF"
                   value={confirmPassword}
@@ -519,7 +519,7 @@ const RegistrationScreen = ({ navigation }: any) => {
               {loading ? (
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <View style={{ width: screen.width * 0.05, height: screen.width * 0.05, borderWidth: 2, borderColor: 'white', borderTopColor: 'transparent', borderRadius: screen.width * 0.025, marginRight: screen.width * 0.02 }} />
-                  <Text style={{ fontSize: screen.width * 0.05, fontWeight: '600', color: 'white' }}>
+                  <Text style={{ fontSize: screen.width * 0.04375, fontWeight: '600', color: 'white' }}>
                     Creating Account...
                   </Text>
                 </View>

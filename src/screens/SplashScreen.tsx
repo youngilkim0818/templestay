@@ -252,7 +252,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
             <Text
               style={{
                 color: 'white',
-                fontSize: Math.max(screenWidth * 0.04, 14), // 화면 너비의 4%, 최소 14px
+                fontSize: Math.max(screenWidth * 0.035, 13), // 화면 너비의 3.5%, 최소 13px
                 fontWeight: '700',
                 textAlign: 'center',
               }}
@@ -289,7 +289,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
             <Text
               style={{
                 color: '#5A4636',
-                fontSize: Math.max(screenWidth * 0.04, 14), // 화면 너비의 4%, 최소 14px
+                fontSize: Math.max(screenWidth * 0.035, 13), // 화면 너비의 3.5%, 최소 13px
                 fontWeight: '700',
                 textAlign: 'center',
               }}

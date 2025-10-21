@@ -15,14 +15,14 @@ const CommonListScreen = ({ navigation, route }: any) => {
   const isLargeScreen = screenHeight > 800;
   
   // 동적 크기 계산 (반응형 크기 개선)
-  const headerFontSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 18);
-  const tabFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
-  const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
-  const cardMargin = isSmallScreen ? 6 : (isLargeScreen ? 12 : 8);
-  const titleFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
-  const textFontSize = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
-  const buttonPadding = isSmallScreen ? 6 : (isLargeScreen ? 10 : 8);
-  const iconSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+  const headerFontSize = isSmallScreen ? 14 : (isLargeScreen ? 19.25 : 15.75);
+  const tabFontSize = isSmallScreen ? 9.5 : (isLargeScreen ? 13 : 11.5);
+  const cardPadding = isSmallScreen ? 8.75 : (isLargeScreen ? 12.25 : 10.5);
+  const cardMargin = isSmallScreen ? 5.25 : (isLargeScreen ? 10.5 : 7);
+  const titleFontSize = isSmallScreen ? 10.5 : (isLargeScreen ? 14 : 12.25);
+  const textFontSize = isSmallScreen ? 7 : (isLargeScreen ? 10.5 : 8.75);
+  const buttonPadding = isSmallScreen ? 5.25 : (isLargeScreen ? 8.75 : 7);
+  const iconSize = isSmallScreen ? 10.5 : (isLargeScreen ? 14 : 12.25);
   
   // 새로운 리뷰가 전달되었는지 확인
   useEffect(() => {
@@ -347,11 +347,11 @@ const CommonListScreen = ({ navigation, route }: any) => {
          {showCancelModal && (
            <View className="absolute inset-0 flex-1 justify-center items-center">
                                                                                                         <View className="bg-white rounded-3xl p-6 mx-12 max-w-xs shadow-2xl border border-stone-200">
-                            <Text className="text-xl font-semibold text-sage-800 text-center mb-4">
+                            <Text className="text-lg font-semibold text-sage-800 text-center mb-4">
                  Cancel Reservation
                </Text>
                               <View className="w-60 h-0.5 bg-sage-300 self-center mb-4" />
-                              <Text className="text-base text-stone-700 text-center mb-6">
+                              <Text className="text-sm text-stone-700 text-center mb-6">
                  Are you sure you want to cancel{'\n'}this reservation?
                </Text>
                             <View className="flex-row justify-center">
@@ -388,11 +388,11 @@ const CommonListScreen = ({ navigation, route }: any) => {
         {showDeleteReviewModal && (
           <View className="absolute inset-0 flex-1 justify-center items-center">
             <View className="bg-white rounded-3xl p-6 mx-12 max-w-xs shadow-2xl border border-stone-200">
-              <Text className="text-xl font-semibold text-sage-800 text-center mb-4">
+              <Text className="text-lg font-semibold text-sage-800 text-center mb-4">
                 Delete Review
               </Text>
               <View className="w-60 h-0.5 bg-sage-300 self-center mb-4" />
-              <Text className="text-base text-stone-700 text-center mb-6">
+              <Text className="text-sm text-stone-700 text-center mb-6">
                 Are you sure you want to{'\n'}delete this review?
               </Text>
               <View className="flex-row justify-center">

@@ -61,7 +61,7 @@ const NotificationCard = ({ notification, onPress, onDelete }: {
         
         <View className="flex-1">
           <View className="flex-row justify-between items-start mb-1">
-            <Text className={`text-base font-semibold flex-1 ${
+            <Text className={`text-sm font-semibold flex-1 ${
               notification.isRead ? 'text-neutral-600' : 'text-neutral-900'
             }`}>
               {notification.title}
@@ -74,14 +74,14 @@ const NotificationCard = ({ notification, onPress, onDelete }: {
             </TouchableOpacity>
           </View>
           
-          <Text className={`text-sm mb-2 ${
+          <Text className={`text-xs mb-2 ${
             notification.isRead ? 'text-neutral-500' : 'text-neutral-700'
           }`}>
             {notification.message}
           </Text>
           
           <View className="flex-row justify-between items-center">
-            <Text className="text-xs text-neutral-400">
+            <Text className="text-[11px] text-neutral-400">
               {getTimeAgo(notification.createdAt)}
             </Text>
             
@@ -176,14 +176,14 @@ const NotificationsScreen = ({ navigation }: any) => {
         >
           <Ionicons name="chevron-back" size={24} color="#4A5D23" />
         </TouchableOpacity>
-        <Text className="text-xl font-bold text-sage-600 flex-1">알림</Text>
+        <Text className="text-lg font-bold text-sage-600 flex-1">알림</Text>
         
         {notifications.length > 0 && (
           <TouchableOpacity 
             className="px-3 py-1 bg-stone-100 rounded-lg"
             onPress={handleClearAll}
           >
-            <Text className="text-sm text-neutral-600">전체 삭제</Text>
+            <Text className="text-xs text-neutral-600">전체 삭제</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -192,13 +192,13 @@ const NotificationsScreen = ({ navigation }: any) => {
       <View className="bg-white px-5 py-4 border-b border-stone-200">
         <View className="flex-row justify-between items-center mb-3">
           <View className="flex-row items-center">
-            <Text className="text-base font-semibold text-neutral-900">
+            <Text className="text-sm font-semibold text-neutral-900">
               총 {notifications.length}개
             </Text>
             {unreadCount > 0 && (
               <>
-                <Text className="text-base text-neutral-600 mx-2">•</Text>
-                <Text className="text-base font-semibold text-sage-600">
+                <Text className="text-sm text-neutral-600 mx-2">•</Text>
+                <Text className="text-sm font-semibold text-sage-600">
                   읽지 않음 {unreadCount}개
                 </Text>
               </>
@@ -210,7 +210,7 @@ const NotificationsScreen = ({ navigation }: any) => {
               className="px-3 py-1 bg-sage-100 rounded-lg"
               onPress={handleMarkAllAsRead}
             >
-              <Text className="text-sm text-sage-600 font-medium">모두 읽음</Text>
+              <Text className="text-xs text-sage-600 font-medium">모두 읽음</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -223,7 +223,7 @@ const NotificationsScreen = ({ navigation }: any) => {
             }`}
             onPress={() => setFilter('all')}
           >
-            <Text className={`text-sm font-semibold ${
+            <Text className={`text-xs font-semibold ${
               filter === 'all' ? 'text-white' : 'text-neutral-600'
             }`}>
               전체 ({notifications.length})
@@ -235,7 +235,7 @@ const NotificationsScreen = ({ navigation }: any) => {
             }`}
             onPress={() => setFilter('unread')}
           >
-            <Text className={`text-sm font-semibold ${
+            <Text className={`text-xs font-semibold ${
               filter === 'unread' ? 'text-white' : 'text-neutral-600'
             }`}>
               읽지 않음 ({unreadCount})
@@ -273,13 +273,13 @@ const NotificationsScreen = ({ navigation }: any) => {
               size={64} 
               color="#6B7280" 
             />
-            <Text className="text-lg font-semibold text-neutral-900 mt-4 mb-2">
+            <Text className="text-base font-semibold text-neutral-900 mt-4 mb-2">
               {filter === 'all' 
                 ? '알림이 없습니다' 
                 : '읽지 않은 알림이 없습니다'
               }
             </Text>
-            <Text className="text-sm text-neutral-600 text-center">
+            <Text className="text-xs text-neutral-600 text-center">
               {filter === 'all'
                 ? '새로운 알림이 오면 여기에 표시됩니다.'
                 : '모든 알림을 확인하셨습니다.'

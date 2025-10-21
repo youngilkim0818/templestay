@@ -269,7 +269,7 @@ const EditProfileScreen = ({ navigation }: any) => {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Ionicons name="arrow-back" size={24} color="#1A1B1F" />
                 </TouchableOpacity>
-                <Text className="text-2xl font-semibold text-neutral-900">
+                <Text className="text-xl font-semibold text-neutral-900">
                     Edit Profile
                 </Text>
                 <View className="w-6" />
@@ -328,7 +328,7 @@ const EditProfileScreen = ({ navigation }: any) => {
                                     });
                                 }
                             }}>
-                                <Text className="text-sm text-stone-500">Delete Profile Photo</Text>
+                                <Text className="text-xs text-stone-500">Delete Profile Photo</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -337,12 +337,12 @@ const EditProfileScreen = ({ navigation }: any) => {
                             {/* 이름 */}
                             {isEditingName ? (
                                 <View className="p-6 border-b border-gray-100">
-                                    <Text className="text-lg font-semibold text-neutral-900 mb-3">Name</Text>
+                                    <Text className="text-base font-semibold text-neutral-900 mb-3">Name</Text>
                                     <View className="flex-row items-center">
                                         <TextInput
                                             value={tempName}
                                             onChangeText={setTempName}
-                                            className="flex-1 text-lg font-medium text-neutral-900 mr-3"
+                                            className="flex-1 text-base font-medium text-neutral-900 mr-3"
                                             placeholder="Enter your name"
                                             placeholderTextColor="#9CA3AF"
                                         />
@@ -356,9 +356,9 @@ const EditProfileScreen = ({ navigation }: any) => {
                                 </View>
                             ) : (
                                 <TouchableOpacity className="flex-row items-center p-6 border-b border-gray-100" onPress={startEditingName}>
-                                    <Text className="text-lg text-neutral-900 flex-1">Name</Text>
+                                    <Text className="text-base text-neutral-900 flex-1">Name</Text>
                                     <View className="flex-row items-center">
-                                        <Text className="text-lg font-medium text-neutral-900 mr-2">{name || 'User'}</Text>
+                                        <Text className="text-base font-medium text-neutral-900 mr-2">{name || 'User'}</Text>
                                         <Ionicons name="chevron-forward" size={18} color="#6b7280" />
                                     </View>
                                 </TouchableOpacity>
@@ -366,9 +366,9 @@ const EditProfileScreen = ({ navigation }: any) => {
 
                             {/* 대표 이메일 */}
                             <View className="flex-row items-center p-6 border-b border-gray-100">
-                                <Text className="text-lg text-neutral-900 flex-1">Email</Text>
+                                <Text className="text-base text-neutral-900 flex-1">Email</Text>
                                 <View className="flex-row items-center">
-                                    <Text className="text-lg font-medium text-neutral-900 mr-2">{email || 'user@example.com'}</Text>
+                                    <Text className="text-base font-medium text-neutral-900 mr-2">{email || 'user@example.com'}</Text>
                                 </View>
                             </View>
 

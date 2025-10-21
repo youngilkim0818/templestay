@@ -13,20 +13,20 @@ const isSmallScreen = height < 700;
 const isLargeScreen = height > 800;
 
 // Responsive sizes
-const headerFontSize = isSmallScreen ? 18 : (isLargeScreen ? 24 : 20);
-const subHeaderFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
-const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
-const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
-const templeImageHeight = isSmallScreen ? 120 : (isLargeScreen ? 180 : 150);
-const templeTitleSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
-const templeDescSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
-const templeDistanceSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
-const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
-const searchFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
-const searchPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
-const iconSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 20);
-const buttonPadding = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
-const buttonFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
+const headerFontSize = isSmallScreen ? 15.75 : (isLargeScreen ? 21 : 17.5);
+const subHeaderFontSize = isSmallScreen ? 10.5 : (isLargeScreen ? 14 : 12.25);
+const cardPadding = isSmallScreen ? 8.75 : (isLargeScreen ? 14 : 10.5);
+const cardMargin = isSmallScreen ? 3.5 : (isLargeScreen ? 7 : 5.25);
+const templeImageHeight = isSmallScreen ? 105 : (isLargeScreen ? 157.5 : 131.25);
+const templeTitleSize = isSmallScreen ? 12.25 : (isLargeScreen ? 15.75 : 14);
+const templeDescSize = isSmallScreen ? 9.625 : (isLargeScreen ? 13.125 : 11.375);
+const templeDistanceSize = isSmallScreen ? 8.75 : (isLargeScreen ? 12.25 : 10.5);
+const sectionPadding = isSmallScreen ? 8.75 : (isLargeScreen ? 14 : 10.5);
+const searchFontSize = isSmallScreen ? 10.5 : (isLargeScreen ? 14 : 12.25);
+const searchPadding = isSmallScreen ? 8.75 : (isLargeScreen ? 12.25 : 10.5);
+const iconSize = isSmallScreen ? 14 : (isLargeScreen ? 19.25 : 17.5);
+const buttonPadding = isSmallScreen ? 7 : (isLargeScreen ? 10.5 : 8.75);
+const buttonFontSize = isSmallScreen ? 9.625 : (isLargeScreen ? 13.125 : 11.375);
 
 interface RecommendTemplesScreenProps {
   navigation: any;
@@ -346,7 +346,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                   className="flex-row items-center w-20"
                                   activeOpacity={1}
                                 >
-                                  <Text className="ml-3 text-sm font-medium text-neutral-900 flex-1" numberOfLines={1}>
+                                  <Text className="ml-3 text-[10px] font-medium text-neutral-900 flex-1" numberOfLines={1}>
                                     {selectedRegion === '' ? 'Region' : 
                                      selectedRegion === 'all' ? 'All' : 
                                      getRegionDisplayName(selectedRegion)}
@@ -368,7 +368,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                   className="flex-row items-center w-20"
                                   activeOpacity={1}
                                 >
-                                  <Text className="ml-2 text-sm font-medium text-neutral-900 flex-1" numberOfLines={1}>
+                                  <Text className="ml-2 text-[10px] font-medium text-neutral-900 flex-1" numberOfLines={1}>
                                     {selectedTemple ? getTempleDisplayName(selectedTemple) : 'Temple'}
                                   </Text>
                                   <Ionicons 
@@ -388,7 +388,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                   className="flex-row items-center w-20"
                                   activeOpacity={1}
                                 >
-                                  <Text className="ml-2 text-sm font-medium text-neutral-900 flex-1" numberOfLines={1}>
+                                  <Text className="ml-2 text-[10px] font-medium text-neutral-900 flex-1" numberOfLines={1}>
                                     {selectedProgram === 'One-Day Type' ? 'Daily' : 
                                      selectedProgram === 'Experience Type' ? 'Experience' : 
                                      selectedProgram === 'Relaxation Type' ? 'Relaxation' : 
@@ -447,7 +447,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                   }`}
                                   activeOpacity={1}
                                 >
-                                  <Text className={`text-sm font-medium text-center ${
+                                  <Text className={`text-[10px] font-medium text-center ${
                                     selectedRegion === 'all' ? 'text-white' : 'text-neutral-700'
                                   }`}>
                                     All
@@ -467,7 +467,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                     }`}
                                     activeOpacity={1}
                                   >
-                                    <Text className={`text-sm font-medium text-center ${
+                                    <Text className={`text-[10px] font-medium text-center ${
                                       selectedRegion === region ? 'text-white' : 'text-neutral-700'
                                     }`}>
                                       {getRegionDisplayName(region)}
@@ -496,7 +496,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                     }`}
                                     activeOpacity={1}
                                   >
-                                    <Text className={`text-sm font-medium text-center ${
+                                    <Text className={`text-[10px] font-medium text-center ${
                                       selectedTemple === temple.name ? 'text-white' : 'text-neutral-700'
                                     }`}>
                                       {getTempleDisplayName(temple.name)}
@@ -522,7 +522,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                     }`}
                                   activeOpacity={1}
                                 >
-                                                                      <Text className={`text-sm font-medium text-center ${
+                                                                      <Text className={`text-[10px] font-medium text-center ${
                                       selectedProgram === 'One-Day Type' ? 'text-white' : 'text-neutral-700'
                                     }`}>
                                     Daily
@@ -538,7 +538,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                   }`}
                                   activeOpacity={1}
                                 >
-                                  <Text className={`text-sm font-medium text-center ${
+                                  <Text className={`text-[10px] font-medium text-center ${
                                     selectedProgram === 'Experience Type' ? 'text-white' : 'text-neutral-700'
                                   }`}>
                                     Experience
@@ -554,7 +554,7 @@ const RecommendTemplesScreen = ({ navigation, route }: RecommendTemplesScreenPro
                                   }`}
                                   activeOpacity={1}
                                 >
-                                  <Text className={`text-sm font-medium text-center ${
+                                  <Text className={`text-[10px] font-medium text-center ${
                                     selectedProgram === 'Relaxation Type' ? 'text-white' : 'text-neutral-700'
                                   }`}>
                                     Relaxation

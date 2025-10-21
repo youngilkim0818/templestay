@@ -54,11 +54,11 @@ const TemplestayExperienceScreen = ({ navigation }: any) => {
         {/* 타이틀 섹션 - 반응형 크기 */}
         <View style={{ paddingVertical: screen.height * 0.01 }}>
           <Text style={{ 
-            fontSize: Math.max(screen.width * 0.06, 18), 
+            fontSize: Math.max(screen.width * 0.0525, 16), 
             fontWeight: 'bold', 
             color: COLORS.text.primary, 
             textAlign: 'center', 
-            lineHeight: Math.max(screen.width * 0.07, 22), 
+            lineHeight: Math.max(screen.width * 0.06125, 19), 
             marginBottom: 0 
           }}>
             Have you experienced {'\n'} templestay before? (1/4)
@@ -88,7 +88,7 @@ const TemplestayExperienceScreen = ({ navigation }: any) => {
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
                   <Text style={{
-                    fontSize: Math.max(screen.width * 0.035, 14),
+                    fontSize: Math.max(screen.width * 0.030625, 12),
                     fontWeight: isSelected ? 'bold' : '600',
                     color: isSelected ? COLORS.brand.sage : COLORS.text.secondary,
                     textAlign: 'left',
@@ -138,7 +138,7 @@ const TemplestayExperienceScreen = ({ navigation }: any) => {
           disabled={selectedOption === null}
         >
           <Text style={{
-            fontSize: screen.width * 0.04,
+            fontSize: screen.width * 0.035,
             fontWeight: '600',
             marginRight: screen.width * 0.02,
             color: selectedOption !== null ? '#FFFFFF' : '#9CA3AF',

@@ -18,18 +18,18 @@ const isLargeScreen = height > 800;
 // Responsive sizes
 const cardWidth = isSmallScreen ? Math.min(width - 36, 280) : (isLargeScreen ? Math.min(width - 48, 340) : Math.min(width - 44, 320));
 const cardGap = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
-const searchFontSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
+const searchFontSize = isSmallScreen ? 12.25 : (isLargeScreen ? 15.75 : 14);
 const searchPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
 const cardPadding = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
 const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
-const titleFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
-const descFontSize = isSmallScreen ? 9 : (isLargeScreen ? 13 : 11);
-const distanceFontSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const titleFontSize = isSmallScreen ? 10.5 : (isLargeScreen ? 14 : 12.25);
+const descFontSize = isSmallScreen ? 8 : (isLargeScreen ? 11.5 : 9.5);
+const distanceFontSize = isSmallScreen ? 8.75 : (isLargeScreen ? 12.25 : 10.5);
 const imageWidth = isSmallScreen ? 80 : (isLargeScreen ? 120 : 100);
 const imageHeight = isSmallScreen ? 110 : (isLargeScreen ? 130 : 120);
 const buttonSize = isSmallScreen ? 36 : (isLargeScreen ? 44 : 40);
 const iconSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
-const toggleFontSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+const toggleFontSize = isSmallScreen ? 8.75 : (isLargeScreen ? 12.25 : 10.5);
 const togglePadding = isSmallScreen ? 6 : (isLargeScreen ? 10 : 8);
 
 // Google Translate 무료 API 사용
@@ -861,9 +861,9 @@ export default function MapScreen({ navigation, route }: any) {
             disableIntervalMomentum
             ListEmptyComponent={
               <View className="mx-4 p-3 bg-white border border-stone-200">
-                <Text className="text-sm text-neutral-700">{loadingAttractions ? 'Loading attractions...' : '주변 관광지를 찾지 못했습니다'}</Text>
+                <Text className="text-xs text-neutral-700">{loadingAttractions ? 'Loading attractions...' : '주변 관광지를 찾지 못했습니다'}</Text>
                 {!loadingAttractions && (
-                  <Text className="text-xs text-neutral-500 mt-1">로그를 확인하세요 (Hub STRICT 요청/응답)</Text>
+                  <Text className="text-[11px] text-neutral-500 mt-1">로그를 확인하세요 (Hub STRICT 요청/응답)</Text>
                 )}
               </View>
             }

@@ -16,16 +16,16 @@ const isSmallScreen = height < 700;
 const isLargeScreen = height > 800;
 
 // Responsive sizes
-const headerFontSize = isSmallScreen ? 18 : (isLargeScreen ? 24 : 20);
-const subHeaderFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
+const headerFontSize = isSmallScreen ? 16 : (isLargeScreen ? 21 : 17.5);
+const subHeaderFontSize = isSmallScreen ? 10.5 : (isLargeScreen ? 14 : 12.25);
 const quickActionSize = isSmallScreen ? 36 : (isLargeScreen ? 48 : 42);
 const quickActionFontSize = isSmallScreen ? 9 : (isLargeScreen ? 12 : 10);
 const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
 const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
 const templeImageSize = isSmallScreen ? 36 : (isLargeScreen ? 48 : 42);
-const templeTitleSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
-const templeDescSize = isSmallScreen ? 9 : (isLargeScreen ? 13 : 11);
-const templeDistanceSize = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+const templeTitleSize = isSmallScreen ? 10.5 : (isLargeScreen ? 14 : 12.25);
+const templeDescSize = isSmallScreen ? 8 : (isLargeScreen ? 11.5 : 9.5);
+const templeDistanceSize = isSmallScreen ? 7 : (isLargeScreen ? 10.5 : 8.75);
 const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
 const searchFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
 const searchPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
@@ -473,7 +473,7 @@ const HomeScreen = ({ navigation }: any) => {
                         <Image source={item} style={{ width: bannerWidth, height: 110}} resizeMode="cover" />
                         <View className="absolute bottom-1 left-0 right-0">
                           <View className="bg-black/30 px-3 py-0.5">
-                            <Text className="text-white text-base font-bold ml-3">
+                            <Text className="text-white text-sm font-bold ml-3">
                               {index === 0 ? "Join a Templestay in Gyeongbuk!" :
                                index === 1 ? "Browse Buddhist Souvenirs" :
                                "Explore comfortably with a tour taxi"}
@@ -487,7 +487,7 @@ const HomeScreen = ({ navigation }: any) => {
                 {/* 인디케이터 */}
                 <View className="absolute top-2 right-3">
                   <View className="bg-black/50 px-2 py-1 rounded-full">
-                    <Text className="text-white text-sm font-bold">
+                    <Text className="text-white text-xs font-bold">
                       {currentBannerIndex + 1}/{bannerImages.length}
                     </Text>
                   </View>
@@ -519,7 +519,7 @@ const HomeScreen = ({ navigation }: any) => {
                   <Image source={require('../../../../assets/jikjisa-temple.jpg')} className="w-full h-full" resizeMode="cover" />
                   <View className="absolute bottom-2 left-2">
                                           <View className="bg-black/25 px-3 py-1 rounded-2xl">
-                        <Text className="text-white text-lg font-bold">Popular</Text>
+                        <Text className="text-white text-base font-bold">Popular</Text>
                       </View>
                   </View>
                 </TouchableOpacity>
@@ -537,7 +537,7 @@ const HomeScreen = ({ navigation }: any) => {
                   <Image source={require('../../../../assets/map.jpg')} className="w-full h-full" resizeMode="cover" />
                   <View className="absolute bottom-2 left-2">
                     <View className="bg-black/25 px-3 py-1 rounded-2xl">
-                      <Text className="text-white text-lg font-bold">By Distance</Text>
+                      <Text className="text-white text-base font-bold">By Distance</Text>
                     </View>
                   </View>
                 </TouchableOpacity>
@@ -553,7 +553,7 @@ const HomeScreen = ({ navigation }: any) => {
                   <Image source={require('../../../../assets/day-trip.jpg')} className="w-full h-full" resizeMode="cover" />
                   <View className="absolute bottom-2 left-2">
                                           <View className="bg-black/25 px-3 py-1 rounded-2xl">
-                        <Text className="text-white text-lg font-bold">One-Day</Text>
+                        <Text className="text-white text-base font-bold">One-Day</Text>
                       </View>
                   </View>
                 </TouchableOpacity>
@@ -592,60 +592,60 @@ const HomeScreen = ({ navigation }: any) => {
                   {/* 섹터별 숫자들 */}
                   {/* 1번 섹터 */}
                   <View className="absolute left-4" style={{ top: '6.5%' }}>
-                    <Text className="text-6xl font-bold text-neutral-800" style={{ fontFamily: 'System', transform: [{ skewX: '-16deg' }] }}>1</Text>
+                    <Text className="text-5xl font-bold text-neutral-800" style={{ fontFamily: 'System', transform: [{ skewX: '-16deg' }] }}>1</Text>
                   </View>
                   
                   {/* 2번 섹터 */}
                   <View className="absolute left-4" style={{ top: '26.5%' }}>
-                    <Text className="text-6xl font-bold text-neutral-800" style={{ fontFamily: 'System', transform: [{ skewX: '-16deg' }] }}>2</Text>
+                    <Text className="text-5xl font-bold text-neutral-800" style={{ fontFamily: 'System', transform: [{ skewX: '-16deg' }] }}>2</Text>
                   </View>
                   
                   {/* 3번 섹터 */}
                   <View className="absolute left-4" style={{ top: '46.5%' }}>
-                    <Text className="text-6xl font-bold text-neutral-800" style={{ fontFamily: 'System', transform: [{ skewX: '-16deg' }] }}>3</Text>
+                    <Text className="text-5xl font-bold text-neutral-800" style={{ fontFamily: 'System', transform: [{ skewX: '-16deg' }] }}>3</Text>
                   </View>
                   
                   {/* 4번 섹터 */}
                   <View className="absolute left-4" style={{ top: '66.5%' }}>
-                    <Text className="text-6xl font-bold text-neutral-800" style={{ fontFamily: 'System', transform: [{ skewX: '-16deg' }] }}>4</Text>
+                    <Text className="text-5xl font-bold text-neutral-800" style={{ fontFamily: 'System', transform: [{ skewX: '-16deg' }] }}>4</Text>
                   </View>
                   
                   {/* 5번 섹터 */}
                   <View className="absolute left-4" style={{ top: '86.5%' }}>
-                    <Text className="text-6xl font-bold text-neutral-800" style={{ fontFamily: 'System', transform: [{ skewX: '-16deg' }] }}>5</Text>
+                    <Text className="text-5xl font-bold text-neutral-800" style={{ fontFamily: 'System', transform: [{ skewX: '-16deg' }] }}>5</Text>
                   </View>
 
                   {/* 장소명과 주소들 */}
                   {/* 1번 섹터 - Donggung Palace */}
                   <View className="absolute left-16" style={{ top: '6%' }}>
-                    <Text className="text-lg font-semibold text-neutral-800 mb-1">Donggung Palace and Wolji Pond</Text>
-                    <Text className="text-sm text-neutral-700">102 Wonhwa-ro, Gyeongju-si</Text>
+                    <Text className="text-base font-semibold text-neutral-800 mb-1">Donggung Palace and Wolji Pond</Text>
+                    <Text className="text-xs text-neutral-700">102 Wonhwa-ro, Gyeongju-si</Text>
                   </View>
                   
                   {/* 2번 섹터 - Bulguksa Temple */}
                   <View className="absolute left-16" style={{ top: '25%' }}>
-                    <Text className="text-lg font-semibold text-neutral-800 mb-1">Andong Hahoe Folk Village</Text>
-                    <Text className="text-sm text-neutral-700">186 Jeonseo-ro, Pungcheon-myeon,</Text>
-                    <Text className="text-sm text-neutral-700">Andong-si</Text>
+                    <Text className="text-base font-semibold text-neutral-800 mb-1">Andong Hahoe Folk Village</Text>
+                    <Text className="text-xs text-neutral-700">186 Jeonseo-ro, Pungcheon-myeon,</Text>
+                    <Text className="text-xs text-neutral-700">Andong-si</Text>
                   </View>
                   
                   {/* 3번 섹터 - Seokguram Grotto */}
                   <View className="absolute left-16" style={{ top: '46%' }}>
-                    <Text className="text-lg font-semibold text-neutral-800 mb-1">Space Walk</Text>
-                    <Text className="text-sm text-neutral-700">30 Hwanhogongwon-gil, Buk-gu, Pohang-si</Text>
+                    <Text className="text-base font-semibold text-neutral-800 mb-1">Space Walk</Text>
+                    <Text className="text-xs text-neutral-700">30 Hwanhogongwon-gil, Buk-gu, Pohang-si</Text>
                   </View>
                   
                   {/* 4번 섹터 - Andong Hahoe Folk Village */}
                   <View className="absolute left-16" style={{ top: '65%' }}>
-                    <Text className="text-lg font-semibold text-neutral-800 mb-1">Homigot Sunrise Square</Text>
-                    <Text className="text-sm text-neutral-700">20 Haemaji-ro 150beon-gil, Homigot-myeon,</Text>
-                    <Text className="text-sm text-neutral-700">Nam-gu, Pohang-si</Text>
+                    <Text className="text-base font-semibold text-neutral-800 mb-1">Homigot Sunrise Square</Text>
+                    <Text className="text-xs text-neutral-700">20 Haemaji-ro 150beon-gil, Homigot-myeon,</Text>
+                    <Text className="text-xs text-neutral-700">Nam-gu, Pohang-si</Text>
                  </View>
                   
                   {/* 5번 섹터 - Space Walk */}
                   <View className="absolute left-16" style={{ top: '86%' }}>
-                    <Text className="text-lg font-semibold text-neutral-800 mb-1">Bomun Lake</Text>
-                    <Text className="text-sm text-neutral-700">424-33 Bomun-ro, Gyeongju-si</Text>
+                    <Text className="text-base font-semibold text-neutral-800 mb-1">Bomun Lake</Text>
+                    <Text className="text-xs text-neutral-700">424-33 Bomun-ro, Gyeongju-si</Text>
                   </View>
 
                   {/* 사진칸들 */}
@@ -760,7 +760,7 @@ const HomeScreen = ({ navigation }: any) => {
                 <View className="w-full h-full bg-gradient-to-r from-sage-100 to-stone-100 relative p-4">
                   <View className="flex-row items-center justify-between">
                     <View className="flex-1" />
-                    <Text className="text-lg font-semibold text-neutral-900">Start exploring nearby attractions!</Text>
+                    <Text className="text-base font-semibold text-neutral-900">Start exploring nearby attractions!</Text>
                     <View className="flex-1" />
                     <Ionicons name="chevron-forward" size={20} color="#616351" />
                   </View>
@@ -825,12 +825,12 @@ const HomeScreen = ({ navigation }: any) => {
                         
                         {/* 중앙: 후기 제목과 사찰 이름 */}
                         <View className="flex-1 mr-4">
-                          <Text className="text-sm font-semibold text-neutral-900 mb-2 leading-4">
+                          <Text className="text-xs font-semibold text-neutral-900 mb-2 leading-4">
                             {item.title}
                           </Text>
                           <View className="flex-row items-center mb-1">
                             <Ionicons name="location" size={14} color="#6b7280" className="mr-1" />
-                            <Text className="text-xs text-neutral-600">
+                            <Text className="text-[11px] text-neutral-600">
                               {item.temple}
                             </Text>
                           </View>
@@ -873,7 +873,7 @@ const HomeScreen = ({ navigation }: any) => {
                     }}
                   >
                     <View className="flex-1">
-                      <Text className="text-base font-semibold text-neutral-500 text-center mr-8">
+                      <Text className="text-sm font-semibold text-neutral-500 text-center mr-8">
                         Privacy Policy
                       </Text>
                     </View>
@@ -897,7 +897,7 @@ const HomeScreen = ({ navigation }: any) => {
           <View className="bg-white rounded-2xl mx-4 max-h-[90%] w-[95%]">
             {/* Header */}
             <View className="flex-row justify-between items-center p-4 border-b border-stone-200">
-              <Text className="text-xl font-bold text-neutral-900">Privacy Policy</Text>
+              <Text className="text-lg font-bold text-neutral-900">Privacy Policy</Text>
               <TouchableOpacity onPress={() => setShowPrivacyPolicy(false)}>
                 <Ionicons name="close" size={24} color="#6b7280" />
               </TouchableOpacity>
@@ -905,107 +905,107 @@ const HomeScreen = ({ navigation }: any) => {
             
             {/* Content */}
             <ScrollView className="p-4" showsVerticalScrollIndicator={false}>
-              <Text className="text-sm text-neutral-700 leading-6 mb-4">
+              <Text className="text-xs text-neutral-700 leading-6 mb-4">
                 Templebuk ("the Company") complies with the Personal Information Protection Act and is committed to protecting users' personal information and rights, as well as smoothly handling user complaints related to personal data.
               </Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">1. Purpose of Processing Personal Information</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">1. Purpose of Processing Personal Information</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 The Company processes personal information for the following purposes. Personal data will not be used for any purposes other than those stated below, and if the purpose of use changes, necessary actions such as obtaining additional consent will be taken in accordance with Article 18 of the Personal Information Protection Act.
               </Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 <Text className="font-semibold">Membership Registration and Management:</Text> To confirm membership intention, identify and authenticate users for membership-based services, maintain and manage user status, prevent misuse of services, verify consent of a legal representative when collecting personal data of children under 14, provide notices and notifications, and handle complaints.
               </Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 <Text className="font-semibold">Provision of Goods or Services:</Text> To deliver products, provide services and content, offer personalized services, perform identity verification, and process payments.
               </Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 <Text className="font-semibold">Complaint Handling:</Text> To verify the identity of complainants, confirm complaints, communicate notices for fact-finding, and notify results of processing.
               </Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">2. Processing and Retention Period of Personal Information</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">2. Processing and Retention Period of Personal Information</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 The Company processes and retains personal data within the period specified by law or agreed upon when collecting personal data.
               </Text>
               <View className="bg-stone-50 p-3 rounded-lg mb-3">
-                <Text className="text-sm font-semibold text-neutral-800 mb-2">Category | Retention Period | Legal Basis</Text>
-                <Text className="text-sm text-neutral-700 mb-1">Membership Information | Until withdrawal of membership | Service use contract</Text>
-                <Text className="text-sm text-neutral-700 mb-1">Service Usage Records | 3 years | E-Commerce Act</Text>
-                <Text className="text-sm text-neutral-700 mb-1">Records of Contract or Cancellation | 5 years | E-Commerce Act</Text>
-                <Text className="text-sm text-neutral-700 mb-1">Records of Payment and Supply of Goods | 5 years | E-Commerce Act</Text>
-                <Text className="text-sm text-neutral-700 mb-1">Records of Consumer Complaints or Dispute Handling | 3 years | E-Commerce Act</Text>
+                <Text className="text-xs font-semibold text-neutral-800 mb-2">Category | Retention Period | Legal Basis</Text>
+                <Text className="text-xs text-neutral-700 mb-1">Membership Information | Until withdrawal of membership | Service use contract</Text>
+                <Text className="text-xs text-neutral-700 mb-1">Service Usage Records | 3 years | E-Commerce Act</Text>
+                <Text className="text-xs text-neutral-700 mb-1">Records of Contract or Cancellation | 5 years | E-Commerce Act</Text>
+                <Text className="text-xs text-neutral-700 mb-1">Records of Payment and Supply of Goods | 5 years | E-Commerce Act</Text>
+                <Text className="text-xs text-neutral-700 mb-1">Records of Consumer Complaints or Dispute Handling | 3 years | E-Commerce Act</Text>
               </View>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">3. Provision of Personal Information to Third Parties</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">3. Provision of Personal Information to Third Parties</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 The Company processes personal information only within the scope stated in Article 1 (Purpose of Processing) and provides personal data to third parties only when consent is obtained or as permitted by law under Articles 17 and 18 of the Personal Information Protection Act.
               </Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">4. Entrustment of Personal Information Processing</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">4. Entrustment of Personal Information Processing</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 To ensure smooth processing, the Company entrusts the following personal information handling tasks:
               </Text>
               <View className="bg-stone-50 p-3 rounded-lg mb-3">
-                <Text className="text-sm font-semibold text-neutral-800 mb-2">Entrusted Party | Entrusted Task</Text>
-                <Text className="text-sm text-neutral-700 mb-1">Cloud Service Providers | Data storage and backup</Text>
-                <Text className="text-sm text-neutral-700 mb-1">Payment Service Providers | Payment processing and management</Text>
+                <Text className="text-xs font-semibold text-neutral-800 mb-2">Entrusted Party | Entrusted Task</Text>
+                <Text className="text-xs text-neutral-700 mb-1">Cloud Service Providers | Data storage and backup</Text>
+                <Text className="text-xs text-neutral-700 mb-1">Payment Service Providers | Payment processing and management</Text>
               </View>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">5. Rights of Data Subjects and How to Exercise Them</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">5. Rights of Data Subjects and How to Exercise Them</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 Users, as data subjects, may exercise the following rights:
               </Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-1">• Request to Access Personal Information (Article 35 of the Act)</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-1">• Request to Correct or Delete Personal Information (Article 36 of the Act)</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">• Request to Suspend Processing of Personal Information (Article 37 of the Act)</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-1">• Request to Access Personal Information (Article 35 of the Act)</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-1">• Request to Correct or Delete Personal Information (Article 36 of the Act)</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">• Request to Suspend Processing of Personal Information (Article 37 of the Act)</Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">6. Personal Information Items Processed</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-1">• Required: ID, password, email address</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-1">• Optional: Name, location information</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">• Automatically Collected: IP address, cookies, service usage records, access logs</Text>
+              <Text className="text-sm font-bold text-neutral-900 mb-2">6. Personal Information Items Processed</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-1">• Required: ID, password, email address</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-1">• Optional: Name, location information</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">• Automatically Collected: IP address, cookies, service usage records, access logs</Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">7. Destruction of Personal Information</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">7. Destruction of Personal Information</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 The Company promptly destroys personal information when the retention period has expired or the purpose of processing has been achieved.
               </Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-1">• Electronic files: Permanently deleted in an unrecoverable way</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">• Printed documents: Shredded or incinerated</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-1">• Electronic files: Permanently deleted in an unrecoverable way</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">• Printed documents: Shredded or incinerated</Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">8. Measures to Ensure the Security of Personal Information</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">8. Measures to Ensure the Security of Personal Information</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 In accordance with Article 29 of the Personal Information Protection Act, the Company takes the following measures:
               </Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-1">• <Text className="font-semibold">Encryption of Personal Data:</Text> Passwords are encrypted and stored, and important data is encrypted during storage and transmission.</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-1">• <Text className="font-semibold">Technical Measures Against Hacking:</Text> Security programs are installed, regularly updated, and inspected. Systems are placed in restricted-access zones and monitored/blocked against unauthorized access.</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">• <Text className="font-semibold">Access Control:</Text> Access rights to the personal data system are managed by granting, changing, and revoking permissions, while intrusion prevention systems restrict unauthorized access.</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-1">• <Text className="font-semibold">Encryption of Personal Data:</Text> Passwords are encrypted and stored, and important data is encrypted during storage and transmission.</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-1">• <Text className="font-semibold">Technical Measures Against Hacking:</Text> Security programs are installed, regularly updated, and inspected. Systems are placed in restricted-access zones and monitored/blocked against unauthorized access.</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">• <Text className="font-semibold">Access Control:</Text> Access rights to the personal data system are managed by granting, changing, and revoking permissions, while intrusion prevention systems restrict unauthorized access.</Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">9. Personal Information Protection Officer</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">9. Personal Information Protection Officer</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 The Company designates the following person to oversee personal information protection, handle complaints, and provide remedies:
               </Text>
               <View className="bg-stone-50 p-3 rounded-lg mb-3">
-                <Text className="text-sm text-neutral-700 mb-1">• Name: Kim Seo-hyun</Text>
-                <Text className="text-sm text-neutral-700 mb-1">• Position: Data Protection Officer</Text>
-                <Text className="text-sm text-neutral-700 mb-1">• Email: kimziin0513@gmail.com</Text>
+                <Text className="text-xs text-neutral-700 mb-1">• Name: Kim Seo-hyun</Text>
+                <Text className="text-xs text-neutral-700 mb-1">• Position: Data Protection Officer</Text>
+                <Text className="text-xs text-neutral-700 mb-1">• Email: kimziin0513@gmail.com</Text>
               </View>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">10. Changes to the Privacy Policy</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">10. Changes to the Privacy Policy</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 This Privacy Policy will take effect from the effective date. Any additions, deletions, or modifications required by law or internal policy will be notified through announcements at least 7 days prior to enforcement.
               </Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">11. Department for Requests to Access Personal Information</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">11. Department for Requests to Access Personal Information</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 Users may request access to their personal information under Article 35 of the Act through the following department. The Company will strive to process requests promptly.
               </Text>
               <View className="bg-stone-50 p-3 rounded-lg mb-3">
-                <Text className="text-sm text-neutral-700 mb-1">• Department: Kim Seo-hyun</Text>
-                <Text className="text-sm text-neutral-700 mb-1">• Person in Charge: Data Protection Officer</Text>
-                <Text className="text-sm text-neutral-700 mb-1">• Email: kimziin0513@gmail.com</Text>
+                <Text className="text-xs text-neutral-700 mb-1">• Department: Kim Seo-hyun</Text>
+                <Text className="text-xs text-neutral-700 mb-1">• Person in Charge: Data Protection Officer</Text>
+                <Text className="text-xs text-neutral-700 mb-1">• Email: kimziin0513@gmail.com</Text>
               </View>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">Effective Date</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-4">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">Effective Date</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-4">
                 This Privacy Policy will be effective as of August 19, 2025.
               </Text>
             </ScrollView>

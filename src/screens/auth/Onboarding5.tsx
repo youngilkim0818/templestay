@@ -159,7 +159,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
             {/* Title - 반응형 크기 */}
             <View style={{ paddingVertical: screen.height * 0.03 }}>
               <Text style={{ 
-                fontSize: Math.max(screen.width * 0.07, 20), 
+                fontSize: Math.max(screen.width * 0.06125, 17.5), 
                 fontWeight: 'bold', 
                 color: COLORS.text.primary, 
                 marginLeft: screen.width * 0.04, 
@@ -170,7 +170,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
               </Text>
               {!isGuestMode && (
                 <Text style={{ 
-                  fontSize: Math.max(screen.width * 0.06, 18), 
+                  fontSize: Math.max(screen.width * 0.0525, 15.75), 
                   fontWeight: 'bold', 
                   color: COLORS.text.primary, 
                   marginLeft: screen.width * 0.04, 
@@ -238,7 +238,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                     borderColor: '#D4C4A8',
                     paddingHorizontal: screen.width * 0.03,
                     paddingVertical: screen.height * 0.015,
-                    fontSize: Math.max(screen.width * 0.035, 14),
+                    fontSize: Math.max(screen.width * 0.030625, 12.25),
                     color: isGuestMode ? COLORS.text.tertiary : COLORS.text.primary,
                     minHeight: Math.max(screen.height * 0.06, 40),
                     textAlign: 'center',
@@ -300,7 +300,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
                   <Text
                     style={{
                       color: 'white',
-                      fontSize: Math.max(screen.width * 0.045, 18),
+                      fontSize: Math.max(screen.width * 0.039375, 15.75),
                       fontWeight: '700',
                       textAlign: 'center',
                     }}
@@ -350,7 +350,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
               </TouchableOpacity>
 
               <Text style={{
-                fontSize: screen.width * 0.05,
+                fontSize: screen.width * 0.04375,
                 fontWeight: 'bold',
                 color: COLORS.text.primary,
                 textAlign: 'center',
@@ -372,7 +372,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
               >
                 <Text style={{
                   color: 'white',
-                  fontSize: screen.width * 0.04,
+                  fontSize: screen.width * 0.035,
                   fontWeight: '600',
                   textAlign: 'center'
                 }}>
@@ -395,7 +395,7 @@ const ImportantFactor2Screen = ({ navigation }: any) => {
               >
                 <Text style={{
                   color: 'white',
-                  fontSize: screen.width * 0.04,
+                  fontSize: screen.width * 0.035,
                   fontWeight: '600',
                   textAlign: 'center'
                 }}>

@@ -147,16 +147,16 @@ const MarketScreen = ({ navigation }: any) => {
   const isLargeScreen = screenHeight > 800;
   
   // 동적 크기 계산 (전체적으로 크기 축소)
-  const headerFontSize = isSmallScreen ? 20 : (isLargeScreen ? 26 : 22);
+  const headerFontSize = isSmallScreen ? 17.5 : (isLargeScreen ? 22.75 : 19.25);
   const categoryPadding = isSmallScreen ? 6 : (isLargeScreen ? 10 : 8);
-  const categoryFontSize = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+  const categoryFontSize = isSmallScreen ? 7 : (isLargeScreen ? 10.5 : 8.75);
   const categoryIconSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
   const productImageHeight = isSmallScreen ? 80 : (isLargeScreen ? 120 : 100);
   const productPadding = isSmallScreen ? 6 : (isLargeScreen ? 10 : 8);
-  const productTitleSize = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
-  const productPriceSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
+  const productTitleSize = isSmallScreen ? 7 : (isLargeScreen ? 10.5 : 8.75);
+  const productPriceSize = isSmallScreen ? 8.75 : (isLargeScreen ? 12.25 : 10.5);
   const sortIconSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
-  const sortFontSize = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
+  const sortFontSize = isSmallScreen ? 7 : (isLargeScreen ? 10.5 : 8.75);
   
   const products = getProductData(t);
   const filteredAndSortedProducts = useMemo(() => {

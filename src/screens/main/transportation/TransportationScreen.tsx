@@ -80,13 +80,13 @@ const TransportationScreen = () => {
   const isLargeScreen = screenHeight > 800;
   
   // Dynamic sizes
-  const headerFontSize = isSmallScreen ? 20 : (isLargeScreen ? 26 : 22);
-  const subHeaderFontSize = isSmallScreen ? 16 : (isLargeScreen ? 20 : 18);
+  const headerFontSize = isSmallScreen ? 17.5 : (isLargeScreen ? 22.75 : 19.25);
+  const subHeaderFontSize = isSmallScreen ? 12.25 : (isLargeScreen ? 15.3125 : 13.78125);
   const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
   const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
-  const titleFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
-  const descFontSize = isSmallScreen ? 10 : (isLargeScreen ? 13 : 11);
-  const priceFontSize = isSmallScreen ? 11 : (isLargeScreen ? 14 : 12);
+  const titleFontSize = isSmallScreen ? 10.5 : (isLargeScreen ? 14 : 12.25);
+  const descFontSize = isSmallScreen ? 8.75 : (isLargeScreen ? 11.5 : 9.5);
+  const priceFontSize = isSmallScreen ? 9.5 : (isLargeScreen ? 12.25 : 10.5);
   const imageSize = isSmallScreen ? 70 : (isLargeScreen ? 85 : 75);
   const headerPadding = isSmallScreen ? 16 : (isLargeScreen ? 24 : 20);
   const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);

@@ -93,7 +93,7 @@ const ImportantFactorScreen = ({ navigation }: any) => {
         {/* 타이틀 섹션 - 반응형 크기 */}
         <View style={{ paddingVertical: screen.height * 0.01 }}>
           <Text style={{ 
-            fontSize: Math.max(screen.width * 0.06, 18), 
+            fontSize: Math.max(screen.width * 0.0525, 16), 
             fontWeight: 'bold', 
             color: COLORS.text.primary, 
             textAlign: 'center', 
@@ -127,7 +127,7 @@ const ImportantFactorScreen = ({ navigation }: any) => {
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
                   <Text style={{
-                    fontSize: Math.max(screen.width * 0.035, 14),
+                    fontSize: Math.max(screen.width * 0.030625, 12),
                     fontWeight: isSelected ? 'bold' : '600',
                     color: isSelected ? COLORS.brand.sage : COLORS.text.secondary,
                     textAlign: 'left',
@@ -148,14 +148,14 @@ const ImportantFactorScreen = ({ navigation }: any) => {
             <View style={{ width: screen.width * 0.24, height: screen.width * 0.24, backgroundColor: COLORS.brand.sage, borderRadius: screen.width * 0.12, alignItems: 'center', justifyContent: 'center', marginBottom: screen.height * 0.03 }}>
               <Ionicons name="checkmark" size={screen.width * 0.12} color="white" />
             </View>
-            <Text style={{ fontSize: screen.width * 0.1, fontWeight: 'bold', color: COLORS.brand.sage, marginBottom: screen.height * 0.015 }}>
+            <Text style={{ fontSize: screen.width * 0.0875, fontWeight: 'bold', color: COLORS.brand.sage, marginBottom: screen.height * 0.015 }}>
               Survey Complete!
             </Text>
-            <Text style={{ fontSize: screen.width * 0.05, color: COLORS.text.secondary, textAlign: 'center' }}>
+            <Text style={{ fontSize: screen.width * 0.04375, color: COLORS.text.secondary, textAlign: 'center' }}>
               Thank you for your responses
             </Text>
             <View style={{ marginTop: screen.height * 0.04, flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ fontSize: screen.width * 0.045, color: COLORS.text.tertiary, marginRight: screen.width * 0.03 }}>Moving to next step</Text>
+              <Text style={{ fontSize: screen.width * 0.039375, color: COLORS.text.tertiary, marginRight: screen.width * 0.03 }}>Moving to next step</Text>
               <View style={{ flexDirection: 'row', gap: screen.width * 0.02 }}>
                 <View style={{ width: screen.width * 0.03, height: screen.width * 0.03, borderRadius: screen.width * 0.015, backgroundColor: dotIndex === 0 ? COLORS.brand.sage : COLORS.brand.sageLighter }}></View>
                 <View style={{ width: screen.width * 0.03, height: screen.width * 0.03, borderRadius: screen.width * 0.015, backgroundColor: dotIndex === 1 ? COLORS.brand.sage : COLORS.brand.sageLighter }}></View>
@@ -202,7 +202,7 @@ const ImportantFactorScreen = ({ navigation }: any) => {
           disabled={selectedOption === null}
         >
           <Text style={{
-            fontSize: screen.width * 0.04,
+            fontSize: screen.width * 0.035,
             fontWeight: '600',
             marginRight: screen.width * 0.02,
             color: selectedOption !== null ? '#FFFFFF' : '#9CA3AF',

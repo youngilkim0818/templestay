@@ -12,17 +12,17 @@ const isSmallScreen = height < 700;
 const isLargeScreen = height > 800;
 
 // Responsive sizes
-const headerFontSize = isSmallScreen ? 18 : (isLargeScreen ? 24 : 20);
-const subHeaderFontSize = isSmallScreen ? 12 : (isLargeScreen ? 16 : 14);
-const cardPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
-const cardMargin = isSmallScreen ? 4 : (isLargeScreen ? 8 : 6);
-const templeImageHeight = isSmallScreen ? 120 : (isLargeScreen ? 180 : 150);
-const templeTitleSize = isSmallScreen ? 14 : (isLargeScreen ? 18 : 16);
-const templeDescSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
-const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
-const iconSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 20);
-const buttonPadding = isSmallScreen ? 8 : (isLargeScreen ? 12 : 10);
-const buttonFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
+const headerFontSize = isSmallScreen ? 15.75 : (isLargeScreen ? 21 : 17.5);
+const subHeaderFontSize = isSmallScreen ? 10.5 : (isLargeScreen ? 14 : 12.25);
+const cardPadding = isSmallScreen ? 8.75 : (isLargeScreen ? 14 : 10.5);
+const cardMargin = isSmallScreen ? 3.5 : (isLargeScreen ? 7 : 5.25);
+const templeImageHeight = isSmallScreen ? 105 : (isLargeScreen ? 157.5 : 131.25);
+const templeTitleSize = isSmallScreen ? 12.25 : (isLargeScreen ? 15.75 : 14);
+const templeDescSize = isSmallScreen ? 9.625 : (isLargeScreen ? 13.125 : 11.375);
+const sectionPadding = isSmallScreen ? 8.75 : (isLargeScreen ? 14 : 10.5);
+const iconSize = isSmallScreen ? 14 : (isLargeScreen ? 19.25 : 17.5);
+const buttonPadding = isSmallScreen ? 7 : (isLargeScreen ? 10.5 : 8.75);
+const buttonFontSize = isSmallScreen ? 9.625 : (isLargeScreen ? 13.125 : 11.375);
 
 // Styled components for NativeWind
 
@@ -192,10 +192,10 @@ const TempleListScreen = ({ navigation, route }: any) => {
             {!isOneDayMode && selectedRegion !== '전체' && selectedRegion !== '경북' ? (
                 <View className="flex-1 justify-center items-center px-6">
                     <View className="bg-white rounded-2xl p-8 items-center">
-                        <Text className="text-xl font-medium text-neutral-600 text-center mb-2">
+                        <Text className="text-lg font-medium text-neutral-600 text-center mb-2">
                             서비스 준비 중
                         </Text>
-                        <Text className="text-base text-neutral-500 text-center">
+                        <Text className="text-sm text-neutral-500 text-center">
                             '{selectedRegion}' 지역은 현재 서비스 준비 중입니다.
                         </Text>
                     </View>

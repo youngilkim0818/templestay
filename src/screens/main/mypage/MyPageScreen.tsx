@@ -33,8 +33,8 @@ const MyPageScreen = ({ navigation }: any) => {
   
   // 동적 크기 계산 (전체적으로 크기 축소)
   const profileImageSize = isSmallScreen ? 20 : (isLargeScreen ? 26 : 22);
-  const headerFontSize = isSmallScreen ? 20 : (isLargeScreen ? 26 : 22);
-  const nameFontSize = isSmallScreen ? 16 : (isLargeScreen ? 20 : 18);
+  const headerFontSize = isSmallScreen ? 17.5 : (isLargeScreen ? 22.75 : 19.25);
+  const nameFontSize = isSmallScreen ? 14 : (isLargeScreen ? 17.5 : 15.75);
   const sectionPadding = isSmallScreen ? 10 : (isLargeScreen ? 16 : 12);
   const menuItemPadding = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
   const bottomSpacing = isSmallScreen ? 8 : (isLargeScreen ? 16 : 12);
@@ -257,7 +257,7 @@ const MyPageScreen = ({ navigation }: any) => {
                 </TouchableOpacity>
                 {!isGuestMode && (
                   <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={{ marginLeft: 16 }}>
-                    <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#6b7280' }}>Edit Profile</Text>
+                    <Text style={{ fontSize: isSmallScreen ? 10.5 : 12.25, color: '#6b7280' }}>Edit Profile</Text>
                   </TouchableOpacity>
                 )}
               </View>
@@ -273,22 +273,22 @@ const MyPageScreen = ({ navigation }: any) => {
                 <View className="bg-sage-600 px-3 py-1 rounded-full">
                   <View className="flex-row items-center">
                     <Ionicons name="calendar" size={isSmallScreen ? 10 : 12} color="white" />
-                    <Text style={{ color: 'white', fontSize: isSmallScreen ? 10 : 12, fontWeight: '600', marginLeft: 4 }}>Current Reservation</Text>
+                    <Text style={{ color: 'white', fontSize: isSmallScreen ? 8.75 : 10.5, fontWeight: '600', marginLeft: 4 }}>Current Reservation</Text>
                   </View>
                 </View>
               </View>
-              <Text style={{ fontSize: isSmallScreen ? 12 : 14, fontWeight: '600', color: '#171717', marginBottom: 10 }}>
+              <Text style={{ fontSize: isSmallScreen ? 10.5 : 12.25, fontWeight: '600', color: '#171717', marginBottom: 10 }}>
                 {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? `${upcomingReservation.temple_name || 'Unknown Temple'} - ${upcomingReservation.program_title || 'Temple Stay Program'}` : 'No temple stay reservations yet'}
               </Text>
               <View className="border-t-2 border-sage-200" style={{ paddingTop: 10 }}>
                 <View className="flex-row items-center">
-                  <Text style={{ fontSize: isSmallScreen ? 10 : 12, color: '#404040' }}>
+                  <Text style={{ fontSize: isSmallScreen ? 8.75 : 10.5, color: '#404040' }}>
                     {hasReservations && upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? 'Upcoming Reservation' : 'Try booking a templestay'}
                   </Text>
                   {upcomingReservation && new Date(upcomingReservation.reservation_date || '').getTime() > new Date().getTime() ? (
                     <>
                       <Ionicons name="time" size={isSmallScreen ? 12 : 14} color="#5A4636" style={{ marginLeft: 6 }} />
-                      <Text style={{ fontSize: isSmallScreen ? 10 : 12, fontWeight: '600', color: '#4A5D23', marginLeft: 3 }}>
+                      <Text style={{ fontSize: isSmallScreen ? 8.75 : 10.5, fontWeight: '600', color: '#4A5D23', marginLeft: 3 }}>
                         D-{Math.ceil((new Date(upcomingReservation.reservation_date || '').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))}
                       </Text>
                     </>
@@ -308,7 +308,7 @@ const MyPageScreen = ({ navigation }: any) => {
               onPress={() => navigation.navigate('CommonList', { initialTab: 0 })}
             >
               <Ionicons name="calendar-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
-              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>Reservation History</Text>
+              <Text style={{ fontSize: isSmallScreen ? 10.5 : 12.25, color: '#171717', marginLeft: 10, flex: 1 }}>Reservation History</Text>
               <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
             
@@ -318,7 +318,7 @@ const MyPageScreen = ({ navigation }: any) => {
               onPress={() => navigation.navigate('CommonList', { initialTab: 1 })}
             >
               <Ionicons name="heart-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
-              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>Favorite Temples</Text>
+              <Text style={{ fontSize: isSmallScreen ? 10.5 : 12.25, color: '#171717', marginLeft: 10, flex: 1 }}>Favorite Temples</Text>
               <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
             
@@ -328,7 +328,7 @@ const MyPageScreen = ({ navigation }: any) => {
               onPress={() => navigation.navigate('CommonList', { initialTab: 2 })}
             >
               <Ionicons name="star-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
-              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>My Reviews</Text>
+              <Text style={{ fontSize: isSmallScreen ? 10.5 : 12.25, color: '#171717', marginLeft: 10, flex: 1 }}>My Reviews</Text>
               <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
           </View>
@@ -343,7 +343,7 @@ const MyPageScreen = ({ navigation }: any) => {
               onPress={() => setShowNotificationSettings(true)}
             >
               <Ionicons name="notifications-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
-              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>Notification Settings</Text>
+              <Text style={{ fontSize: isSmallScreen ? 10.5 : 12.25, color: '#171717', marginLeft: 10, flex: 1 }}>Notification Settings</Text>
               <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
             
@@ -353,7 +353,7 @@ const MyPageScreen = ({ navigation }: any) => {
               onPress={() => setShowPrivacyPolicy(true)}
             >
               <Ionicons name="shield-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
-              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>Privacy Policy</Text>
+              <Text style={{ fontSize: isSmallScreen ? 10.5 : 12.25, color: '#171717', marginLeft: 10, flex: 1 }}>Privacy Policy</Text>
               <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
             
@@ -363,7 +363,7 @@ const MyPageScreen = ({ navigation }: any) => {
               onPress={() => setShowCustomerSupport(true)}
             >
               <Ionicons name="help-circle-outline" size={isSmallScreen ? 16 : 18} color="#6b7280" />
-              <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#171717', marginLeft: 10, flex: 1 }}>Customer Support</Text>
+              <Text style={{ fontSize: isSmallScreen ? 10.5 : 12.25, color: '#171717', marginLeft: 10, flex: 1 }}>Customer Support</Text>
               <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#6b7280" />
             </TouchableOpacity>
 
@@ -374,7 +374,7 @@ const MyPageScreen = ({ navigation }: any) => {
                 onPress={() => navigation.navigate('Login')}
               >
                 <Ionicons name="log-in-outline" size={isSmallScreen ? 16 : 18} color="#5A4636" />
-                <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#4A5D23', marginLeft: 10, flex: 1 }}>Sign In</Text>
+                <Text style={{ fontSize: isSmallScreen ? 10.5 : 12.25, color: '#4A5D23', marginLeft: 10, flex: 1 }}>Sign In</Text>
                 <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#5A4636" />
               </TouchableOpacity>
             ) : (
@@ -384,7 +384,7 @@ const MyPageScreen = ({ navigation }: any) => {
                 onPress={handleLogout}
               >
                 <Ionicons name="log-out-outline" size={isSmallScreen ? 16 : 18} color="#ef4444" />
-                <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#ef4444', marginLeft: 10, flex: 1 }}>Logout</Text>
+                <Text style={{ fontSize: isSmallScreen ? 10.5 : 12.25, color: '#ef4444', marginLeft: 10, flex: 1 }}>Logout</Text>
                 <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#ef4444" />
               </TouchableOpacity>
             )}
@@ -396,7 +396,7 @@ const MyPageScreen = ({ navigation }: any) => {
                 onPress={() => setShowDeleteAccountModal(true)}
               >
                 <Ionicons name="trash-outline" size={isSmallScreen ? 16 : 18} color="#ef4444" />
-                <Text style={{ fontSize: isSmallScreen ? 12 : 14, color: '#ef4444', marginLeft: 10, flex: 1 }}>Delete Account</Text>
+                <Text style={{ fontSize: isSmallScreen ? 10.5 : 12.25, color: '#ef4444', marginLeft: 10, flex: 1 }}>Delete Account</Text>
                 <Ionicons name="chevron-forward" size={isSmallScreen ? 12 : 14} color="#ef4444" />
               </TouchableOpacity>
             )}
@@ -420,10 +420,10 @@ const MyPageScreen = ({ navigation }: any) => {
               <View className="w-16 h-16 bg-red-100 rounded-full items-center justify-center mb-3">
                 <Ionicons name="log-out-outline" size={32} color="#ef4444" />
               </View>
-              <Text className="text-xl font-bold text-neutral-800 mb-2">
+              <Text className="text-lg font-bold text-neutral-800 mb-2">
                 Logout
               </Text>
-              <Text className="text-sm text-neutral-600 text-center leading-5">
+              <Text className="text-xs text-neutral-600 text-center leading-5">
                 Are you sure you want to logout?
               </Text>
             </View>
@@ -433,7 +433,7 @@ const MyPageScreen = ({ navigation }: any) => {
                 className="flex-1 bg-gray-200 py-3 rounded-xl items-center mr-2"
                 onPress={() => setShowLogoutModal(false)}
               >
-                <Text className="text-gray-700 font-semibold text-base">
+                <Text className="text-gray-700 font-semibold text-sm">
                   Cancel
                 </Text>
               </TouchableOpacity>
@@ -445,7 +445,7 @@ const MyPageScreen = ({ navigation }: any) => {
                   executeLogout();
                 }}
               >
-                <Text className="text-white font-semibold text-base">
+                <Text className="text-white font-semibold text-sm">
                   Logout
                 </Text>
               </TouchableOpacity>
@@ -467,10 +467,10 @@ const MyPageScreen = ({ navigation }: any) => {
               <View className="w-16 h-16 bg-red-100 rounded-full items-center justify-center mb-3">
                 <Ionicons name="trash-outline" size={32} color="#ef4444" />
               </View>
-              <Text className="text-xl font-bold text-neutral-800 mb-2">
+              <Text className="text-lg font-bold text-neutral-800 mb-2">
                 Delete Account
               </Text>
-              <Text className="text-sm text-neutral-600 text-center leading-5">
+              <Text className="text-xs text-neutral-600 text-center leading-5">
                 Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.
               </Text>
             </View>
@@ -480,7 +480,7 @@ const MyPageScreen = ({ navigation }: any) => {
                 className="flex-1 bg-gray-200 py-3 rounded-xl items-center mr-2"
                 onPress={() => setShowDeleteAccountModal(false)}
               >
-                <Text className="text-gray-700 font-semibold text-base">
+                <Text className="text-gray-700 font-semibold text-sm">
                   Cancel
                 </Text>
               </TouchableOpacity>
@@ -492,7 +492,7 @@ const MyPageScreen = ({ navigation }: any) => {
                   executeDeleteAccount();
                 }}
               >
-                <Text className="text-white font-semibold text-base">
+                <Text className="text-white font-semibold text-sm">
                   Delete
                 </Text>
               </TouchableOpacity>
@@ -512,7 +512,7 @@ const MyPageScreen = ({ navigation }: any) => {
           <View className="bg-white rounded-2xl mx-4 max-h-[90%] w-[95%]">
             {/* Header */}
             <View className="flex-row justify-between items-center p-4 border-b border-stone-200">
-              <Text className="text-xl font-bold text-neutral-900">Privacy Policy</Text>
+              <Text className="text-lg font-bold text-neutral-900">Privacy Policy</Text>
               <TouchableOpacity onPress={() => setShowPrivacyPolicy(false)}>
                 <Ionicons name="close" size={24} color="#6b7280" />
               </TouchableOpacity>
@@ -520,43 +520,43 @@ const MyPageScreen = ({ navigation }: any) => {
             
             {/* Content */}
             <ScrollView className="p-4" showsVerticalScrollIndicator={false}>
-              <Text className="text-sm text-neutral-700 leading-6 mb-4">
+              <Text className="text-xs text-neutral-700 leading-6 mb-4">
                 Templebuk ("the Company") complies with the Personal Information Protection Act and is committed to protecting users' personal information and rights, as well as smoothly handling user complaints related to personal data.
               </Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">1. Purpose of Processing Personal Information</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">1. Purpose of Processing Personal Information</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 The Company processes personal information for the following purposes. Personal data will not be used for any purposes other than those stated below, and if the purpose of use changes, necessary actions such as obtaining additional consent will be taken in accordance with Article 18 of the Personal Information Protection Act.
               </Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">2. Types of Personal Information Collected</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">2. Types of Personal Information Collected</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 • Account information: email, name, phone number{'\n'}
                 • Profile information: profile picture{'\n'}
                 • Reservation information: temple, date, time, participants{'\n'}
                 • Location information: GPS coordinates (with consent)
               </Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">3. How We Use Your Information</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">3. How We Use Your Information</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 • Provide temple stay reservation services{'\n'}
                 • Send booking confirmations and notifications{'\n'}
                 • Improve our services and user experience{'\n'}
                 • Respond to customer inquiries and support requests
               </Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">4. Data Security</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">4. Data Security</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 We implement appropriate security measures to protect your personal information, including encryption, access controls, and regular security audits.
               </Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">5. Your Rights</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-3">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">5. Your Rights</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-3">
                 You have the right to access, correct, or delete your personal information at any time through your account settings.
               </Text>
               
-              <Text className="text-base font-bold text-neutral-900 mb-2">Effective Date</Text>
-              <Text className="text-sm text-neutral-700 leading-6 mb-4">
+              <Text className="text-sm font-bold text-neutral-900 mb-2">Effective Date</Text>
+              <Text className="text-xs text-neutral-700 leading-6 mb-4">
                 This Privacy Policy will be effective as of August 19, 2025.
               </Text>
                          </ScrollView>
@@ -577,10 +577,10 @@ const MyPageScreen = ({ navigation }: any) => {
                                <View className="w-16 h-16 bg-sage-100 rounded-full items-center justify-center mb-3">
                   <Ionicons name="mail-outline" size={32} color="#4A5D23" />
                 </View>
-               <Text className="text-xl font-bold text-neutral-800 mb-2">
+               <Text className="text-lg font-bold text-neutral-800 mb-2">
                  Customer Support
                </Text>
-               <Text className="text-sm text-neutral-600 text-center leading-5">
+               <Text className="text-xs text-neutral-600 text-center leading-5">
                  Contact us at templebuk@gmail.com
                </Text>
              </View>
@@ -610,7 +610,7 @@ const MyPageScreen = ({ navigation }: any) => {
                 <View className="w-16 h-16 bg-sage-100 rounded-full items-center justify-center mb-3">
                   <Ionicons name="notifications-outline" size={32} color="#4A5D23" />
                 </View>
-                <Text className="text-xl font-bold text-neutral-800 mb-2">
+                <Text className="text-lg font-bold text-neutral-800 mb-2">
                   Notification Settings
                 </Text>
                 <Text className="text-sm text-neutral-600 text-center leading-5 mb-4">
@@ -629,7 +629,7 @@ const MyPageScreen = ({ navigation }: any) => {
                       <Ionicons name="checkmark" size={14} color="white" />
                     )}
                   </View>
-                  <Text className="text-base text-neutral-900">
+                  <Text className="text-sm text-neutral-900">
                     Receive Email notifications
                   </Text>
                 </TouchableOpacity>
@@ -639,7 +639,7 @@ const MyPageScreen = ({ navigation }: any) => {
                 className="bg-sage-600 py-3 rounded-xl items-center"
                 onPress={() => setShowNotificationSettings(false)}
               >
-                <Text className="text-white font-semibold text-base">
+                <Text className="text-white font-semibold text-sm">
                   Save
                 </Text>
               </TouchableOpacity>

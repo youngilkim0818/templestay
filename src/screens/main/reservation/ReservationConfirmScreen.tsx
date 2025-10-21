@@ -14,22 +14,22 @@ const isSmallScreen = height < 700;
 const isLargeScreen = height > 800;
 
 // Responsive sizes
-const headerFontSize = isSmallScreen ? 16 : (isLargeScreen ? 22 : 18);
-const subHeaderFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
-const cardPadding = isSmallScreen ? 8 : (isLargeScreen ? 14 : 10);
-const cardMargin = isSmallScreen ? 3 : (isLargeScreen ? 6 : 4);
-const templeImageHeight = isSmallScreen ? 100 : (isLargeScreen ? 140 : 120);
-const templeTitleSize = isSmallScreen ? 13 : (isLargeScreen ? 17 : 15);
-const templeDescSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
-const templeDistanceSize = isSmallScreen ? 9 : (isLargeScreen ? 13 : 11);
-const sectionPadding = isSmallScreen ? 8 : (isLargeScreen ? 14 : 10);
-const iconSize = isSmallScreen ? 14 : (isLargeScreen ? 20 : 18);
-const buttonPadding = isSmallScreen ? 6 : (isLargeScreen ? 10 : 8);
-const buttonFontSize = isSmallScreen ? 10 : (isLargeScreen ? 14 : 12);
-const programTitleSize = isSmallScreen ? 13 : (isLargeScreen ? 17 : 15);
-const programDescSize = isSmallScreen ? 9 : (isLargeScreen ? 13 : 11);
-const priceFontSize = isSmallScreen ? 11 : (isLargeScreen ? 15 : 13);
-const totalPriceFontSize = isSmallScreen ? 14 : (isLargeScreen ? 20 : 16);
+const headerFontSize = isSmallScreen ? 14 : (isLargeScreen ? 19.25 : 15.75);
+const subHeaderFontSize = isSmallScreen ? 9.625 : (isLargeScreen ? 13.125 : 11.375);
+const cardPadding = isSmallScreen ? 7 : (isLargeScreen ? 12.25 : 8.75);
+const cardMargin = isSmallScreen ? 2.625 : (isLargeScreen ? 5.25 : 3.5);
+const templeImageHeight = isSmallScreen ? 87.5 : (isLargeScreen ? 122.5 : 105);
+const templeTitleSize = isSmallScreen ? 11.375 : (isLargeScreen ? 14.875 : 13.125);
+const templeDescSize = isSmallScreen ? 8.75 : (isLargeScreen ? 12.25 : 10.5);
+const templeDistanceSize = isSmallScreen ? 7.875 : (isLargeScreen ? 11.375 : 9.625);
+const sectionPadding = isSmallScreen ? 7 : (isLargeScreen ? 12.25 : 8.75);
+const iconSize = isSmallScreen ? 12.25 : (isLargeScreen ? 17.5 : 15.75);
+const buttonPadding = isSmallScreen ? 5.25 : (isLargeScreen ? 8.75 : 7);
+const buttonFontSize = isSmallScreen ? 8.75 : (isLargeScreen ? 12.25 : 10.5);
+const programTitleSize = isSmallScreen ? 11.375 : (isLargeScreen ? 14.875 : 13.125);
+const programDescSize = isSmallScreen ? 7.875 : (isLargeScreen ? 11.375 : 9.625);
+const priceFontSize = isSmallScreen ? 9.625 : (isLargeScreen ? 13.125 : 11.375);
+const totalPriceFontSize = isSmallScreen ? 12.25 : (isLargeScreen ? 17.5 : 14);
 
 type ReservationConfirmRouteProp = RouteProp<TempleStackParamList, 'ReservationConfirm'>;
 

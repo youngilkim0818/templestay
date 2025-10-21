@@ -160,7 +160,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#374151" />
         </TouchableOpacity>
-        <Text className="text-xl font-bold text-neutral-800">계정설정</Text>
+        <Text className="text-lg font-bold text-neutral-800">계정설정</Text>
         <View className="w-6" />
       </View>
 
@@ -175,7 +175,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
               onPress={handleLogout}
             >
               <Ionicons name="log-out-outline" size={20} color="#ef4444" />
-              <Text className="text-base text-red-500 ml-3 flex-1">로그아웃</Text>
+              <Text className="text-sm text-red-500 ml-3 flex-1">로그아웃</Text>
               <Ionicons name="chevron-forward" size={16} color="#ef4444" />
             </TouchableOpacity>
             
@@ -184,7 +184,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
               onPress={toggleAgreement}
             >
               <Ionicons name="trash-outline" size={20} color="#dc2626" />
-              <Text className="text-base text-red-600 ml-3 flex-1">회원탈퇴</Text>
+              <Text className="text-sm text-red-600 ml-3 flex-1">회원탈퇴</Text>
               <Ionicons name="chevron-forward" size={16} color="#dc2626" />
             </TouchableOpacity>
           </View>
@@ -213,20 +213,20 @@ const AccountSettingsScreen = ({ navigation }: any) => {
                                            {showAgreement && (
                         <View className="bg-red-50 rounded-xl border border-red-200 p-4">
                           {/* Service Discontinuation */}
-                          <Text className="text-sm font-semibold text-red-800 mb-2">Service Discontinuation</Text>
-                          <Text className="text-xs text-red-700 leading-4 mb-4">
+                          <Text className="text-xs font-semibold text-red-800 mb-2">Service Discontinuation</Text>
+                          <Text className="text-[11px] text-red-700 leading-4 mb-4">
                             When you withdraw your membership, the app's service will be immediately discontinued.
                           </Text>
                           
                           {/* Personal Information Processing */}
-                          <Text className="text-sm font-semibold text-red-800 mb-2">Personal Information Processing</Text>
-                          <Text className="text-xs text-red-700 leading-4 mb-4">
+                          <Text className="text-xs font-semibold text-red-800 mb-2">Personal Information Processing</Text>
+                          <Text className="text-[11px] text-red-700 leading-4 mb-4">
                             According to relevant laws and privacy policy, the company's retention of member's personal information will be deleted, and information may be retained only in cases where retention is required.
                           </Text>
                           
                           {/* Objection */}
-                          <Text className="text-sm font-semibold text-red-800 mb-2">Objection</Text>
-                          <Text className="text-xs text-red-700 leading-4 mb-4">
+                          <Text className="text-xs font-semibold text-red-800 mb-2">Objection</Text>
+                          <Text className="text-[11px] text-red-700 leading-4 mb-4">
                             If you do not agree to the changed terms, you can express your refusal through membership withdrawal.
                           </Text>
 
@@ -242,7 +242,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
                                 <Ionicons name="checkmark" size={14} color="white" />
                               )}
                             </View>
-                            <Text className="text-sm text-red-800 font-medium">
+                            <Text className="text-xs text-red-800 font-medium">
                               I understand and agree to the above terms
                             </Text>
                           </TouchableOpacity>
@@ -255,7 +255,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
                             onPress={handleDeleteAccount}
                             disabled={!agreeToTerms}
                           >
-                            <Text className={`font-semibold text-base ${
+                            <Text className={`font-semibold text-sm ${
                               agreeToTerms ? 'text-white' : 'text-gray-500'
                             }`}>
                               계속하기
@@ -282,10 +282,10 @@ const AccountSettingsScreen = ({ navigation }: any) => {
               <View className="w-16 h-16 bg-red-100 rounded-full items-center justify-center mb-3">
                 <Ionicons name="log-out-outline" size={32} color="#ef4444" />
               </View>
-              <Text className="text-xl font-bold text-neutral-800 mb-2">
+              <Text className="text-lg font-bold text-neutral-800 mb-2">
                 로그아웃
               </Text>
-              <Text className="text-sm text-neutral-600 text-center leading-5">
+              <Text className="text-xs text-neutral-600 text-center leading-5">
                 정말 로그아웃 하시겠습니까?
               </Text>
             </View>
@@ -295,7 +295,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
                 className="flex-1 bg-gray-200 py-3 rounded-xl items-center mr-2"
                 onPress={() => setShowLogoutModal(false)}
               >
-                <Text className="text-gray-700 font-semibold text-base">
+                <Text className="text-gray-700 font-semibold text-sm">
                   취소
                 </Text>
               </TouchableOpacity>
@@ -307,7 +307,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
                   executeLogout();
                 }}
               >
-                <Text className="text-white font-semibold text-base">
+                <Text className="text-white font-semibold text-sm">
                   로그아웃
                 </Text>
               </TouchableOpacity>
@@ -329,13 +329,13 @@ const AccountSettingsScreen = ({ navigation }: any) => {
               <View className="w-16 h-16 bg-red-100 rounded-full items-center justify-center mb-3">
                 <Ionicons name="trash-outline" size={32} color="#dc2626" />
               </View>
-              <Text className="text-xl font-bold text-neutral-800 mb-2">
+              <Text className="text-lg font-bold text-neutral-800 mb-2">
                 회원탈퇴
               </Text>
-              <Text className="text-sm text-neutral-600 text-center leading-5 mb-2">
+              <Text className="text-xs text-neutral-600 text-center leading-5 mb-2">
                 정말 계정을 삭제하시겠습니까?
               </Text>
-              <Text className="text-xs text-red-500 text-center leading-4">
+              <Text className="text-[11px] text-red-500 text-center leading-4">
                 이 작업은 되돌릴 수 없습니다.
               </Text>
             </View>
@@ -345,7 +345,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
                 className="flex-1 bg-gray-200 py-3 rounded-xl items-center mr-2"
                 onPress={() => setShowDeleteAccountModal(false)}
               >
-                <Text className="text-gray-700 font-semibold text-base">
+                <Text className="text-gray-700 font-semibold text-sm">
                   취소
                 </Text>
               </TouchableOpacity>
@@ -357,7 +357,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
                   executeDeleteAccount();
                 }}
               >
-                <Text className="text-white font-semibold text-base">
+                <Text className="text-white font-semibold text-sm">
                   삭제
                 </Text>
               </TouchableOpacity>
@@ -379,19 +379,19 @@ const AccountSettingsScreen = ({ navigation }: any) => {
               <View className="w-16 h-16 bg-red-100 rounded-full items-center justify-center mb-3">
                 <Ionicons name="lock-closed-outline" size={32} color="#dc2626" />
               </View>
-              <Text className="text-xl font-bold text-neutral-800 mb-2">
+              <Text className="text-lg font-bold text-neutral-800 mb-2">
                 비밀번호 확인
               </Text>
-              <Text className="text-sm text-neutral-600 text-center leading-5 mb-4">
+              <Text className="text-xs text-neutral-600 text-center leading-5 mb-4">
                 회원탈퇴를 위해 현재 비밀번호를 입력해주세요
               </Text>
             </View>
             
             {/* 비밀번호 입력 */}
             <View className="w-full mb-4">
-              <Text className="text-sm font-medium text-neutral-700 mb-2">현재 비밀번호</Text>
+              <Text className="text-xs font-medium text-neutral-700 mb-2">현재 비밀번호</Text>
               <TextInput
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base"
+                className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm"
                 placeholder="비밀번호를 입력하세요"
                 secureTextEntry={true}
                 value={currentPassword}
@@ -401,7 +401,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
                 }}
               />
               {passwordError ? (
-                <Text className="text-red-500 text-sm mt-1">{passwordError}</Text>
+                <Text className="text-red-500 text-xs mt-1">{passwordError}</Text>
               ) : null}
             </View>
             
@@ -414,7 +414,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
                   setPasswordError('');
                 }}
               >
-                <Text className="text-gray-700 font-semibold text-base">
+                <Text className="text-gray-700 font-semibold text-sm">
                   취소
                 </Text>
               </TouchableOpacity>
@@ -423,7 +423,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
                 className="flex-1 bg-red-600 py-3 rounded-xl items-center ml-2"
                 onPress={handlePasswordConfirm}
               >
-                <Text className="text-white font-semibold text-base">
+                <Text className="text-white font-semibold text-sm">
                   확인
                 </Text>
               </TouchableOpacity>
