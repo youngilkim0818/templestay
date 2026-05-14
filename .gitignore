@@ -6,6 +6,7 @@ yarn-error.log*
 
 # Expo
 .expo/
+.next/
 dist/
 web-build/
 
@@ -34,6 +35,8 @@ yarn-error.*
 .env*.local
 .env.production
 .env.development
+.npmrc
+google-play-service-account.json
 
 # typescript
 *.tsbuildinfo
@@ -50,4 +53,4 @@ yarn-error.*
 # OS generated files
 Thumbs.db
 ehthumbs.db
-Desktop.ini 
+Desktop.ini
